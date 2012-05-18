@@ -1,0 +1,1 @@
+The tests and code coverage routines will write logs to this folder.

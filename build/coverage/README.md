@@ -1,0 +1,1 @@
+The code coverage report will be generated in this folder when you run the test suite.
