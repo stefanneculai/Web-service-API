@@ -16,7 +16,7 @@
 	"smtp_pass":"",
 	"smtp_host":"localhost",
 
-	"app_name":"Vangelis",
+	"app_name":"WebService",
 	"app_mail_address":"",
 	"app_timezone":"Australia/Brisbane",
 	"app_description":"",

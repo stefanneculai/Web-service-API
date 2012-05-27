@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Vangelis.Tests
+ * @package     WebService.Tests
  * @subpackage  Application
  *
  * @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
@@ -8,18 +8,18 @@
  */
 
 /**
- * Test Case class for VangelisApplicationWebRouter
+ * Test Case class for WebServiceApplicationWebRouter
  *
- * @package     Vangelis.Tests
+ * @package     WebService.Tests
  * @subpackage  Application
  * @since       1.0
  */
-class VangelisApplicationWebRouterTest extends TestCase
+class WebServiceApplicationWebRouterTest extends TestCase
 {
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    VangelisApplicationWebRouter
+	 * @var    WebServiceApplicationWebRouter
 	 * @since  1.0
 	 */
 	private $_instance;
@@ -35,13 +35,13 @@ class VangelisApplicationWebRouterTest extends TestCase
 	{
 		// Input, Expected
 		return array(
-			array('application/vnd.vangelis+json', 'application/vnd.vangelis+json'),
-			array('application/vnd.vangelis.1+json', 'application/vnd.vangelis.1+json'),
-			array('application/vnd.vangelis.2.raw+json', 'application/vnd.vangelis.2.raw+json'),
-			array('application/vnd.vangelis+xml', 'application/vnd.vangelis+xml'),
-			array('application/json', 'application/vnd.vangelis+json'),
-			array('', 'application/vnd.vangelis+json'),
-			array('vangelis', 'vangelis')
+			array('application/vnd.webservice+json', 'application/vnd.webservice+json'),
+			array('application/vnd.webservice.1+json', 'application/vnd.webservice.1+json'),
+			array('application/vnd.webservice.2.raw+json', 'application/vnd.webservice.2.raw+json'),
+			array('application/vnd.webservice+xml', 'application/vnd.webservice+xml'),
+			array('application/json', 'application/vnd.webservice+json'),
+			array('', 'application/vnd.webservice+json'),
+			array('webservice', 'webservice')
 		);
 	}
 
@@ -56,10 +56,12 @@ class VangelisApplicationWebRouterTest extends TestCase
 	{
 		// Base, Route, Method, Expected, Remainder, Exception
 		return array(
-			array('VangelisControllerV1Json', 'ping/7', 'GET', 'VangelisControllerV1JsonPingGet', '7', false),
-			array('VangelisControllerV1Json', 'foobar', 'GET', '', '', true),
-// 			array('VangelisControllerV1Json', 'ping/42', 'DELETE', 'VangelisControllerV1JsonPingDelete', '42', false),
-// 			array('VangelisControllerV1Json', 'ping', 'PUT', 'VangelisControllerV1JsonPingCreate', '', false)
+			array('WebServiceControllerV1Json', 'content/7', 'GET', 'WebServiceControllerV1JsonContentGet', '7', false),
+			array('WebServiceControllerV1Json', 'content', 'GET', 'WebServiceControllerV1JsonContentGet', '', false),
+ 			array('WebServiceControllerV1Json', 'content', 'DELETE', 'WebServiceControllerV1JsonContentDelete', '', false),
+ 			array('WebServiceControllerV1Json', 'content', 'PUT', 'WebServiceControllerV1JsonContentCreate', '', false),
+			array('WebServiceControllerV1Json', 'content', 'POST', 'WebServiceControllerV1JsonContentUpdate', '', false),
+			array('WebServiceControllerV1Json', 'content', 'PATCH', 'WebServiceControllerV1JsonContentUpdate', '', false)
 		);
 	}
 
@@ -74,19 +76,19 @@ class VangelisApplicationWebRouterTest extends TestCase
 	{
 		// Input, Version, Output, Type, Exception
 		return array(
-			array('application/vnd.vangelis+json', 1, 'raw', 'json', false),
-			array('application/vnd.vangelis.1+json', 1, 'raw', 'json', false),
-			array('application/vnd.vangelis.1.raw+json', 1, 'raw', 'json', false),
-			array('application/vnd.vangelis.2+json', 2, 'raw', 'json', false),
-			array('application/vnd.vangelis.2.raw+json', 2, 'raw', 'json', false),
-			array('application/vnd.vangelis.1.full+json', 1, 'full', 'json', false),
-			array('application/vnd.vangelis.2.full+json', 2, 'full', 'json', false),
-			array('application/vnd.vangelis.full+json', 1, 'full', 'json', false),
-			array('application/vnd.vangelis.42+json', 42, 'raw', 'json', false),
-			array('application/vnd.vangelis.3', 3, 'raw', 'json', false),
-			array('application/vnd.vangelis.full', 1, 'full', 'json', false),
-			array('application/vnd.vangelis.7.full', 7, 'full', 'json', false),
-			array('application/vnd.vangelis+xml', 1, 'raw', 'xml', false),
+			array('application/vnd.webservice+json', 1, 'raw', 'json', false),
+			array('application/vnd.webservice.1+json', 1, 'raw', 'json', false),
+			array('application/vnd.webservice.1.raw+json', 1, 'raw', 'json', false),
+			array('application/vnd.webservice.2+json', 2, 'raw', 'json', false),
+			array('application/vnd.webservice.2.raw+json', 2, 'raw', 'json', false),
+			array('application/vnd.webservice.1.full+json', 1, 'full', 'json', false),
+			array('application/vnd.webservice.2.full+json', 2, 'full', 'json', false),
+			array('application/vnd.webservice.full+json', 1, 'full', 'json', false),
+			array('application/vnd.webservice.42+json', 42, 'raw', 'json', false),
+			array('application/vnd.webservice.3', 3, 'raw', 'json', false),
+			array('application/vnd.webservice.full', 1, 'full', 'json', false),
+			array('application/vnd.webservice.7.full', 7, 'full', 'json', false),
+			array('application/vnd.webservice+xml', 1, 'raw', 'xml', false),
 			array('application/json', 1, 'raw', 'json', true),
 			array('', 1, 'raw', 'json', true),
 			array('datahub', 1, 'raw', 'json', true)
@@ -151,7 +153,7 @@ class VangelisApplicationWebRouterTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  VangelisApplicationWebRouter::__construct
+	 * @covers  WebServiceApplicationWebRouter::__construct
 	 * @since   1.0
 	 */
 	public function test__construct()
@@ -165,7 +167,7 @@ class VangelisApplicationWebRouterTest extends TestCase
 			);
 
 		// Construct the object.
-		$router = new VangelisApplicationWebRouter($input, $this->getMockWeb());
+		$router = new WebServiceApplicationWebRouter($input, $this->getMockWeb());
 
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('ok', TestReflection::getValue($router, 'input')->test());
@@ -182,7 +184,7 @@ class VangelisApplicationWebRouterTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        VangelisApplicationWebRouter::detectRequestFormat
+	 * @covers        WebServiceApplicationWebRouter::detectRequestFormat
 	 * @dataProvider  seedRequestFormatData
 	 * @since         1.0
 	 */
@@ -211,7 +213,7 @@ class VangelisApplicationWebRouterTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        VangelisApplicationWebRouter::fetchContentType
+	 * @covers        WebServiceApplicationWebRouter::fetchContentType
 	 * @dataProvider  seedContentTypeData
 	 * @since         1.0
 	 */
@@ -242,7 +244,7 @@ class VangelisApplicationWebRouterTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        VangelisApplicationWebRouter::fetchControllerClass
+	 * @covers        WebServiceApplicationWebRouter::fetchControllerClass
 	 * @dataProvider  seedFetchControllerClassData
 	 * @since         1.0
 	 */
@@ -272,7 +274,7 @@ class VangelisApplicationWebRouterTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        VangelisApplicationWebRouter::fetchRequestMethod
+	 * @covers        WebServiceApplicationWebRouter::fetchRequestMethod
 	 * @dataProvider  seedRequestMethodData
 	 * @since         1.0
 	 */
@@ -304,7 +306,7 @@ class VangelisApplicationWebRouterTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  VangelisApplicationWebRouter::getController
+	 * @covers  WebServiceApplicationWebRouter::getController
 	 * @since   1.0
 	 */
 	public function testGetController()
@@ -322,7 +324,7 @@ class VangelisApplicationWebRouterTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        VangelisApplicationWebRouter::rewriteRoute
+	 * @covers        WebServiceApplicationWebRouter::rewriteRoute
 	 * @dataProvider  seedRewriteRouteData
 	 * @since         1.0
 	 */
@@ -346,7 +348,7 @@ class VangelisApplicationWebRouterTest extends TestCase
 	{
 		parent::setUp();
 
-		$this->_instance = new VangelisApplicationWebRouter(new JInput(array()), $this->getMockWeb());
+		$this->_instance = new WebServiceApplicationWebRouter(new JInput(array()), $this->getMockWeb());
 	}
 
 	/**

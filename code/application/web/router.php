@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Vangelis.Application
+ * @package     WebService.Application
  * @subpackage  Application
  *
  * @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
@@ -8,13 +8,13 @@
  */
 
 /**
- * Vangelis Web Services application router.
+ * Web Service application router.
  *
- * @package     Vangelis.Application
+ * @package     WebSercice.Application
  * @subpackage  Application
  * @since       1.0
  */
-class VangelisApplicationWebRouter
+class WebServiceApplicationWebRouter
 {
 	/**
 	 * @var    string  The api content type to use for messaging.
@@ -121,11 +121,11 @@ class VangelisApplicationWebRouter
 	 */
 	protected function detectRequestFormat($type)
 	{
-		// Make sure we are dealing with a valid Vangelis content type.
+		// Make sure we are dealing with a valid WebService content type.
 		$matches = array();
-		if (!preg_match('#application/vnd\.vangelis(\.([0-9]+))?(\.([a-z]+))?(\+([a-z]+))?#', strtolower($type), $matches))
+		if (!preg_match('#application/vnd\.webservice(\.([0-9]+))?(\.([a-z]+))?(\+([a-z]+))?#', strtolower($type), $matches))
 		{
-			throw new InvalidArgumentException($type . ' not a valid Vangelis Services mime type.', 400);
+			throw new InvalidArgumentException($type . ' not a valid Web Service mime type.', 400);
 		}
 
 		// Set the API version if available.
@@ -159,7 +159,7 @@ class VangelisApplicationWebRouter
 		// If no explicit content type is set use the default.
 		if (empty($_SERVER['CONTENT_TYPE']))
 		{
-			$type = 'application/vnd.vangelis+json';
+			$type = 'application/vnd.webservice+json';
 		}
 		// If we have an explicit content type set, get it from the input.
 		else
@@ -170,7 +170,7 @@ class VangelisApplicationWebRouter
 		// Clean up the default json fallback type.
 		if ($type == 'application/json')
 		{
-			$type = 'application/vnd.vangelis+json';
+			$type = 'application/vnd.webservice+json';
 		}
 
 		return $type;
@@ -186,7 +186,7 @@ class VangelisApplicationWebRouter
 	 */
 	protected function fetchControllerBaseName()
 	{
-		return 'VangelisControllerV' . $this->apiVersion . ucfirst($this->apiType);
+		return 'WebServiceControllerV' . $this->apiVersion . ucfirst($this->apiType);
 	}
 
 	/**
@@ -211,13 +211,13 @@ class VangelisApplicationWebRouter
 		{
 			// Build the controller class name from the path information.
 			$class = $base . JStringNormalise::toCamelCase(implode(' ', array_slice($parts, 0, $i))) . ucfirst($this->methodMap[$method]);
-
+			
 			// If the requested controller exists let's use it.
 			if (class_exists($class))
 			{
 				// Set the remainder of the route path in the input object as a local route.
 				$this->input->get->set('@route', implode('/', array_slice($parts, $i)));
-
+				
 				return $class;
 			}
 		}
@@ -237,16 +237,16 @@ class VangelisApplicationWebRouter
 	protected function fetchRequestMethod()
 	{
 		// Some clients don't support anything other than GET and POST so let's give them a way to play too.
-		if (($this->input->server->getWord('REQUEST_METHOD') == 'POST') && $this->input->get->getWord('_method'))
+		if (($this->input->server->getMethod() == 'POST') && $this->input->get->getWord('_method'))
 		{
 			$method = strtoupper($this->input->get->getWord('_method'));
 		}
 		// Standard use case.
 		else
 		{
-			$method = strtoupper($this->input->server->getWord('REQUEST_METHOD'));
+			$method = strtoupper($this->input->server->getMethod());
 		}
-
+		
 		// Is the request method supported?
 		if (empty($this->methodMap[$method]))
 		{

@@ -1,8 +1,8 @@
 <?php
 /**
- * Bootstrap file for the Vangelis Application.
+ * Bootstrap file for the Joomla Web Service Application.
  *
- * @package     Vangelis.Application
+ * @package     JWebService.Application
  *
  * @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
@@ -47,5 +47,5 @@ if (!class_exists('JLoader'))
 	exit('Joomla Platform not loaded.');
 }
 
-// Setup the autoloader for the Vangelis application classes.
-JLoader::registerPrefix('Vangelis', __DIR__);
+// Setup the autoloader for the WebService application classes.
+JLoader::registerPrefix('WebService', __DIR__);

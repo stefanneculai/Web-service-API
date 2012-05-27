@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Vangelis.Application
+ * @package     WebService.Application
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
@@ -8,17 +8,17 @@
  */
 
 /**
- * Vangelis 'ping' method.
+ * WebService 'content' Create method.
  *
- * @package     Vangelis.Application
+ * @package     WebService.Application
  * @subpackage  Controller
  * @since       1.0
  */
-class VangelisControllerV1JsonPingGet extends JControllerBase
+class WebServiceControllerV1JsonContentCreate extends JControllerBase
 {
 	public function execute()
 	{
-		$this->app->setBody(json_encode('Pong'));
+		$this->app->setBody(json_encode('Content Create'));
 	}
 
 }

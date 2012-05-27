@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Vangelis.Application
+ * @package     WebService.Application
  * @subpackage  Application
  *
  * @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
@@ -8,13 +8,13 @@
  */
 
 /**
- * Vangelis Web Services web application class.
+ * Web Service Api web application class.
  *
  * @package     Vangelis.Application
  * @subpackage  Application
  * @since    1.0
  */
-class VangelisApplicationWeb extends JApplicationWeb
+class WebServiceApplicationWeb extends JApplicationWeb
 {
 	/**
 	 * @var    string  Response mime type.  By default this application returns JSON.
@@ -29,7 +29,7 @@ class VangelisApplicationWeb extends JApplicationWeb
 	protected $db;
 
 	/**
-	 * @var    VangelisApplicationWebRouter  A router object for the application to use.
+	 * @var    WebServiceRouter  A router object for the application to use.
 	 * @since  1.0
 	 */
 	protected $router;
@@ -112,9 +112,9 @@ class VangelisApplicationWeb extends JApplicationWeb
 	 *
 	 * @since   1.0
 	 */
-	public function loadRouter(VangelisApplicationWebRouter $router = null)
+	public function loadRouter(WebServiceApplicationWebRouter $router = null)
 	{
-		$this->router = ($router === null) ? new VangelisApplicationWebRouter($this->input, $this) : $router;
+		$this->router = ($router === null) ? new WebServiceApplicationWebRouter($this->input, $this) : $router;
 
 		return $this;
 	}
@@ -159,7 +159,7 @@ class VangelisApplicationWeb extends JApplicationWeb
 		// Ensure that required path constants are defined.
 		if (!defined('JPATH_CONFIGURATION'))
 		{
-			$path = getenv('VANGELIS_CONFIG');
+			$path = getenv('WEBSERVICE_CONFIG');
 			if ($path)
 			{
 				define('JPATH_CONFIGURATION', realpath($path));
@@ -209,7 +209,7 @@ class VangelisApplicationWeb extends JApplicationWeb
 
 		// Set the Server and X-Powered-By Header.
 		$this->setHeader('Server', '', true);
-		$this->setHeader('X-Powered-By', 'Vangelis Services/1.0', true);
+		$this->setHeader('X-Powered-By', 'Web Service/1.0', true);
 		$this->setHeader('X-Runtime', $runtime, true);
 
 		// Send the response.

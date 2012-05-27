@@ -22,7 +22,7 @@ else
 try
 {
 	// Instantiate the application.
-	$application = JApplicationWeb::getInstance('VangelisApplicationWeb');
+	$application = JApplicationWeb::getInstance('WebServiceApplicationWeb');
 
 	// Set the default JInput class for the application to use JSON input.
 // 	$application->input = new JInputJson;
