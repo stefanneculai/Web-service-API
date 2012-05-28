@@ -1,15 +1,15 @@
 <?php
 /**
- * Web server entry point for the Vangelis Application.
+ * Web server entry point for the WebService Application.
  *
- * @package     Vangelis.Application
+ * @package     WebService.Application
  *
  * @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
 // Bootstrap the application.
-$path = getenv('VANGELIS_HOME');
+$path = getenv('WEBSERVICE_HOME');
 if ($path)
 {
 	require_once $path . '/bootstrap.php';
@@ -33,7 +33,7 @@ try
 	// Execute the application.
 	$application
 // 		->loadSession()
-// 		->loadDatabase()
+ 		->loadDatabase()
 		->loadRouter()
 		->execute();
 }

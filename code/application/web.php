@@ -130,6 +130,10 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	{
 		try
 		{
+			$this->dbo = JFactory::getDbo();
+			$this->session = JFactory::getSession();
+			JFactory::$application = $this;
+			
 			// Get the controller instance based on the request.
 			$controller = $this->router->getController($this->get('uri.route'));
 
@@ -191,7 +195,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 		
 		if ($config == NULL)
 			throw new RuntimeException('Configuration file cannot be decoded.');
-
+		
 		return $config;
 	}
 

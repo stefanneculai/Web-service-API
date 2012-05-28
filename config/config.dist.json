@@ -1,10 +1,10 @@
 {
-	"db_driver":"mysqli",
-	"db_host":"127.0.0.1",
+	"db_driver":"mysql",
+	"db_host":"localhost",
 	"db_user":"root",
 	"db_pass":"",
-	"db_name":"",
-	"db_prefix":"",
+	"db_name":"ws",
+	"db_prefix":"ws_",
 
 	"mail_transport":"mail",
 	"sendmail_path":"\/usr\/sbin\/sendmail",
@@ -18,7 +18,7 @@
 
 	"app_name":"WebService",
 	"app_mail_address":"",
-	"app_timezone":"Australia/Brisbane",
+	"app_timezone":"Romania/Bucharest",
 	"app_description":"",
 	"app_token":"B5BhjfY42veydBPc",
 	"app_list_limit":"20",

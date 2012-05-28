@@ -62,7 +62,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	/**
 	 * Get content by id
 	 * 
-	 * @param   string  $id       Content id. All entries if null
+	 * @param   string  $id       Get content with the specified id. If id is null all entries should be returned
 	 * @param   string  $options  Conditions to apply on the content returned 
 	 * 
 	 * @return  void
@@ -85,7 +85,24 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		$modelState->set('content_id', $id);
 		
 		// get the requested data
-		$this->app->setBody(json_encode($model->getData()));
+		$data = $model->getData();
+		
+		$results = $this->parseData($data);
+		
+		$this->app->setBody(json_encode($results));
+	}
+	
+	/**
+	 * Parse the returned data from database
+	 * 
+	 * @param   JContent $data as JContent
+	 * 
+	 * @return  array
+	 * 
+	 * @since   1.0
+	 */
+	protected function parseData($data){
+		return 'Results after parse';
 	}
 
 }

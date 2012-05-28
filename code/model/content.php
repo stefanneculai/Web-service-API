@@ -21,8 +21,9 @@ class WebServiceModelContent extends JModelBase
 		
 		$factory = JContentFactory::getInstance();
 	
-		$content = $factory->getContent($this->state->get('type'))->load($this->state->get('content_id'));
+		$content = $factory->getContent($this->state->get('type'))->load('1');
 		
+		return $content;
 	}
 }
 
