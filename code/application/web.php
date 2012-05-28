@@ -106,7 +106,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	/**
 	 * Allows the application to load a custom or default router.
 	 *
-	 * @param   VangelisApplicationWebRouter  $router  An optional router object. If omitted, the standard router is created.
+	 * @param   WebServiceApplicationWebRouter  $router  An optional router object. If omitted, the standard router is created.
 	 *
 	 * @return  JApplicationWeb This method is chainable.
 	 *
@@ -188,6 +188,9 @@ class WebServiceApplicationWeb extends JApplicationWeb
 
 		// Load the configuration file into an object.
 		$config = json_decode(file_get_contents($file));
+		
+		if ($config == NULL)
+			throw new RuntimeException('Configuration file cannot be decoded.');
 
 		return $config;
 	}

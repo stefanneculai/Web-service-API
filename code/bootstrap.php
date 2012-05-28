@@ -2,7 +2,7 @@
 /**
  * Bootstrap file for the Joomla Web Service Application.
  *
- * @package     JWebService.Application
+ * @package     WebService.Application
  *
  * @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
@@ -37,6 +37,19 @@ if (!defined('JPATH_BASE'))
 {
 	define('JPATH_BASE', realpath(__DIR__));
 }
+
+$path = getenv('WEBSERVICE_CONFIG');
+if ($path)
+{
+	define('JPATH_CONFIGURATION', realpath($path));
+}
+else
+{
+	define('JPATH_CONFIGURATION', realpath(dirname(JPATH_BASE) . '/config'));
+}
+
+define('JPATH_SITE', JPATH_BASE.'/code');
+define('JPATH_CACHE', JPATH_SITE.'/cache');
 
 // Import the platform(s).
 require_once JPATH_PLATFORM . '/import.php';

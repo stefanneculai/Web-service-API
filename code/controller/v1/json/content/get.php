@@ -31,16 +31,16 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		// Break route into more parts
 		$routeParts = explode('/',$route);
 		
-		// Path is longer than it should be
-		if( count($routeParts) > 1)
-			throw new InvalidArgumentException('Unknown content path '.$route, 502);
-		
 		// Contet is not refered by a number id
-		if( !is_numeric($route) && !empty($route))
-			throw new InvalidArgumentException('Unknown content path '.$route, 503);
+		if( count($routeParts) > 0 && !is_numeric($routeParts[0]) && !empty($routeParts[0]) )
+			throw new InvalidArgumentException('Unknown content path', 503);
 		
-		return $route;
+		// All content is refered
+		if ( count($routeParts) == 0 )
+			return null;
 		
+		// Specific content id
+		return $routeParts[0];
 	}
 	
 	/**
@@ -52,8 +52,10 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	 */
 	public function execute()
 	{
+		// Content id
 		$id = $this->getContentId();
 		
+		// Returned data
 		$this->getContent($id);
 	}
 		
@@ -69,11 +71,21 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	 */
 	protected function getContent($id = null){
 		
-		if ( $id != null)
-			$this->app->setBody(json_encode('Content with id '.$id));
-		else 
-			$this->app->setBody(json_encode('All entries from content'));
+		// content model
+		include_once(JPATH_BASE . '/model/content.php');
 		
+		// new content model
+		$model = new WebServiceModelContent;
+		
+		// get content state
+		$modelState = $model->getState();
+		
+		// set content data that we need
+		$modelState->set('type', 'general');
+		$modelState->set('content_id', $id);
+		
+		// get the requested data
+		$this->app->setBody(json_encode($model->getData()));
 	}
 
 }
