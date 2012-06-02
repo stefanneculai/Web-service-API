@@ -260,12 +260,6 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		
 	}
 	
-	public function getResponseCode(){
-		
-		return $this->responseCode;
-		
-	}
-	
 	/**
 	 * Init parameters 
 	 *
