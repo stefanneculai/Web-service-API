@@ -237,9 +237,9 @@ class WebServiceApplicationWebRouter
 	protected function fetchRequestMethod()
 	{
 		// Some clients don't support anything other than GET and POST so let's give them a way to play too.
-		if (($this->input->server->getMethod() == 'POST') && $this->input->post->getWord('_method'))
+		if (($this->input->server->getMethod() == 'POST') && $this->input->getWord('_method'))
 		{
-			$method = strtoupper($this->input->post->getWord('_method'));
+			$method = strtoupper($this->input->getWord('_method'));
 		}
 		// Standard use case.
 		else
