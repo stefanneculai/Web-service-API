@@ -188,7 +188,7 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	 * @dataProvider  seedRequestFormatData
 	 * @since         1.0
 	 */
-	public function testDetectRequestFormat($input, $version, $output, $type, $exception)
+		public function testDetectRequestFormat($input, $version, $output, $type, $exception)
 	{
 		// If we are expecting an exception set it.
 		if ($exception)
@@ -281,9 +281,10 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	public function testFetchRequestMethod($input, $override, $expected, $exception)
 	{
 		// Set the input values.
+		
 		$_SERVER['REQUEST_METHOD'] = $input;
 		$_GET['_method'] = $override;
-
+		
 		// If we are expecting an exception set it.
 		if ($exception)
 		{

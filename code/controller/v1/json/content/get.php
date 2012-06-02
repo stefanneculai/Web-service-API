@@ -56,7 +56,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	 * @var    string  Max results per page
 	 * @since  1.0
 	 */
-	protected $since = '0000-00-00';
+	protected $since = '1970-01-01';
 	
 	/**
 	 * @var    string  Max results per page
@@ -82,15 +82,18 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		// Get route from the input
 		$route = $this->input->get->getString('@route');
 		
+		if(preg_match("/json$/", $route) >= 0)
+			$route = str_replace('.json', '', $route);
+		
 		// Break route into more parts
 		$routeParts = explode('/',$route);
 		
 		// Contet is not refered by a number id
-		if( count($routeParts) > 0 && !is_numeric($routeParts[0]) && !empty($routeParts[0]) )
+		if( count($routeParts) > 0 && (!is_numeric($routeParts[0]) || $routeParts[0] < 0) && !empty($routeParts[0]))
 			throw new InvalidArgumentException('Unknown content path.', $this->responseCode);
 		
 		// All content is refered
-		if ( count($routeParts) == 0 )
+		if ( count($routeParts) == 0 || strlen($routeParts[0]) === 0 )
 			return $this->id;
 		
 		// Specific content id
@@ -108,10 +111,10 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		$offset = $this->input->get->getString('offset');
 		
 		if (isset($offset)){
-			if (is_numeric ($offset))
+			if (is_numeric ($offset) && $offset > 0)
 				return $offset;
 			
-			throw new InvalidArgumentException('Offset should be a number. By default the limit is set to '.$this->offset, $this->responseCode);
+			throw new InvalidArgumentException('Offset should be a positive number. By default the limit is set to '.$this->offset, $this->responseCode);
 		}
 		else
 			return $this->offset;
@@ -129,10 +132,10 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		
 		if (isset($limit)){
 			$limit = min($this->maxResults, $limit);
-			if (is_numeric($limit))
+			if (is_numeric($limit) && $limit > 0)
 				return $limit;
 			
-			throw new InvalidArgumentException('Limit should be a number. By default the limit is set to '.$this->limit, $this->responseCode);
+			throw new InvalidArgumentException('Limit should be a positive number. By default the limit is set to '.$this->limit, $this->responseCode);
 		}
 		else
 			return $this->limit;
@@ -197,18 +200,18 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		if(isset($since)){
 
 			if (strtotime($since) != FALSE)				
-				return $since;
+				return strptime(strtotime($since),'%d/%m/%Y');
 			
 			throw new InvalidArgumentException('Since should be a valid date. By default all the results are returned.', $this->responseCode);
 		}
 		else
-			return $this->since;
+			return strptime(strtotime($this->since),'%d/%m/%Y');
 	}
 	
 	/**
 	 * Get the before date limitation from input or the default one
 	 *
-	 * @return  timestamp
+	 * @return  string
 	 *
 	 * @since   1.0
 	 */
@@ -220,12 +223,12 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 			
 			// Notice: PHP 5.1 would return -1
 			if (strtotime($before) != FALSE)
-				return $before;
+				return strptime(strtotime($before),'%d/%m/%Y');
 				
 			throw new InvalidArgumentException('Before should be a valid date. By default all the results until the current date are returned.', $this->responseCode);
 		}
 		else
-			return strtotime($this->before);
+			return strptime(strtotime($this->before),'%d/%m/%Y');
 	}
 	
 	/**
@@ -244,8 +247,22 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 			
 			if(strcmp($errCode, 'true') === 0){
 				$this->responseCode = 200;
+				return;
 			}
+			
+			if(strcmp($errCode, 'false') === 0){
+				$this->responseCode = 401;
+				return;
+			}
+			
+			throw new InvalidArgumentException('suppress_response_codes should be set to true or false', $this->responseCode);
 		}
+		
+	}
+	
+	public function getResponseCode(){
+		
+		return $this->responseCode;
 		
 	}
 	
@@ -347,5 +364,4 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		
 		return 'Results after parse';
 	}
-
 }
