@@ -110,7 +110,8 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	 *
 	 * @since   1.0
 	 */
-	protected function getOptionalData(){
+	protected function getOptionalData()
+	{
 		foreach ($this->optionalData as $key => $value ){
 				
 			$field = $this->input->get->getString($key);

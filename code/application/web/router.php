@@ -3,7 +3,7 @@
  * @package     WebService.Application
  * @subpackage  Application
  *
- * @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -211,13 +211,13 @@ class WebServiceApplicationWebRouter
 		{
 			// Build the controller class name from the path information.
 			$class = $base . JStringNormalise::toCamelCase(implode(' ', array_slice($parts, 0, $i))) . ucfirst($this->methodMap[$method]);
-			
+
 			// If the requested controller exists let's use it.
 			if (class_exists($class))
 			{
 				// Set the remainder of the route path in the input object as a local route.
 				$this->input->get->set('@route', implode('/', array_slice($parts, $i)));
-				
+
 				return $class;
 			}
 		}
@@ -237,8 +237,8 @@ class WebServiceApplicationWebRouter
 	protected function fetchRequestMethod()
 	{
 		// Some clients don't support anything other than GET and POST so let's give them a way to play too.
-		$postMethod = $this->input->get->getWord('_method');	
-		if (strcmp(strtoupper($this->input->server->getMethod()),'POST') === 0  && $postMethod)
+		$postMethod = $this->input->get->getWord('_method');
+		if (strcmp(strtoupper($this->input->server->getMethod()), 'POST') === 0  && $postMethod)
 		{
 			$method = strtoupper($postMethod);
 		}
@@ -247,7 +247,7 @@ class WebServiceApplicationWebRouter
 		{
 			$method = strtoupper($this->input->server->getMethod());
 		}
-		
+
 		// Is the request method supported?
 		if (empty($this->methodMap[$method]))
 		{

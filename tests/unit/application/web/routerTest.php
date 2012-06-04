@@ -3,7 +3,7 @@
  * @package     WebService.Tests
  * @subpackage  Application
  *
- * @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -58,8 +58,8 @@ class WebServiceApplicationWebRouterTest extends TestCase
 		return array(
 			array('WebServiceControllerV1Json', 'content/7', 'GET', 'WebServiceControllerV1JsonContentGet', '7', false),
 			array('WebServiceControllerV1Json', 'content', 'GET', 'WebServiceControllerV1JsonContentGet', '', false),
- 			array('WebServiceControllerV1Json', 'content', 'DELETE', 'WebServiceControllerV1JsonContentDelete', '', false),
- 			array('WebServiceControllerV1Json', 'content', 'PUT', 'WebServiceControllerV1JsonContentCreate', '', false),
+			array('WebServiceControllerV1Json', 'content', 'DELETE', 'WebServiceControllerV1JsonContentDelete', '', false),
+			array('WebServiceControllerV1Json', 'content', 'PUT', 'WebServiceControllerV1JsonContentCreate', '', false),
 			array('WebServiceControllerV1Json', 'content', 'POST', 'WebServiceControllerV1JsonContentUpdate', '', false),
 			array('WebServiceControllerV1Json', 'content', 'PATCH', 'WebServiceControllerV1JsonContentUpdate', '', false)
 		);
@@ -188,7 +188,7 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	 * @dataProvider  seedRequestFormatData
 	 * @since         1.0
 	 */
-		public function testDetectRequestFormat($input, $version, $output, $type, $exception)
+	public function testDetectRequestFormat($input, $version, $output, $type, $exception)
 	{
 		// If we are expecting an exception set it.
 		if ($exception)
@@ -208,8 +208,8 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	/**
 	 * Tests fetchContentType()
 	 *
-	 * @param   string   $input     Content-Type header string to test.
-	 * @param   string   $expected  Expected fetched string.
+	 * @param   string  $input     Content-Type header string to test.
+	 * @param   string  $expected  Expected fetched string.
 	 *
 	 * @return  void
 	 *
@@ -281,10 +281,9 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	public function testFetchRequestMethod($input, $override, $expected, $exception)
 	{
 		// Set the input values.
-		
 		$_SERVER['REQUEST_METHOD'] = $input;
 		$_GET['_method'] = $override;
-		
+
 		// If we are expecting an exception set it.
 		if ($exception)
 		{
@@ -320,8 +319,8 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	/**
 	 * Tests rewriteRoute()
 	 *
-	 * @param   string   $input     Route to rewrite.
-	 * @param   string   $expected  Expected route string.
+	 * @param   string  $input     Route to rewrite.
+	 * @param   string  $expected  Expected route string.
 	 *
 	 * @return  void
 	 *
@@ -349,7 +348,7 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	{
 		parent::setUp();
 
-		$this->_instance = new WebServiceApplicationWebRouter(new JInput(array()), $this->getMockWeb());
+		$this->_instance = new WebServiceApplicationWebRouter(new JInput, $this->getMockWeb);
 	}
 
 	/**

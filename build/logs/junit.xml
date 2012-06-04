@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="WebServiceControllerV1JsonContentCreateTest" file="/opt/lampp/htdocs/joomla_development/ws/tests/unit/controller/v1/json/content/createTest.php" fullPackage="WebService.Tests.Application" package="WebService.Tests" subpackage="Application" tests="16" assertions="85" failures="0" errors="0" time="0.437155">
+    <testcase name="test__construct" class="WebServiceControllerV1JsonContentCreateTest" file="/opt/lampp/htdocs/joomla_development/ws/tests/unit/controller/v1/json/content/createTest.php" line="36" assertions="10" time="0.124961"/>
+    <testsuite name="WebServiceControllerV1JsonContentCreateTest::testCheckSupressResponseCodes" tests="7" assertions="35" failures="0" errors="0" time="0.140821">
+      <testcase name="testCheckSupressResponseCodes with data set #0" assertions="5" time="0.021180"/>
+      <testcase name="testCheckSupressResponseCodes with data set #1" assertions="5" time="0.019955"/>
+      <testcase name="testCheckSupressResponseCodes with data set #2" assertions="5" time="0.020310"/>
+      <testcase name="testCheckSupressResponseCodes with data set #3" assertions="5" time="0.019695"/>
+      <testcase name="testCheckSupressResponseCodes with data set #4" assertions="5" time="0.019590"/>
+      <testcase name="testCheckSupressResponseCodes with data set #5" assertions="5" time="0.019512"/>
+      <testcase name="testCheckSupressResponseCodes with data set #6" assertions="5" time="0.020579"/>
+    </testsuite>
+    <testsuite name="WebServiceControllerV1JsonContentCreateTest::testGetMandatoryData" tests="4" assertions="20" failures="0" errors="0" time="0.083583">
+      <testcase name="testGetMandatoryData with data set #0" assertions="5" time="0.019082"/>
+      <testcase name="testGetMandatoryData with data set #1" assertions="5" time="0.019758"/>
+      <testcase name="testGetMandatoryData with data set #2" assertions="5" time="0.020402"/>
+      <testcase name="testGetMandatoryData with data set #3" assertions="5" time="0.024341"/>
+    </testsuite>
+    <testsuite name="WebServiceControllerV1JsonContentCreateTest::testGetOptionalData" tests="4" assertions="20" failures="0" errors="0" time="0.087790">
+      <testcase name="testGetOptionalData with data set #0" assertions="5" time="0.021636"/>
+      <testcase name="testGetOptionalData with data set #1" assertions="5" time="0.021524"/>
+      <testcase name="testGetOptionalData with data set #2" assertions="5" time="0.022562"/>
+      <testcase name="testGetOptionalData with data set #3" assertions="5" time="0.022068"/>
+    </testsuite>
+  </testsuite>
+</testsuites>

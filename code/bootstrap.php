@@ -2,10 +2,10 @@
 /**
  * Bootstrap file for the Joomla Web Service Application.
  *
- * @package     WebService.Application
+ * @package    WebService.Application
  *
- * @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
 // Set the Joomla execution flag.
@@ -38,8 +38,8 @@ if (!defined('JPATH_BASE'))
 	define('JPATH_BASE', realpath(__DIR__));
 }
 
-define('JPATH_SITE', JPATH_BASE.'/code');
-define('JPATH_CACHE', JPATH_SITE.'/cache');
+define('JPATH_SITE', JPATH_BASE . '/code');
+define('JPATH_CACHE', JPATH_SITE . '/cache');
 
 // Import the platform(s).
 require_once JPATH_PLATFORM . '/import.php';

@@ -3,7 +3,7 @@
  * @package     WebService.Application
  * @subpackage  Application
  *
- * @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -12,7 +12,7 @@
  *
  * @package     Vangelis.Application
  * @subpackage  Application
- * @since    1.0
+ * @since       1.0
  */
 class WebServiceApplicationWeb extends JApplicationWeb
 {
@@ -133,7 +133,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 			$this->dbo = JFactory::getDbo();
 			$this->session = JFactory::getSession();
 			JFactory::$application = $this;
-			
+
 			// Get the controller instance based on the request.
 			$controller = $this->router->getController($this->get('uri.route'));
 
@@ -192,10 +192,12 @@ class WebServiceApplicationWeb extends JApplicationWeb
 
 		// Load the configuration file into an object.
 		$config = json_decode(file_get_contents($file));
-		
-		if ($config == NULL)
+
+		if ($config == null)
+		{
 			throw new RuntimeException('Configuration file cannot be decoded.');
-		
+		}
+
 		return $config;
 	}
 
