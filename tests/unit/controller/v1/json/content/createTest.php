@@ -1,11 +1,11 @@
 <?php
 /**
  * @package     WebService.Tests
-* @subpackage  Application
-*
-* @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
-* @license     GNU General Public License version 2 or later; see LICENSE
-*/
+ * @subpackage  Controller
+ *
+ * @copyright     Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
 /**
  * Test Case class for WebServiceControllerV1JsonContentCreate
@@ -24,7 +24,7 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	 * @since  1.0
 	 */
 	private $_instance;
-	
+
 	/**
 	 * Tests __construct()
 	 *
@@ -42,14 +42,14 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 		->will(
 				$this->returnValue('ok')
 		);
-	
+
 		// Construct the object.
 		$controller = new WebServiceControllerV1JsonContentCreate($input, $this->getMockWeb());
-	
+
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('ok', TestReflection::getValue($controller, 'input')->test());
 	}
-	
+
 	/**
 	 * Provides test data for request format detection.
 	 *
@@ -61,16 +61,16 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array('', NULL, true),
-				array(NULL, 401, false),
+				array('', null, true),
+				array(null, 401, false),
 				array('true', 200, false),
 				array('false', 401, false),
-				array('error', NULL, true),
+				array('error', null, true),
 				array('TRUE', 200, false),
 				array('FALSE', 401, false)
 		);
 	}
-	
+
 	/**
 	 * Tests checkSupressResponseCodes()
 	 *
@@ -88,23 +88,23 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	{
 		// Set the input values.
 		$_GET['suppress_response_codes'] = $input;
-	
+
 		// If we are expecting an exception set it.
 		if ($exception)
 		{
 			$this->setExpectedException('InvalidArgumentException');
 		}
-	
+
 		// Execute the code to test.
 		TestReflection::invoke($this->_instance, 'checkSupressResponseCodes');
-	
+
 		// Clean up after ourselves.
 		$_GET['suppress_response_codes'] = null;
-	
+
 		// Verify the value.
 		$this->assertEquals($expected, TestReflection::getValue($this->_instance, 'responseCode'));
 	}
-	
+
 	/**
 	 * Provides test data for request format detection.
 	 *
@@ -116,14 +116,14 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array(array(), NULL, true),
-				array(array('field1'=>'test'), NULL, true),
-				array(array('field1'=>'test', 'field2'=>'test', 'field3'=> null), NULL, true),
-				array(array('field1'=>'test', 'field2'=>'test', 'field3'=> 'test'), 
-						array('field1'=>'test', 'field2'=>'test', 'field3'=> 'test'), false),
+				array(array(), null, true),
+				array(array('field1' => 'test'), null, true),
+				array(array('field1' => 'test', 'field2' => 'test', 'field3' => null), null, true),
+				array(array('field1' => 'test', 'field2' => 'test', 'field3' => 'test'),
+						array('field1' => 'test', 'field2' => 'test', 'field3' => 'test'), false),
 		);
 	}
-	
+
 	/**
 	 * Tests getMandatoryData()
 	 *
@@ -139,28 +139,30 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	 */
 	public function testGetMandatoryData($input,  $expected, $exception)
 	{
-		foreach($input as $key => $value){
+		foreach ($input as $key => $value)
+		{
 			$_GET[$key] = $value;
 		}
-	
+
 		// If we are expecting an exception set it.
 		if ($exception)
 		{
 			$this->setExpectedException('InvalidArgumentException');
 		}
-	
+
 		// Execute the code to test.
 		TestReflection::invoke($this->_instance, 'getMandatoryData');
-	
+
 		// Clean up after ourselves.
-		foreach($input as $key => $value){
+		foreach ($input as $key => $value)
+		{
 			$_GET[$key] = null;
 		}
-	
+
 		// Verify the value.
 		$this->assertEquals($expected, TestReflection::getValue($this->_instance, 'mandatoryData'));
 	}
-	
+
 	/**
 	 * Provides test data for request format detection.
 	 *
@@ -172,15 +174,15 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array(array(), array('field4'=>'', 'field5'=>''), false),
-				array(array('field4'=>'test'), array('field4'=>'test', 'field5'=>''), false),
-				array(array('field4'=>'test', 'field5'=>'test'), 
-						array('field4'=>'test', 'field5'=>'test'), false),
-				array(array('field4'=>'test', 'field5'=>'test'),
-						array('field4'=>'test', 'field5'=>'test'), false)
+				array(array(), array('field4' => '', 'field5' => ''), false),
+				array(array('field4' => 'test'), array('field4' => 'test', 'field5' => ''), false),
+				array(array('field4' => 'test', 'field5' => 'test'),
+						array('field4' => 'test', 'field5' => 'test'), false),
+				array(array('field4' => 'test', 'field5' => 'test'),
+						array('field4' => 'test', 'field5' => 'test'), false)
 		);
 	}
-	
+
 	/**
 	 * Tests getOptionalData()
 	 *
@@ -196,28 +198,30 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	 */
 	public function testGetOptionalData($input,  $expected, $exception)
 	{
-		foreach($input as $key => $value){
+		foreach ($input as $key => $value)
+		{
 			$_GET[$key] = $value;
 		}
-	
+
 		// If we are expecting an exception set it.
 		if ($exception)
 		{
 			$this->setExpectedException('InvalidArgumentException');
 		}
-	
+
 		// Execute the code to test.
 		TestReflection::invoke($this->_instance, 'getOptionalData');
-	
+
 		// Clean up after ourselves.
-		foreach($input as $key => $value){
+		foreach ($input as $key => $value)
+		{
 			$_GET[$key] = null;
 		}
-	
+
 		// Verify the value.
 		$this->assertEquals($expected, TestReflection::getValue($this->_instance, 'optionalData'));
 	}
-	
+
 	/**
 	 * Prepares the environment before running a test.
 	 *
@@ -228,10 +232,10 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	protected function setUp()
 	{
 		parent::setUp();
-	
-		$this->_instance = new WebServiceControllerV1JsonContentCreate(new JInput(array()), $this->getMockWeb());
+
+		$this->_instance = new WebServiceControllerV1JsonContentCreate(new JInput, $this->getMockWeb());
 	}
-	
+
 	/**
 	 * Cleans up the environment after running a test.
 	 *
@@ -242,9 +246,7 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	protected function tearDown()
 	{
 		$this->_instance = null;
-	
+
 		parent::tearDown();
 	}
-	
-
 }

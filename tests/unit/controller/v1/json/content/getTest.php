@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @package     WebService.Tests
 * @subpackage  Application
 *
-* @copyright   Copyright (C) {COPYRIGHT}. All rights reserved.
+* @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
 * @license     GNU General Public License version 2 or later; see LICENSE
 */
 
@@ -24,7 +25,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 * @since  1.0
 	 */
 	private $_instance;
-	
+
 	/**
 	 * Tests __construct()
 	 *
@@ -42,14 +43,14 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 		->will(
 				$this->returnValue('ok')
 		);
-	
+
 		// Construct the object.
 		$controller = new WebServiceControllerV1JsonContentGet($input, $this->getMockWeb());
-	
+
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('ok', TestReflection::getValue($controller, 'input')->test());
 	}
-	
+
 	/**
 	 * Provides test data for request format detection.
 	 *
@@ -71,7 +72,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 				array('error', 'desc', true)
 		);
 	}
-	
+
 	/**
 	 * Tests getOrder()
 	 *
@@ -89,23 +90,23 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Set the input values.
 		$_GET['order'] = $input;
-	
+
 		// If we are expecting an exception set it.
 		if ($exception)
 		{
 			$this->setExpectedException('InvalidArgumentException');
 		}
-	
+
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getOrder');
-	
+
 		// Clean up after ourselves.
 		$_GET['order'] = null;
-	
+
 		// Verify the value.
 		$this->assertEquals($expected, $actual);
 	}
-	
+
 	/**
 	 * Provides test data for request format detection.
 	 *
@@ -117,17 +118,17 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array('', NULL, true),
+				array('', null, true),
 				array(null, 20, false),
-				array('wrong', NULL, true),
+				array('wrong', null, true),
 				array(22, 22, false),
 				array(150, 100, false),
 				array(99, 99, false),
-				array(-1, NULL, true),
-				array(0, NULL, true)
+				array(-1, null, true),
+				array(0, null, true)
 		);
 	}
-	
+
 	/**
 	 * Tests getLimit()
 	 *
@@ -145,23 +146,23 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Set the input values.
 		$_GET['limit'] = $input;
-	
+
 		// If we are expecting an exception set it.
 		if ($exception)
 		{
 			$this->setExpectedException('InvalidArgumentException');
 		}
-	
+
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getLimit');
-	
+
 		// Clean up after ourselves.
 		$_GET['limit'] = null;
-	
+
 		// Verify the value.
 		$this->assertEquals($expected, $actual);
 	}
-	
+
 	/**
 	 * Provides test data for request format detection.
 	 *
@@ -173,14 +174,14 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array('', NULL, true),
+				array('', null, true),
 				array(null, 0, false),
 				array(10, 10, false),
 				array(200, 200, false),
-				array(-1, NULL, true)
+				array(-1, null, true)
 		);
 	}
-	
+
 	/**
 	 * Tests getOffset()
 	 *
@@ -198,23 +199,23 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Set the input values.
 		$_GET['offset'] = $input;
-	
+
 		// If we are expecting an exception set it.
 		if ($exception)
 		{
 			$this->setExpectedException('InvalidArgumentException');
 		}
-	
+
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getOffset');
-	
+
 		// Clean up after ourselves.
 		$_GET['offset'] = null;
-	
+
 		// Verify the value.
 		$this->assertEquals($expected, $actual);
 	}
-	
+
 	/**
 	 * Provides test data for request format detection.
 	 *
@@ -229,17 +230,17 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 				array('', '*', false),
 				array(null, '*', false),
 				array('22', '22', false),
-				array('-7', NULL, true),
+				array('-7', null, true),
 				array('22/user', '22', false),
 				array('bad/user', '22', true),
-				array('-1/user', NULL, true),
+				array('-1/user', null, true),
 				array('22.json', '22', false),
-				array('-1.xml', NULL, true),
-				array('-1.json', NULL, true),
+				array('-1.xml', null, true),
+				array('-1.json', null, true),
 				array('22/user.json', '22', false)
 		);
 	}
-	
+
 	/**
 	 * Tests getContentId()
 	 *
@@ -257,23 +258,23 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Set the input values.
 		$_GET['@route'] = $input;
-	
+
 		// If we are expecting an exception set it.
 		if ($exception)
 		{
 			$this->setExpectedException('InvalidArgumentException');
 		}
-	
+
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getContentId');
-	
+
 		// Clean up after ourselves.
 		$_GET['@route'] = null;
-	
+
 		// Verify the value.
 		$this->assertEquals($expected, $actual);
 	}
-	
+
 	/**
 	 * Provides test data for request format detection.
 	 *
@@ -285,16 +286,16 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array('', NULL, true),
-				array('1970-01-01', strptime(strtotime('1970-01-01'),'%d/%m/%Y'), false),
-				array('0001-01-01', NULL, true),
-				array('2001-01-01', strptime(strtotime('2001-01-01'),'%d/%m/%Y'), false),
-				array(null, strptime(strtotime('1970-01-01'),'%d/%m/%Y'), false),
-				array('99-03-03', strptime(strtotime('1999-03-03'),'%d/%m/%Y'), false),
-				array('now', strptime(strtotime('now'),'%d/%m/%Y'), false)
+				array('', null, true),
+				array('1970-01-01', strptime(strtotime('1970-01-01'), '%d/%m/%Y'), false),
+				array('0001-01-01', null, true),
+				array('2001-01-01', strptime(strtotime('2001-01-01'), '%d/%m/%Y'), false),
+				array(null, strptime(strtotime('1970-01-01'), '%d/%m/%Y'), false),
+				array('99-03-03', strptime(strtotime('1999-03-03'), '%d/%m/%Y'), false),
+				array('now', strptime(strtotime('now'), '%d/%m/%Y'), false)
 		);
 	}
-	
+
 	/**
 	 * Tests getSince()
 	 *
@@ -312,23 +313,23 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Set the input values.
 		$_GET['since'] = $input;
-	
+
 		// If we are expecting an exception set it.
 		if ($exception)
 		{
 			$this->setExpectedException('InvalidArgumentException');
 		}
-	
+
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getSince');
-	
+
 		// Clean up after ourselves.
 		$_GET['since'] = null;
-	
+
 		// Verify the value.
 		$this->assertEquals($expected, $actual);
 	}
-	
+
 	/**
 	 * Provides test data for request format detection.
 	 *
@@ -340,16 +341,16 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array('', NULL, true),
-				array('1970-01-01', strptime(strtotime('1970-01-01'),'%d/%m/%Y'), false),
-				array('0001-01-01', NULL, true),
-				array('2001-01-01', strptime(strtotime('2001-01-01'),'%d/%m/%Y'), false),
-				array(null, strptime(strtotime('now'),'%d/%m/%Y'), false),
-				array('99-03-03', strptime(strtotime('1999-03-03'),'%d/%m/%Y'), false),
-				array('now', strptime(strtotime('now'),'%d/%m/%Y'), false)
+				array('', null, true),
+				array('1970-01-01', strptime(strtotime('1970-01-01'), '%d/%m/%Y'), false),
+				array('0001-01-01', null, true),
+				array('2001-01-01', strptime(strtotime('2001-01-01'), '%d/%m/%Y'), false),
+				array(null, strptime(strtotime('now'), '%d/%m/%Y'), false),
+				array('99-03-03', strptime(strtotime('1999-03-03'), '%d/%m/%Y'), false),
+				array('now', strptime(strtotime('now'), '%d/%m/%Y'), false)
 		);
 	}
-	
+
 	/**
 	 * Tests getBefore()
 	 *
@@ -367,23 +368,23 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Set the input values.
 		$_GET['before'] = $input;
-	
+
 		// If we are expecting an exception set it.
 		if ($exception)
 		{
 			$this->setExpectedException('InvalidArgumentException');
 		}
-	
+
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getBefore');
-	
+
 		// Clean up after ourselves.
 		$_GET['before'] = null;
-	
+
 		// Verify the value.
 		$this->assertEquals($expected, $actual);
 	}
-	
+
 	/**
 	 * Provides test data for request format detection.
 	 *
@@ -395,16 +396,16 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array('', NULL, true),
-				array(NULL, 401, false),
+				array('', null, true),
+				array(null, 401, false),
 				array('true', 200, false),
 				array('false', 401, false),
-				array('error', NULL, true),
+				array('error', null, true),
 				array('TRUE', 200, false),
 				array('FALSE', 401, false)
 		);
 	}
-	
+
 	/**
 	 * Tests checkSupressResponseCodes()
 	 *
@@ -422,23 +423,23 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Set the input values.
 		$_GET['suppress_response_codes'] = $input;
-	
+
 		// If we are expecting an exception set it.
 		if ($exception)
 		{
 			$this->setExpectedException('InvalidArgumentException');
 		}
-	
+
 		// Execute the code to test.
 		TestReflection::invoke($this->_instance, 'checkSupressResponseCodes');
-	
+
 		// Clean up after ourselves.
 		$_GET['suppress_response_codes'] = null;
-	
+
 		// Verify the value.
 		$this->assertEquals($expected, TestReflection::getValue($this->_instance, 'responseCode'));
 	}
-	
+
 	/**
 	 * Provides test data for request format detection.
 	 *
@@ -450,13 +451,13 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array(NULL, NULL, false),
+				array(null, null, false),
 				array('', array(), false),
 				array('name, surname', array('name','surname'), false),
 				array('content, created_at, user_id', array('content','created_at', 'user_id'), false),
 		);
 	}
-	
+
 	/**
 	 * Tests getFields()
 	 *
@@ -474,23 +475,23 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Set the input values.
 		$_GET['fields'] = $input;
-	
+
 		// If we are expecting an exception set it.
 		if ($exception)
 		{
 			$this->setExpectedException('InvalidArgumentException');
 		}
-	
+
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getFields');
-	
+
 		// Clean up after ourselves.
 		$_GET['fields'] = null;
-	
+
 		// Verify the value.
 		$this->assertEquals($expected, $actual);
 	}
-	
+
 	/**
 	 * Prepares the environment before running a test.
 	 *
@@ -499,12 +500,12 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 * @since   1.0
 	 */
 	protected function setUp()
-	{
+{
 		parent::setUp();
-	
-		$this->_instance = new WebServiceControllerV1JsonContentGet(new JInput(array()), $this->getMockWeb());
+
+		$this->_instance = new WebServiceControllerV1JsonContentGet(new JInput, $this->getMockWeb());
 	}
-	
+
 	/**
 	 * Cleans up the environment after running a test.
 	 *
@@ -515,9 +516,8 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	protected function tearDown()
 	{
 		$this->_instance = null;
-	
+
 		parent::tearDown();
 	}
-	
 
 }
