@@ -284,15 +284,27 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 */
 	public function seedGetSinceData()
 	{
+		$date1 = new JDate('1970-01-01');
+		$date1 = $date1->toSql();
+
+		$date2 = new JDate('2001-01-01');
+		$date2 = $date2->toSql();
+
+		$date3 = new JDate('1999-03-03');
+		$date3 = $date3->toSql();
+
+		$date4 = new JDate('now');
+		$date4 = $date4->toSql();
+
 		// Input, Expected, Exception
 		return array(
 				array('', null, true),
-				array('1970-01-01', strptime(strtotime('1970-01-01'), '%d/%m/%Y'), false),
-				array('0001-01-01', null, true),
-				array('2001-01-01', strptime(strtotime('2001-01-01'), '%d/%m/%Y'), false),
-				array(null, strptime(strtotime('1970-01-01'), '%d/%m/%Y'), false),
-				array('99-03-03', strptime(strtotime('1999-03-03'), '%d/%m/%Y'), false),
-				array('now', strptime(strtotime('now'), '%d/%m/%Y'), false)
+				array('1970-01-01', $date1, false),
+				array('-0001-01-01', null, true),
+				array('2001-01-01', $date2, false),
+				array(null, $date1 , false),
+				array('99-03-03', $date3 , false),
+				array('now', $date4, false)
 		);
 	}
 
@@ -339,15 +351,27 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 */
 	public function seedGetBeforeData()
 	{
+		$date1 = new JDate('1970-01-01');
+		$date1 = $date1->toSql();
+
+		$date2 = new JDate('2001-01-01');
+		$date2 = $date2->toSql();
+
+		$date3 = new JDate('1999-03-03');
+		$date3 = $date3->toSql();
+
+		$date4 = new JDate('now');
+		$date4 = $date4->toSql();
+
 		// Input, Expected, Exception
 		return array(
 				array('', null, true),
-				array('1970-01-01', strptime(strtotime('1970-01-01'), '%d/%m/%Y'), false),
-				array('0001-01-01', null, true),
-				array('2001-01-01', strptime(strtotime('2001-01-01'), '%d/%m/%Y'), false),
-				array(null, strptime(strtotime('now'), '%d/%m/%Y'), false),
-				array('99-03-03', strptime(strtotime('1999-03-03'), '%d/%m/%Y'), false),
-				array('now', strptime(strtotime('now'), '%d/%m/%Y'), false)
+				array('1970-01-01', $date1, false),
+				array('-0001-01-01', null, true),
+				array('2001-01-01', $date2, false),
+				array(null, $date4 , false),
+				array('99-03-03', $date3 , false),
+				array('now', $date4, false)
 		);
 	}
 

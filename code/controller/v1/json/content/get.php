@@ -56,7 +56,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	 * @var    string  Max results per page
 	 * @since  1.0
 	 */
-	protected $since = '1970-01-01';
+	protected $since = '01-01-1970';
 
 	/**
 	 * @var    string  Max results per page
@@ -237,16 +237,18 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 
 		if (isset($since))
 		{
-			if (strtotime($since) != false)
+			$date = new JDate($since);
+			if (!empty($since) && checkdate($date->__get('month'), $date->__get('day'), $date->__get('year')))
 			{
-				return strptime(strtotime($since), '%d/%m/%Y');
+				return $date->toSql();
 			}
 
 			throw new InvalidArgumentException('Since should be a valid date. By default all the results are returned.', $this->responseCode);
 		}
 		else
 		{
-			return strptime(strtotime($this->since), '%d/%m/%Y');
+			$date = new JDate($this->since);
+			return $date->toSql();
 		}
 	}
 
@@ -264,10 +266,10 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 
 		if (isset($before))
 		{
-			// Notice: PHP 5.1 would return -1
-			if (strtotime($before) != false)
+			$date = new JDate($before);
+			if (!empty($before) && checkdate($date->__get('month'), $date->__get('day'), $date->__get('year')))
 			{
-				return strptime(strtotime($before), '%d/%m/%Y');
+				return $date->toSql();
 			}
 
 			throw new InvalidArgumentException(
@@ -277,7 +279,8 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		}
 		else
 		{
-			return strptime(strtotime($this->before), '%d/%m/%Y');
+			$date = new JDate($this->before);
+			return $date->toSql();
 		}
 	}
 
@@ -360,7 +363,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		$this->init();
 
 		// Returned data
-		$data = $this->getContent($this->id);
+		// $data = $this->getContent($this->id);
 
 		$this->app->setBody(json_encode('OK'));
 	}
