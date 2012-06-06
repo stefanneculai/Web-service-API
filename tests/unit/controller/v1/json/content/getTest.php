@@ -524,7 +524,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 * @since   1.0
 	 */
 	protected function setUp()
-{
+	{
 		parent::setUp();
 
 		$this->_instance = new WebServiceControllerV1JsonContentGet(new JInput, $this->getMockWeb());

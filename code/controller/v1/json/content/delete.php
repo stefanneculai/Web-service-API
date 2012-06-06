@@ -90,18 +90,19 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 
 		if (isset($since))
 		{
-			if (strtotime($since) != false)
+			$date = new JDate($since);
+			if (!empty($since) && checkdate($date->__get('month'), $date->__get('day'), $date->__get('year')))
 			{
-				return strptime(strtotime($since), '%d/%m/%Y');
+				return $date->toSql();
 			}
 
 			throw new InvalidArgumentException('Since should be a valid date. By default all the results are returned.', $this->responseCode);
 		}
 		else
 		{
-			return strptime(strtotime($this->since), '%d/%m/%Y');
+			$date = new JDate($this->since);
+			return $date->toSql();
 		}
-
 	}
 
 	/**
@@ -113,24 +114,26 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 	 */
 	protected function getBefore()
 	{
+
 		$before = $this->input->get->getString('before');
 
 		if (isset($before))
 		{
-			// Notice: PHP 5.1 would return -1
-			if (strtotime($before) != false)
+			$date = new JDate($before);
+			if (!empty($before) && checkdate($date->__get('month'), $date->__get('day'), $date->__get('year')))
 			{
-				return strptime(strtotime($before), '%d/%m/%Y');
+				return $date->toSql();
 			}
 
 			throw new InvalidArgumentException(
 					'Before should be a valid date. By default all the results until the current date are returned.',
 					$this->responseCode
-			);
+					);
 		}
 		else
 		{
-			return strptime(strtotime($this->before), '%d/%m/%Y');
+			$date = new JDate($this->before);
+			return $date->toSql();
 		}
 	}
 
