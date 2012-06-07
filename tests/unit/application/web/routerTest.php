@@ -348,7 +348,9 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	{
 		parent::setUp();
 
-		$this->_instance = new WebServiceApplicationWebRouter(new JInput, $this->getMockWeb());
+		$testInput = new JInput;
+		$testMock = $this->getMockWeb();
+		$this->_instance = new WebServiceApplicationWebRouter($testInput, $testMock);
 	}
 
 	/**

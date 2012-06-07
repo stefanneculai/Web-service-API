@@ -309,7 +309,9 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 	{
 		parent::setUp();
 
-		$this->_instance = new WebServiceControllerV1JsonContentDelete(new JInput, $this->getMockWeb());
+		$testInput = new JInput;
+		$testMock = $this->getMockWeb();
+		$this->_instance = new WebServiceControllerV1JsonContentDelete($testInput, $testMock);
 	}
 
 	/**

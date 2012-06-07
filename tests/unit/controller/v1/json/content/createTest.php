@@ -3,7 +3,7 @@
  * @package     WebService.Tests
  * @subpackage  Controller
  *
- * @copyright     Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -233,7 +233,9 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	{
 		parent::setUp();
 
-		$this->_instance = new WebServiceControllerV1JsonContentCreate(new JInput, $this->getMockWeb());
+		$testInput = new JInput;
+		$testMock = $this->getMockWeb();
+		$this->_instance = new WebServiceControllerV1JsonContentCreate($testInput, $testMock);
 	}
 
 	/**
