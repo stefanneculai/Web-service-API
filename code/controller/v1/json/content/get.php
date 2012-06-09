@@ -363,9 +363,9 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		$this->init();
 
 		// Returned data
-		// $data = $this->getContent($this->id);
+		$data = $this->getContent($this->id);
 
-		$this->app->setBody(json_encode('OK'));
+		$this->app->setBody(json_encode($data));
 	}
 
 	/**
@@ -381,7 +381,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	{
 
 		// Content model
-		include_once JPATH_BASE . '/model/content.php';
+		include_once JPATH_BASE . '/model/model.php';
 
 		// New content model
 		$model = new WebServiceModelContent;
@@ -397,7 +397,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		$modelState->set('limit', min(100, $this->input->get->getInt('per_page', 20)));
 
 		// Get the requested data
-		$data = $model->getData();
+		$data = $model->getData($this->fields);
 
 		return $data;
 	}

@@ -10,7 +10,7 @@
 /**
  * Web Service Api web application class.
  *
- * @package     Vangelis.Application
+ * @package     WebService.Application
  * @subpackage  Application
  * @since       1.0
  */
