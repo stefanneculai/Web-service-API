@@ -201,7 +201,49 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 	{
 		$this->init();
 
-		$this->app->setBody(json_encode('Content Delete'));
+		$result = $this->delete();
+
+		if ($result == true)
+		{
+			$this->app->setBody(json_encode('Content has been deleted'));
+		}
+		else
+		{
+			$this->app->setBody(json_encode('Content does not exist'));
+		}
 	}
 
+	/**
+	 * Delete item or all data using before and since
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 */
+	public function delete()
+	{
+		// Content model
+		include_once JPATH_BASE . '/model/model.php';
+
+		// New content model
+		$model = new WebServiceContentModelBase;
+
+		// Get content state
+		$modelState = $model->getState();
+
+		// Set content type that we need
+		$modelState->set('content.type', 'general');
+		$modelState->set('content.id', $this->id);
+
+		$modelState->set('filter.since', $this->since);
+		$modelState->set('filter.before', $this->before);
+
+		if (strcmp($this->id, '*') !== 0)
+		{
+			// Get the result
+			$result = $model->deleteItem();
+
+			return $result;
+		}
+	}
 }

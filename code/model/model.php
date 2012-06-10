@@ -216,6 +216,109 @@ class WebServiceContentModelBase extends JModelBase
 	}
 
 	/**
+	 * Method to delete a content item.
+	 *
+	 * @return  JContent  A content object.
+	 *
+	 * @since   10.1
+	 * @throws  InvalidArgumentException
+	 * @throws  RuntimeException
+	 * @throws  UnexpectedValueException
+	 */
+	public function deleteItem()
+	{
+		// Get the content id and type.
+		$contentId = $this->state->get('content.id');
+		$contentType = $this->state->get('content.type');
+
+		// Assert that the content id is set.
+		if (empty($contentId))
+		{
+			throw new InvalidArgumentException('%s->deleteItem() called without a content id set in state.', get_class($this));
+		}
+
+		// Check if the content type is set.
+		if (empty($contentType))
+		{
+			// Get the content type for the id.
+			$results = $this->getTypes($contentId);
+
+			// Assert that the content type was found.
+			if (empty($results[$contentId]))
+			{
+				throw new UnexpectedValueException('%s->deleteItem() could not find the content type for item %s.', get_class($this), $contentId);
+			}
+
+			// Set the content type alias.
+			$contentType = $results[$contentId]->type;
+		}
+
+		if ($this->existsItem($contentId))
+		{
+			$item = $this->factory->getContent($contentType)->load($contentId);
+			$item->delete();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Method to delete a content item.
+	 *
+	 * @param   int  $contentId  The id of the content to test if exists
+	 *
+	 * @return  boolean  True or false if the item exists or not in database
+	 *
+	 * @since   1.0
+	 * @throws  InvalidArgumentException
+	 * @throws  RuntimeException
+	 * @throws  UnexpectedValueException
+	 */
+	public function existsItem($contentId)
+	{
+		// Build the query object.
+		$query = $this->db->getQuery(true);
+		$query->select('COUNT(' . $query->qn('a.content_id') . ')');
+		$query->from($query->qn('#__content', 'a'));
+		$query->innerJoin($query->qn('#__content_types', 'b') . ' ON ' . $query->qn('b.type_id') . ' = ' . $query->qn('a.type_id'));
+		$query->where($query->qn('a.content_id') . ' = ' . (int) $contentId);
+
+		// Check if we should filter the list based on content type.
+		if (!is_null($this->state->get('content.type')))
+		{
+			// Get the requested type.
+			$type = $this->state->get('content.type');
+
+			// The type can be either a string type alias or a numeric type id.
+			if (is_numeric($type))
+			{
+				// Handle a numeric type.
+				$query->where($query->qn('a.type_id') . ' = ' . (int) $type);
+			}
+			elseif (is_string($type))
+			{
+				// Handle a type alias.
+				$query->where($query->qn('b.alias') . ' = ' . $query->q($type));
+			}
+		}
+
+		$this->db->setQuery($query);
+		$row = $this->db->loadRow();
+
+		if ( (int) $row[0] > 0 )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
 	 * Method to get the content types for one or more content items.
 	 *
 	 * @param   mixed  $contentIds  An integer or array of integer content ids.

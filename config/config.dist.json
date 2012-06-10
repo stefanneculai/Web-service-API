@@ -1,5 +1,5 @@
 {
-	"db_driver":"mysql",
+	"db_driver":"mysqli",
 	"db_host":"localhost",
 	"db_user":"root",
 	"db_pass":"",
