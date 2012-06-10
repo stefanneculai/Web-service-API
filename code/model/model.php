@@ -15,7 +15,7 @@
  * @subpackage  Model
  * @since       1.0
  */
-class WebServiceModelContent extends JModelBase
+class WebServiceContentModelBase extends JModelBase
 {
 	/**
 	 * The content factory.
@@ -249,6 +249,65 @@ class WebServiceModelContent extends JModelBase
 		$results = $this->db->loadObjectList('content_id');
 
 		return $results;
+	}
+
+	/**
+	 * Method to get the content types for one or more content items.
+	 *
+	 * @return  JContent  A JContent object
+	 *
+	 * @since   1.0
+	 * @throws  UnexpectedValueException
+	 */
+	public function createItem()
+	{
+		// Get the content type.
+		$contentType = $this->state->get('content.type');
+
+		// Check if the content type is set.
+		if (empty($contentType))
+		{
+			// Get the content type for the id.
+			$results = $this->getTypes($contentId);
+
+			// Assert that the content type was found.
+			if (empty($results[$contentId]))
+			{
+				throw new UnexpectedValueException('%s->createItem() could not find the content type for item %s.', get_class($this), $contentId);
+			}
+
+			// Set the content type alias.
+			$contentType = $results[$contentId]->type;
+		}
+
+		// Get new content
+		$content = $this->factory->getContent($contentType);
+
+		// Get fields for new content and check them
+		$fields = $this->state->get('content.fields');
+		if (empty($fields))
+		{
+			throw new UnexpectedValueException('Missing fields for new object');
+		}
+
+		// Get each field for the new content
+		$fieldsArray = preg_split('#[\s,]+#', $fields, null, PREG_SPLIT_NO_EMPTY);
+		foreach ($fieldsArray as $key => $fieldName)
+		{
+			$field = $this->state->get('fields.' . $fieldName);
+
+			if (empty($field) && $field != '')
+			{
+				throw new UnexpectedValueException('Missing field ' . $fieldName);
+			}
+
+			$content->__set($fieldName, $field);
+		}
+
+		// Create content
+		$content = $content->create();
+
+		return $content;
 	}
 
 	/**

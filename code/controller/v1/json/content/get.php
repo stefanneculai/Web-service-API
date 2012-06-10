@@ -374,12 +374,11 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	 */
 	protected function getContent()
 	{
-
 		// Content model
 		include_once JPATH_BASE . '/model/model.php';
 
 		// New content model
-		$model = new WebServiceModelContent;
+		$model = new WebServiceContentModelBase;
 
 		// Get content state
 		$modelState = $model->getState();
@@ -393,7 +392,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 
 		if ($this->order != null)
 		{
-			$modelState->set('filter.order', '\'' . implode('\',\'', $this->order) . '\'');
+			$modelState->set('filter.order', implode('\',\'', $this->order));
 		}
 
 		if (strcmp($this->id, '*') !== 0)

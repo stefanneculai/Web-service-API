@@ -139,7 +139,53 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	public function execute()
 	{
 		$this->init();
-		$this->app->setBody(json_encode('Content Create'));
+
+		$item = (array) $this->create()->dump();
+
+		$this->app->setBody(json_encode($item['content_id']));
+	}
+
+	/**
+	 * Create content
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	protected function create()
+	{
+		// Content model
+		include_once JPATH_BASE . '/model/model.php';
+
+		$fields = implode(',', array_keys($this->mandatoryData));
+		$fields = $fields . ',' . implode(',', array_keys($this->optionalData));
+
+		// New content model
+		$model = new WebServiceContentModelBase;
+
+		// Get content state
+		$modelState = $model->getState();
+
+		// Set content type that we need
+		$modelState->set('content.type', 'general');
+
+		// Set field list
+		$modelState->set('content.fields', $fields);
+
+		// Set each field
+		foreach ($this->mandatoryData as $fieldName => $fieldContent)
+		{
+			$modelState->set('fields.' . $fieldName, $fieldContent);
+		}
+
+		foreach ($this->optionalData as $fieldName => $fieldContent)
+		{
+			$modelState->set('fields.' . $fieldName, $fieldContent);
+		}
+
+		$item = $model->createItem();
+
+		return $item;
 	}
 
 }
