@@ -50,7 +50,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	 * @var    string  The results order
 	 * @since  1.0
 	 */
-	protected $order = 'asc';
+	protected $order = null;
 
 	/**
 	 * @var    string  Max results per page
@@ -206,21 +206,18 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 
 		if (isset($order))
 		{
-			$order = strtolower($order);
+			$order = preg_split('#[\s,]+#', $order, null, PREG_SPLIT_NO_EMPTY);
 
-			if (strcmp($order, 'asc') === 0 || strcmp($order, 'desc') === 0)
+			if ($order == false)
 			{
-				return $order;
+				return null;
 			}
 
-			throw new InvalidArgumentException(
-					'Order should be "asc" or "desc". By default order is set to ' . $this->order,
-					$this->responseCode
-					);
+			return $order;
 		}
 		else
 		{
-			return $this->order;
+			return null;
 		}
 	}
 
@@ -371,13 +368,11 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	/**
 	 * Get content by id
 	 *
-	 * @param   string  $id  Get content with the specified id. If id is null all entries should be returned
-	 *
 	 * @return  JContent
 	 *
 	 * @since   1.0
 	 */
-	protected function getContent($id = '*')
+	protected function getContent()
 	{
 
 		// Content model
@@ -390,16 +385,35 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		$modelState = $model->getState();
 
 		// Set content type that we need
-		$modelState->set('type', 'general');
-		$modelState->set('content_id', $id);
+		$modelState->set('content.type', 'general');
+		$modelState->set('content.id', $this->id);
 
-		// Set additional options
-		$modelState->set('limit', min(100, $this->input->get->getInt('per_page', 20)));
+		$modelState->set('filter.since', $this->since);
+		$modelState->set('filter.before', $this->before);
 
-		// Get the requested data
-		$data = $model->getData($this->fields);
+		if ($this->order != null)
+		{
+			$modelState->set('filter.order', '\'' . implode('\',\'', $this->order) . '\'');
+		}
 
-		return $data;
+		if (strcmp($this->id, '*') !== 0)
+		{
+			// Get the requested data
+			$item = $model->getItem();
+			$data = $model->pruneFields(array($item), $this->fields);
+
+			return $data;
+		}
+		else
+		{
+			$modelState->set('list.offset', $this->offset);
+			$modelState->set('list.limit', $this->limit);
+
+			$items = $model->getList();
+			$data = $model->pruneFields($items, $this->fields);
+
+			return $data;
+		}
 	}
 
 	/**
