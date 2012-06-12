@@ -8,7 +8,7 @@
  */
 
 /**
- * WebService 'content' method.
+ * WebService GET content class
  *
  * @package     WebService.Application
  * @subpackage  Controller
@@ -17,49 +17,49 @@
 class WebServiceControllerV1JsonContentGet extends JControllerBase
 {
 	/**
-	 * @var    string  The output results limit
+	 * @var    string  The limit of the results
 	 * @since  1.0
 	 */
 	protected $limit = 20;
 
 	/**
-	 * @var    string  Max results per page
+	 * @var    string  The maximum number of results per page
 	 * @since  1.0
 	 */
 	protected $maxResults = 100;
 
 	/**
-	 * @var    string  The output results offset
+	 * @var    string  The offset of the results
 	 * @since  1.0
 	 */
 	protected $offset = 0;
 
 	/**
-	 * @var    array  The output results fields
+	 * @var    array  The fields of the results
 	 * @since  1.0
 	 */
 	protected $fields;
 
 	/**
-	 * @var    string  The content id. It may be numeric id or '*' if all content is needed
+	 * @var    string  The content id. It may be numeric id or '*' if all content is refeered
 	 * @since  1.0
 	 */
 	protected $id = '*';
 
 	/**
-	 * @var    string  The results order
+	 * @var    string  The order of the results
 	 * @since  1.0
 	 */
 	protected $order = null;
 
 	/**
-	 * @var    string  Max results per page
+	 * @var    string  The minimum created date of the results
 	 * @since  1.0
 	 */
 	protected $since = '01-01-1970';
 
 	/**
-	 * @var    string  Max results per page
+	 * @var    string  The maximum created date of the results
 	 * @since  1.0
 	 */
 	protected $before = 'now';
@@ -71,7 +71,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	protected $responseCode = 401;
 
 	/**
-	 * Get route parts from the input or the default one
+	 * Get the content ID from the input. It may also return '*' refeering all the content
 	 *
 	 * @return  string
 	 *
@@ -166,7 +166,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	/**
 	 * Get the fields from input or the default one
 	 *
-	 * @return  array
+	 * @return  mixed
 	 *
 	 * @since   1.0
 	 */
@@ -195,7 +195,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	/**
 	 * Get the order from input or the default one
 	 *
-	 * @return  string
+	 * @return  mixed
 	 *
 	 * @since   1.0
 	 */
@@ -362,18 +362,14 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		// Returned data
 		$data = $this->getContent($this->id);
 
-		if ($data == false)
-		{
-			$data = "No such content";
-		}
-
-		$this->app->setBody(json_encode($data));
+		// Format the results properly
+		$this->parseData($data);
 	}
 
 	/**
-	 * Get content by id
+	 * Get content by id or all content
 	 *
-	 * @return  JContent
+	 * @return  mixed
 	 *
 	 * @since   1.0
 	 */
@@ -392,14 +388,17 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		$modelState->set('content.type', 'general');
 		$modelState->set('content.id', $this->id);
 
+		// Set date limitations
 		$modelState->set('filter.since', $this->since);
 		$modelState->set('filter.before', $this->before);
 
+		// Sort order
 		if ($this->order != null)
 		{
 			$modelState->set('filter.order', implode('\',\'', $this->order));
 		}
 
+		// A specific content is requested
 		if (strcmp($this->id, '*') !== 0)
 		{
 			// Get the requested data
@@ -415,11 +414,14 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 
 			return $data;
 		}
+		// All content is requested
 		else
 		{
+			// Set offset and results limit
 			$modelState->set('list.offset', $this->offset);
 			$modelState->set('list.limit', $this->limit);
 
+			// Get content from Database
 			$items = $model->getList();
 
 			// No items found
@@ -437,16 +439,21 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	/**
 	 * Parse the returned data from database
 	 *
-	 * @param   JContent  $data  Data as JContent
+	 * @param   mixed  $data  A JContent object, an array of JContent or a boolean.
 	 *
-	 * @return  array
+	 * @return  void
 	 *
 	 * @since   1.0
 	 */
 	protected function parseData($data)
 	{
-		// TODO parse database data and return only what the user requested
+		// There is no content for the request
+		if ($data == false)
+		{
+			$data = "No such content";
+		}
 
-		return 'Results after parse';
+		// Output the results
+		$this->app->setBody(json_encode($data));
 	}
 }

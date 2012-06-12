@@ -24,13 +24,13 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 	protected $id = '*';
 
 	/**
-	 * @var    string  Max results per page
+	 * @var    string  The minimum created date of the results
 	 * @since  1.0
 	 */
 	protected $since = '1970-01-01';
 
 	/**
-	 * @var    string  Max results per page
+	 * @var    string  The maximum created date of the results
 	 * @since  1.0
 	 */
 	protected $before = 'now';
@@ -177,7 +177,7 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 	 */
 	protected function init()
 	{
-
+		// Check supress error codes
 		$this->checkSupressResponseCodes();
 
 		// Content id
@@ -199,18 +199,14 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 	 */
 	public function execute()
 	{
+		// Init
 		$this->init();
 
-		$result = $this->delete();
+		// Delete content from Database
+		$data = $this->deleteContent();
 
-		if ($result == true)
-		{
-			$this->app->setBody(json_encode('Content has been deleted'));
-		}
-		else
-		{
-			$this->app->setBody(json_encode('Content does not exist'));
-		}
+		// Parse the returned code
+		$this->parseData($data);
 	}
 
 	/**
@@ -220,7 +216,7 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 	 *
 	 * @since   1.0
 	 */
-	public function delete()
+	public function deleteContent()
 	{
 		// Content model
 		include_once JPATH_BASE . '/model/model.php';
@@ -244,6 +240,29 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 			$result = $model->deleteItem();
 
 			return $result;
+		}
+	}
+
+/**
+	 * Parse the returned data from database
+	 *
+	 * @param   boolean  $data  Request was successful or not
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	protected function parseData($data)
+	{
+		// Request was done successfully
+		if ($data == true)
+		{
+			$this->app->setBody(json_encode('Content has been deleted'));
+		}
+		// Request was not successfully
+		else
+		{
+			$this->app->setBody(json_encode('Content does not exist'));
 		}
 	}
 }

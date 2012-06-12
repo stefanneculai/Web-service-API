@@ -9,7 +9,7 @@
  */
 
 /**
- * Web Service Api 'content' Model class.
+ * Web Service Api Model class.
  *
  * @package     WebService.Model
  * @subpackage  Model

@@ -137,7 +137,7 @@ class WebServiceControllerV1JsonContentUpdate extends JControllerBase
 	 */
 	protected function init()
 	{
-
+		// Check error codes
 		$this->checkSupressResponseCodes();
 
 		// Content id
@@ -162,23 +162,14 @@ class WebServiceControllerV1JsonContentUpdate extends JControllerBase
 		// Returned data
 		$data = $this->updateContent($this->id);
 
-		// Check if the update was successful
-		if ($data == false)
-		{
-			$data = "No such content";
-		}
-		else
-		{
-			$data = "Content was updated successfully";
-		}
-
-		$this->app->setBody(json_encode($data));
+		// Parse the returned data
+		$this->parseData($data);
 	}
 
 /**
 	 * Create content
 	 *
-	 * @return  void
+	 * @return  mixed
 	 *
 	 * @since   1.0
 	 */
@@ -227,6 +218,30 @@ class WebServiceControllerV1JsonContentUpdate extends JControllerBase
 		$item = $model->updateItem();
 
 		return $item;
+	}
+
+	/**
+	 * Parse the returned data from database
+	 *
+	 * @param   boolean  $data  Request was successful or not
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	protected function parseData($data)
+	{
+		// Check if the update was successful
+		if ($data == false)
+		{
+			$data = "No such content";
+		}
+		else
+		{
+			$data = "Content was updated successfully";
+		}
+
+		$this->app->setBody(json_encode($data));
 	}
 
 }

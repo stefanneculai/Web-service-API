@@ -17,7 +17,7 @@
 class WebServiceControllerV1JsonContentCreate extends JControllerBase
 {
 	/**
-	 * @var    array  Required data
+	 * @var    array  Required fields
 	 * @since  1.0
 	 */
 	protected $mandatoryData = array(
@@ -27,7 +27,7 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 			);
 
 	/**
-	 * @var    array  Mandatory data
+	 * @var    array  Optional fields
 	 * @since  1.0
 	*/
 	protected $optionalData = array(
@@ -81,9 +81,13 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	 */
 	protected function init()
 	{
+		// Supress error codes
 		$this->checkSupressResponseCodes();
 
+		// Init mandatory fields
 		$this->getMandatoryData();
+
+		// Init optional fields
 		$this->getOptionalData();
 	}
 
@@ -96,6 +100,7 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	 */
 	protected function getMandatoryData()
 	{
+		// Search for mandatory fields in input query
 		foreach ($this->mandatoryData as $key => $value )
 		{
 			$field = $this->input->get->getString($key);
@@ -119,6 +124,7 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	 */
 	protected function getOptionalData()
 	{
+		// Search for optional fields in input query
 		foreach ($this->optionalData as $key => $value )
 		{
 			$field = $this->input->get->getString($key);
@@ -138,17 +144,18 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	 */
 	public function execute()
 	{
+		// Init
 		$this->init();
 
-		$item = (array) $this->createContent()->dump();
+		$data = $this->createContent();
 
-		$this->app->setBody(json_encode($item['content_id']));
+		$this->parseData($data);
 	}
 
 	/**
 	 * Create content
 	 *
-	 * @return  void
+	 * @return  JContent
 	 *
 	 * @since   1.0
 	 */
@@ -172,20 +179,38 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 		// Set field list
 		$modelState->set('content.fields', $fields);
 
-		// Set each field
+		// Set each mandatory field
 		foreach ($this->mandatoryData as $fieldName => $fieldContent)
 		{
 			$modelState->set('fields.' . $fieldName, $fieldContent);
 		}
 
+		// Set each optional field
 		foreach ($this->optionalData as $fieldName => $fieldContent)
 		{
 			$modelState->set('fields.' . $fieldName, $fieldContent);
 		}
 
+		// Create item
 		$item = $model->createItem();
 
 		return $item;
+	}
+
+	/**
+	 * Parse the returned data from database
+	 *
+	 * @param   mixed  $data  Data may be JContent, array of JContent or false
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	protected function parseData($data)
+	{
+		$item = (array) $data->dump();
+
+		$this->app->setBody(json_encode($item['content_id']));
 	}
 
 }
