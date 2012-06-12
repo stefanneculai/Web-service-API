@@ -62,14 +62,10 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array('', 'asc', true),
-				array('asc', 'asc', false),
-				array('desc', 'desc', false),
-				array(null, 'asc', false),
-				array('DESC', 'desc', false),
-				array('ASC', 'asc', false),
-				array('aSc', 'asc', false),
-				array('error', 'desc', true)
+				array('', null, false),
+				array('field1', array('field1'), false),
+				array('field1, field2', array('field1', 'field2'), false),
+				array(null, null, false)
 		);
 	}
 
@@ -298,13 +294,13 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 
 		// Input, Expected, Exception
 		return array(
-				array('', null, true),
-				array('1970-01-01', $date1, false),
-				array('-0001-01-01', null, true),
-				array('2001-01-01', $date2, false),
-				array(null, $date1 , false),
-				array('99-03-03', $date3 , false),
-				array('now', $date4, false)
+				array('', null, true, false),
+				array('1970-01-01', $date1, false, false),
+				array('-0001-01-01', null, true, false),
+				array('2001-01-01', $date2, false, false),
+				array(null, $date1 , false, false),
+				array('99-03-03', $date3 , false, false),
+				array('now', $date4, false, true)
 		);
 	}
 
@@ -314,6 +310,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 * @param   string   $input      Input string to test.
 	 * @param   string   $expected   Expected fetched string.
 	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
+	 * @param   boolean  $over       True if an Returned date should be after the current date
 	 *
 	 * @return  void
 	 *
@@ -321,7 +318,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 * @dataProvider  seedGetSinceData
 	 * @since         1.0
 	 */
-	public function testGetSince($input,  $expected, $exception)
+	public function testGetSince($input,  $expected, $exception, $over)
 	{
 		// Set the input values.
 		$_GET['since'] = $input;
@@ -339,7 +336,17 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 		$_GET['since'] = null;
 
 		// Verify the value.
-		$this->assertEquals($expected, $actual);
+		if ($over == false)
+		{
+			$this->assertEquals($expected, $actual);
+		}
+		else
+		{
+			$expected = new JDate($expected);
+			$actual = new JDate($actual);
+
+			$this->assertGreaterThanOrEqual($expected, $actual);
+		}
 	}
 
 	/**
@@ -365,13 +372,13 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 
 		// Input, Expected, Exception
 		return array(
-				array('', null, true),
-				array('1970-01-01', $date1, false),
-				array('-0001-01-01', null, true),
-				array('2001-01-01', $date2, false),
-				array(null, $date4 , false),
-				array('99-03-03', $date3 , false),
-				array('now', $date4, false)
+				array('', null, true, false),
+				array('1970-01-01', $date1, false, false),
+				array('-0001-01-01', null, true, false),
+				array('2001-01-01', $date2, false, false),
+				array(null, $date4 , false, true),
+				array('99-03-03', $date3 , false, false),
+				array('now', $date4, false, true)
 		);
 	}
 
@@ -381,6 +388,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 * @param   string   $input      Input string to test.
 	 * @param   string   $expected   Expected fetched string.
 	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
+	 * @param   boolean  $over       True if an Returned date should be after the current date
 	 *
 	 * @return  void
 	 *
@@ -388,7 +396,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 * @dataProvider  seedGetBeforeData
 	 * @since         1.0
 	 */
-	public function testGetBefore($input,  $expected, $exception)
+	public function testGetBefore($input,  $expected, $exception, $over)
 	{
 		// Set the input values.
 		$_GET['before'] = $input;
@@ -406,7 +414,17 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 		$_GET['before'] = null;
 
 		// Verify the value.
-		$this->assertEquals($expected, $actual);
+		if ($over == false)
+		{
+			$this->assertEquals($expected, $actual);
+		}
+		else
+		{
+			$expected = new JDate($expected);
+			$actual = new JDate($actual);
+
+			$this->assertGreaterThanOrEqual($expected, $actual);
+		}
 	}
 
 	/**

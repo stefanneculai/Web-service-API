@@ -392,6 +392,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		$modelState->set('filter.since', $this->since);
 		$modelState->set('filter.before', $this->before);
 
+		// TODO should check if order exists in fields
 		// Sort order
 		if ($this->order != null)
 		{
