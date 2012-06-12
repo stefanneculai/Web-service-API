@@ -91,7 +91,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		// Break route into more parts
 		$routeParts = explode('/', $route);
 
-		// Contet is not refered by a number id
+		// Content is not refered by a number id
 		if (count($routeParts) > 0 && (!is_numeric($routeParts[0]) || $routeParts[0] < 0) && !empty($routeParts[0]))
 		{
 			throw new InvalidArgumentException('Unknown content path.', $this->responseCode);
@@ -362,6 +362,11 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		// Returned data
 		$data = $this->getContent($this->id);
 
+		if ($data == false)
+		{
+			$data = "No such content";
+		}
+
 		$this->app->setBody(json_encode($data));
 	}
 
@@ -399,6 +404,13 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		{
 			// Get the requested data
 			$item = $model->getItem();
+
+			// No item found
+			if ($item == false)
+			{
+				return false;
+			}
+
 			$data = $model->pruneFields(array($item), $this->fields);
 
 			return $data;
@@ -409,6 +421,13 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 			$modelState->set('list.limit', $this->limit);
 
 			$items = $model->getList();
+
+			// No items found
+			if ($items == false)
+			{
+				return false;
+			}
+
 			$data = $model->pruneFields($items, $this->fields);
 
 			return $data;

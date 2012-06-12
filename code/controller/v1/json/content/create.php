@@ -140,7 +140,7 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	{
 		$this->init();
 
-		$item = (array) $this->create()->dump();
+		$item = (array) $this->createContent()->dump();
 
 		$this->app->setBody(json_encode($item['content_id']));
 	}
@@ -152,7 +152,7 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	 *
 	 * @since   1.0
 	 */
-	protected function create()
+	protected function createContent()
 	{
 		// Content model
 		include_once JPATH_BASE . '/model/model.php';

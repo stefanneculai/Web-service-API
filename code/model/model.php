@@ -212,7 +212,14 @@ class WebServiceContentModelBase extends JModelBase
 			$contentType = $results[$contentId]->type;
 		}
 
-		return $this->factory->getContent($contentType)->load($contentId);
+		if ($this->existsItem($contentId))
+		{
+			return $this->factory->getContent($contentType)->load($contentId);
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -266,7 +273,7 @@ class WebServiceContentModelBase extends JModelBase
 	}
 
 	/**
-	 * Method to delete a content item.
+	 * Method to check existance of an item by ID
 	 *
 	 * @param   int  $contentId  The id of the content to test if exists
 	 *
@@ -355,7 +362,80 @@ class WebServiceContentModelBase extends JModelBase
 	}
 
 	/**
-	 * Method to get the content types for one or more content items.
+	 * Method to delete a content item.
+	 *
+	 * @return  JContent  A content object.
+	 *
+	 * @since   10.1
+	 * @throws  InvalidArgumentException
+	 * @throws  RuntimeException
+	 * @throws  UnexpectedValueException
+	 */
+	public function updateItem()
+	{
+		// Get the content id and type.
+		$contentId = $this->state->get('content.id');
+		$contentType = $this->state->get('content.type');
+
+		// Assert that the content id is set.
+		if (empty($contentId))
+		{
+			throw new InvalidArgumentException('%s-updateItem() called without a content id set in state.', get_class($this));
+		}
+
+		// Check if the content type is set.
+		if (empty($contentType))
+		{
+			// Get the content type for the id.
+			$results = $this->getTypes($contentId);
+
+			// Assert that the content type was found.
+			if (empty($results[$contentId]))
+			{
+				throw new UnexpectedValueException('%s->deleteItem() could not find the content type for item %s.', get_class($this), $contentId);
+			}
+
+			// Set the content type alias.
+			$contentType = $results[$contentId]->type;
+		}
+
+		if ($this->existsItem($contentId))
+		{
+			$item = $this->factory->getContent($contentType)->load($contentId);
+
+			// Get fields for new content and check them
+			$fields = $this->state->get('content.fields');
+			if (empty($fields))
+			{
+				throw new UnexpectedValueException('Missing fields for new object');
+			}
+
+			// Get each field for the new content
+			$fieldsArray = preg_split('#[\s,]+#', $fields, null, PREG_SPLIT_NO_EMPTY);
+			foreach ($fieldsArray as $key => $fieldName)
+			{
+				$field = $this->state->get('fields.' . $fieldName);
+
+				if (empty($field) && $field != '')
+				{
+					throw new UnexpectedValueException('Missing field ' . $fieldName);
+				}
+
+				$item->__set($fieldName, $field);
+			}
+
+			$item->update();
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Method to update one item
 	 *
 	 * @return  JContent  A JContent object
 	 *
