@@ -180,10 +180,7 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 		}
 		else
 		{
-			$expected = new JDate($expected);
-			$actual = new JDate($actual);
-
-			$this->assertGreaterThanOrEqual($expected, $actual);
+			$this->assertGreaterThanOrEqual(new JDate($expected), new JDate($actual));
 		}
 	}
 
