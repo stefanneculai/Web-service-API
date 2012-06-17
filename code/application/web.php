@@ -114,7 +114,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	 */
 	public function loadRouter(WebServiceApplicationWebRouter $router = null)
 	{
-		$this->router = ($router === null) ? new WebServiceApplicationWebRouter($this->input, $this) : $router;
+		$this->router = ($router === null) ? new WebServiceApplicationWebRouter($this, $this->input) : $router;
 
 		return $this;
 	}
@@ -134,11 +134,11 @@ class WebServiceApplicationWeb extends JApplicationWeb
 			$this->session = JFactory::getSession();
 			JFactory::$application = $this;
 
-			// Get the controller instance based on the request.
-			$controller = $this->router->getController($this->get('uri.route'));
+			$this->router->addMap('/content', 'content');
+			$this->router->addMap('/content/*', 'content');
 
-			// Execute the controller.
-			$controller->execute();
+			// Get the controller instance based on the request.
+			$this->router->execute($this->get('uri.route'));
 		}
 		catch (Exception $e)
 		{

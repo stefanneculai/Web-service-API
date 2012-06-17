@@ -14,7 +14,7 @@
  * @subpackage  Application
  * @since       1.0
  */
-class WebServiceApplicationWebRouter
+class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 {
 	/**
 	 * @var    string  The api content type to use for messaging.
@@ -23,238 +23,58 @@ class WebServiceApplicationWebRouter
 	protected $apiType = 'json';
 
 	/**
-	 * @var    string  The api output type to use for content fields.
-	 * @since  1.0
-	 */
-	protected $apiOutput = 'raw';
-
-	/**
 	 * @var    integer  The api revision number.
 	 * @since  1.0
 	 */
-	protected $apiVersion = 1;
-
-	/**
-	 * @var    JApplicationWeb  The application object.
-	 * @since  1.0
-	 */
-	protected $app;
-
-	/**
-	 * @var    JInput  The application input object.
-	 * @since  1.0
-	 */
-	protected $input;
-
-	/**
-	 * @var    array  The map of HTTP methods to controller types.
-	 * @since  1.0
-	 */
-	protected $methodMap = array(
-		'PUT' => 'Create',
-		'POST' => 'Update',
-		'PATCH' => 'Update',
-		'DELETE' => 'Delete',
-		'GET' => 'Get',
-		'OPTIONS' => 'Options'
-	);
+	protected $apiVersion = 'v1';
 
 	/**
 	 * @var    array  The URL => controller map for routing requests.
 	 * @since  1.0
 	 */
 	protected $routeMap = array(
-		'#([\w\/]*)/(\d+)/(\w+)#i' => '$1/$3/$2'
+		'#([\w\/]*)/(\d+)/(\w+)#i' => '$3'
 	);
 
 	/**
-	 * Object constructor.
+	 * Find and execute the appropriate controller based on a given route.
 	 *
-	 * @param   JInput           $input  The input object.
-	 * @param   JApplicationWeb  $app    The application object.
+	 * @param   string  $route  The route string for which to find and execute a controller.
 	 *
-	 * @since 1.0
-	 */
-	public function __construct(JInput $input, JApplicationWeb $app)
-	{
-		$this->input = $input;
-		$this->app = $app;
-	}
-
-	/**
-	 * Method to get a controller object based on the incoming request.
-	 *
-	 * @param   string  $route  The request route for which to get a controller.
-	 *
-	 * @return  JController
+	 * @return  void
 	 *
 	 * @since   1.0
 	 * @throws  InvalidArgumentException
+	 * @throws  RuntimeException
 	 */
-	public function getController($route)
+	public function execute($route)
 	{
-		// Build the base namespace for the controller class based on API version and type.
-		$base = $this->fetchControllerBaseName();
+		// Make route to match our API structure
+		$this->reorderRoute($route);
 
-		// Get the request method.
-		$method = $this->fetchRequestMethod();
+		// Parse route to get only the main
+		$route = $this->rewriteRoute($route);
 
-		// Get a URI object for the current route.
-		$uri = JUri::getInstance($this->rewriteRoute($route));
+		// Set controller prefix
+		$this->setControllerPrefix('WebServiceController' . ucfirst($this->apiVersion) . ucfirst($this->apiType));
 
-		// Get the controller object.
-		$class = $this->fetchControllerClass($base, $uri, $method);
-		$controller = new $class($this->input, $this->app);
+		// Get the controller name based on the route patterns and requested route.
+		$name = $this->parseRoute($route);
 
-		return $controller;
-	}
+		// Get the effective route after matching the controller
+		$route = $this->removeControllerFromRoute($route);
 
-	/**
-	 * Method to get the API request format information.
-	 *
-	 * @param   string  $type  The request Content-Type header string.
-	 *
-	 * @return void
-	 *
-	 * @since   1.0
-	 * @throws  InvalidArgumentException
-	 */
-	protected function detectRequestFormat($type)
-	{
-		// Make sure we are dealing with a valid WebService content type.
-		$matches = array();
-		if (!preg_match('#application/vnd\.webservice(\.([0-9]+))?(\.([a-z]+))?(\+([a-z]+))?#', strtolower($type), $matches))
-		{
-			throw new InvalidArgumentException($type . ' not a valid Web Service mime type.', 400);
-		}
+		// Set the remainder of the route path in the input object as a local route.
+		$this->input->get->set('@route', $route);
 
-		// Set the API version if available.
-		if (!empty($matches[2]))
-		{
-			$this->apiVersion = (int) $matches[2];
-		}
+		// Append the HTTP method based suffix.
+		$name .= $this->fetchControllerSuffix();
 
-		// Set the API output type if available.
-		if (!empty($matches[4]))
-		{
-			$this->apiOutput = $matches[4];
-		}
+		// Get the controller object by name.
+		$controller = $this->fetchController($name);
 
-		// Set the API request type if available.
-		if (!empty($matches[6]))
-		{
-			$this->apiType = $matches[6];
-		}
-	}
-
-	/**
-	 * Get the content type from the request.  This will fallback to a default.
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0
-	 */
-	protected function fetchContentType()
-	{
-		// If no explicit content type is set use the default.
-		if (empty($_SERVER['CONTENT_TYPE']))
-		{
-			$type = 'application/vnd.webservice+json';
-		}
-		// If we have an explicit content type set, get it from the input.
-		else
-		{
-			$type = strtolower($this->input->server->getString('CONTENT_TYPE'));
-		}
-
-		// Clean up the default json fallback type.
-		if ($type == 'application/json')
-		{
-			$type = 'application/vnd.webservice+json';
-		}
-
-		return $type;
-	}
-
-	/**
-	 * Get the base namespace for the controller class based on API version and type.
-	 *
-	 * @return  string
-	 *
-	 * @codeCoverageIgnore
-	 * @since   1.0
-	 */
-	protected function fetchControllerBaseName()
-	{
-		return 'WebServiceControllerV' . $this->apiVersion . ucfirst($this->apiType);
-	}
-
-	/**
-	 * Method to get a controller class name based on the incoming request.
-	 *
-	 * @param   string  $base    Controller class base name.
-	 * @param   JURI    $uri     JURI object for the route to fetch the controller class.
-	 * @param   string  $method  HTTP request method.
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0
-	 * @throws  InvalidArgumentException
-	 */
-	protected function fetchControllerClass($base, $uri, $method)
-	{
-		// Convert the base path into an array of segments to build the controller.
-		$parts = explode('/', trim($uri->getPath(), ' /'));
-
-		// Iterate backwards over the route segments so we get the most specific class to handle the request.
-		for ($i = count($parts); $i > 0; $i--)
-		{
-			// Build the controller class name from the path information.
-			$class = $base . JStringNormalise::toCamelCase(implode(' ', array_slice($parts, 0, $i))) . ucfirst($this->methodMap[$method]);
-
-			// If the requested controller exists let's use it.
-			if (class_exists($class))
-			{
-				// Set the remainder of the route path in the input object as a local route.
-				$this->input->get->set('@route', implode('/', array_slice($parts, $i)));
-
-				return $class;
-			}
-		}
-
-		// Nothing found. Panic.
-		throw new InvalidArgumentException('Unable to handle the request for route: ' . $uri, 400);
-	}
-
-	/**
-	 * Method to get the request method for the incoming request.
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0
-	 * @throws  InvalidArgumentException
-	 */
-	protected function fetchRequestMethod()
-	{
-		// Some clients don't support anything other than GET and POST so let's give them a way to play too.
-		$postMethod = $this->input->get->getWord('_method');
-		if (strcmp(strtoupper($this->input->server->getMethod()), 'POST') === 0  && $postMethod)
-		{
-			$method = strtoupper($postMethod);
-		}
-		// Standard use case.
-		else
-		{
-			$method = strtoupper($this->input->server->getMethod());
-		}
-
-		// Is the request method supported?
-		if (empty($this->methodMap[$method]))
-		{
-			throw new InvalidArgumentException('Unknown request method: ' . $method, 400);
-		}
-
-		return $method;
+		// Execute the controller.
+		$controller->execute();
 	}
 
 	/**
@@ -266,14 +86,122 @@ class WebServiceApplicationWebRouter
 	 *
 	 * @since   1.0
 	 */
-	protected function rewriteRoute($input)
+	protected function reorderRoute($input)
 	{
 		// Get the patterns and replacement fields from the route map.
 		$pattern = array_keys($this->routeMap);
 		$replace = array_values($this->routeMap);
 
+		// Replace the route
 		$output = preg_replace($pattern, $replace, $input);
 
+		// If there are changes in the route, make the changes in the input
+		foreach ($this->routeMap as $pattern => $replace)
+		{
+			// /collection1/id/collection2 becames /collection2?collection1=id
+			if (preg_match($pattern, $input, $matches))
+			{
+				$this->input->get->set($matches[1], $matches[2]);
+			}
+
+		}
+
 		return $output;
+	}
+
+	/**
+	 * Get the effective route after matching the controller by removing the controller name
+	 *
+	 * @param   string  $route  The route string which to parse
+	 *
+	 * @return  string
+	 *
+	 * @since   1.0
+	 */
+	protected function removeControllerFromRoute($route)
+	{
+		// Explode route
+		$parts = explode('/', trim($route, ' /'));
+
+		// Remove the first part of the route
+		unset($parts[0]);
+
+		// Reindex the array
+		$parts = array_values($parts);
+
+		// Build route back
+		$route = implode('/', $parts);
+
+		return $route;
+	}
+
+	/**
+	 * Gets from the current route the api version and the output format
+	 *
+	 * @param   string  $route  The route string which to parse
+	 *
+	 * @return  string
+	 *
+	 * @since   1.0
+	 */
+	protected function rewriteRoute($route)
+	{
+		// Get the path from the route
+		$uri = JUri::getInstance($route);
+
+		// Explode path in multiple parts
+		$parts = explode('/', trim($uri->getPath(), ' /'));
+
+		// Get version
+		if (preg_match('/^v\d$/', $parts[0]))
+		{
+			$this->apiVersion = $parts[0];
+			unset($parts[0]);
+			$parts = array_values($parts);
+		}
+
+		// Check if there is a json request
+		if (preg_match('/(\.json)$/', $parts[count($parts) - 1]))
+		{
+			$this->apiType = 'json';
+			$parts[count($parts) - 1] = str_replace('.json', '', $parts[count($parts) - 1]);
+		}
+
+		// Check if there is a xml request
+		if (preg_match('/(\.xml)$/', $parts[count($parts) - 1]))
+		{
+			$this->apiType = 'xml';
+			$parts[count($parts) - 1] = str_replace('.xml', '', $parts[count($parts) - 1]);
+		}
+
+		// Build route back
+		$route = implode('/', $parts);
+
+		return $route;
+	}
+
+	/**
+	 * Get the controller class suffix string.
+	 *
+	 * @return  string
+	 *
+	 * @since   12.3
+	 * @throws  RuntimeException
+	 */
+	protected function fetchControllerSuffix()
+	{
+		// Validate that we have a map to handle the given HTTP method.
+		if (!isset($this->suffixMap[$this->input->getMethod()]))
+		{
+			throw new RuntimeException(sprintf('Unable to support the HTTP method `%s`.', $this->input->getMethod()), 404);
+		}
+
+		$postMethod = $this->input->get->getWord('_method');
+		if (strcmp(strtoupper($this->input->server->getMethod()), 'POST') === 0  && $postMethod)
+		{
+			return ucfirst($postMethod);
+		}
+
+		return ucfirst($this->suffixMap[$this->input->getMethod()]);
 	}
 }

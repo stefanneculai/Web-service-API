@@ -79,7 +79,6 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	 */
 	protected function getContentId()
 	{
-
 		// Get route from the input
 		$route = $this->input->get->getString('@route');
 
