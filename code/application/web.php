@@ -135,7 +135,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 			JFactory::$application = $this;
 
 			$this->router->addMap('/content', 'content');
-			$this->router->addMap('/content/*', 'content');
+			$this->router->addMap('/content/:content_id', 'content');
 
 			// Get the controller instance based on the request.
 			$this->router->execute($this->get('uri.route'));

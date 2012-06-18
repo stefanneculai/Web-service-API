@@ -68,10 +68,6 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 				array('22/user', '22', false),
 				array('bad/user', '22', true),
 				array('-1/user', null, true),
-				array('22.json', '22', false),
-				array('-1.xml', null, true),
-				array('-1.json', null, true),
-				array('22/user.json', '22', false)
 		);
 	}
 

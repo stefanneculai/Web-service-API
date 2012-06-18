@@ -53,11 +53,6 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 		// Get route from the input
 		$route = $this->input->get->getString('@route');
 
-		if (preg_match("/json$/", $route) >= 0)
-		{
-			$route = str_replace('.json', '', $route);
-		}
-
 		// Break route into more parts
 		$routeParts = explode('/', $route);
 
