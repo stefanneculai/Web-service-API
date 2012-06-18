@@ -25,111 +25,95 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	private $_instance;
 
 	/**
-	 * Provides test data for content type fetching.
+	 * Provides test data for reordering route
 	 *
 	 * @return  array
 	 *
 	 * @since   1.0
 	 */
-	public function seedContentTypeData()
+	public function seedReorderRouteData()
 	{
 		// Input, Expected
 		return array(
-			array('application/vnd.webservice+json', 'application/vnd.webservice+json'),
-			array('application/vnd.webservice.1+json', 'application/vnd.webservice.1+json'),
-			array('application/vnd.webservice.2.raw+json', 'application/vnd.webservice.2.raw+json'),
-			array('application/vnd.webservice+xml', 'application/vnd.webservice+xml'),
-			array('application/json', 'application/vnd.webservice+json'),
-			array('', 'application/vnd.webservice+json'),
-			array('webservice', 'webservice')
+			array('/collection1/1', '/collection1/1', false, null, null),
+			array('collection', 'collection', false, null, null),
+			array('collection', 'collection', false, null, null),
+			array('collection1/2/collection2', 'collection2', true, "collection1", "2"),
+			array('collection1/2/collection2?fields', 'collection2?fields', true, "collection1", "2"),
 		);
 	}
 
 	/**
-	 * Provides test data for fetching controller class names.
+	 * Tests reorderRoute()
+	 *
+	 * @param   string   $input      Input string to test.
+	 * @param   string   $expected   Expected fetched string.
+	 * @param   boolean  $testInput  Test input or not
+	 * @param   string   $key        Input key
+	 * @param   string   $value      Input value
+	 *
+	 * @return  void
+	 *
+	 * @covers        WebServiceApplicationWebRouter::reorderRoute
+	 * @dataProvider  seedReorderRouteData
+	 * @since         1.0
+	 */
+	public function testReorderRoute($input,  $expected, $testInput, $key, $value)
+	{
+		// Execute the code to test.
+		$actual = TestReflection::invoke($this->_instance, 'reorderRoute', $input);
+
+		// Verify the value.
+		$this->assertEquals($expected, $actual);
+
+		// Test input value
+		if ($testInput == true)
+		{
+			$input = TestReflection::getValue($this->_instance, 'input');
+			$this->assertEquals($input->get->getString($key), $value);
+		}
+	}
+
+	/**
+	 * Provides test data for removing controller from route
 	 *
 	 * @return  array
 	 *
 	 * @since   1.0
 	 */
-	public function seedFetchControllerClassData()
+	public function seedRemoveControllerFromRouteData()
 	{
-		// Base, Route, Method, Expected, Remainder, Exception
+		// Input, Expected
 		return array(
-			array('WebServiceControllerV1Json', 'content/7', 'GET', 'WebServiceControllerV1JsonContentGet', '7', false),
-			array('WebServiceControllerV1Json', 'content', 'GET', 'WebServiceControllerV1JsonContentGet', '', false),
-			array('WebServiceControllerV1Json', 'content', 'DELETE', 'WebServiceControllerV1JsonContentDelete', '', false),
-			array('WebServiceControllerV1Json', 'content', 'PUT', 'WebServiceControllerV1JsonContentCreate', '', false),
-			array('WebServiceControllerV1Json', 'content', 'POST', 'WebServiceControllerV1JsonContentUpdate', '', false),
-			array('WebServiceControllerV1Json', 'content', 'PATCH', 'WebServiceControllerV1JsonContentUpdate', '', false)
+			array('content', ''),
+			array('content/22', '22'),
+			array('', ''),
 		);
 	}
 
 	/**
-	 * Provides test data for request format detection.
+	 * Tests removeControllerFromRoute()
 	 *
-	 * @return  array
+	 * @param   string  $input     Input string to test.
+	 * @param   string  $expected  Expected fetched string.
 	 *
-	 * @since   1.0
+	 * @return  void
+	 *
+	 * @covers        WebServiceApplicationWebRouter::removeControllerFromRoute
+	 * @dataProvider  seedRemoveControllerFromRouteData
+	 * @since         1.0
 	 */
-	public function seedRequestFormatData()
+	public function testRemoveControllerFromRoute($input,  $expected)
 	{
-		// Input, Version, Output, Type, Exception
-		return array(
-			array('application/vnd.webservice+json', 1, 'raw', 'json', false),
-			array('application/vnd.webservice.1+json', 1, 'raw', 'json', false),
-			array('application/vnd.webservice.1.raw+json', 1, 'raw', 'json', false),
-			array('application/vnd.webservice.2+json', 2, 'raw', 'json', false),
-			array('application/vnd.webservice.2.raw+json', 2, 'raw', 'json', false),
-			array('application/vnd.webservice.1.full+json', 1, 'full', 'json', false),
-			array('application/vnd.webservice.2.full+json', 2, 'full', 'json', false),
-			array('application/vnd.webservice.full+json', 1, 'full', 'json', false),
-			array('application/vnd.webservice.42+json', 42, 'raw', 'json', false),
-			array('application/vnd.webservice.3', 3, 'raw', 'json', false),
-			array('application/vnd.webservice.full', 1, 'full', 'json', false),
-			array('application/vnd.webservice.7.full', 7, 'full', 'json', false),
-			array('application/vnd.webservice+xml', 1, 'raw', 'xml', false),
-			array('application/json', 1, 'raw', 'json', true),
-			array('', 1, 'raw', 'json', true),
-			array('datahub', 1, 'raw', 'json', true)
-		);
+		// Execute the code to test.
+		$actual = TestReflection::invoke($this->_instance, 'removeControllerFromRoute', $input);
+
+		// Verify the value.
+		$this->assertEquals($expected, $actual);
 	}
 
 	/**
-	 * Provides test data for request format detection.
-	 *
-	 * @return  array
-	 *
-	 * @since   1.0
-	 */
-	public function seedRequestMethodData()
-	{
-		// Input, Override, Expected, Exception
-		return array(
-			array('GET', '', 'GET', false),
-			array('POST', '', 'POST', false),
-			array('PUT', '', 'PUT', false),
-			array('DELETE', '', 'DELETE', false),
-			array('PATCH', '', 'PATCH', false),
-			array('OPTIONS', '', 'OPTIONS', false),
-			// Output should always be allcaps.
-			array('Put', '', 'PUT', false),
-			// If the main method is not post then the override is ignored.
-			array('GET', 'POST', 'GET', false),
-			array('DELETE', 'PUT', 'DELETE', false),
-			array('PUT', 'GET', 'PUT', false),
-			// If the main method is POST and we have an override, the override wins.
-			array('POST', 'GET', 'GET', false),
-			array('POST', 'PUT', 'PUT', false),
-			array('POST', 'DELETE', 'DELETE', false),
-			// Test some unsupported cases.  Exceptions are expected.
-			array('TRACE', '', '', true),
-			array('TEST', '', '', true)
-		);
-	}
-
-	/**
-	 * Provides test data for route rewriting.
+	 * Provides test data for rewriting the route
 	 *
 	 * @return  array
 	 *
@@ -139,188 +123,22 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	{
 		// Input, Expected
 		return array(
-			array('/path/to/resource', '/path/to/resource'),
-			array('/container/123', '/container/123'),
-			array('/path/to/42/resource', '/path/to/resource/42'),
-			array('/container/123/like', '/container/like/123'),
-			array('/path/to/7/resource/action', '/path/to/resource/7/action'),
-			array('/321', '/321')
+			array('collection', 'collection', 'v1', 'json'),
+			array('collection/22?fields', 'collection/22', 'v1', 'json'),
+			array('collection.xml', 'collection', 'v1', 'xml'),
+			array('v1/collection.json', 'collection', 'v1', 'json'),
+			array('v2/collection/13.json?fields', 'collection/13', 'v2', 'json'),
+			array('/v2/collection/13.json/?fields', 'collection/13', 'v2', 'json'),
 		);
-	}
-
-	/**
-	 * Tests __construct()
-	 *
-	 * @return  void
-	 *
-	 * @covers  WebServiceApplicationWebRouter::__construct
-	 * @since   1.0
-	 */
-	public function test__construct()
-	{
-		// Create the mock.
-		$input = $this->getMock('JInput', array('test'), array(), '', false);
-		$input->expects($this->any())
-			->method('test')
-			->will(
-				$this->returnValue('ok')
-			);
-
-		// Construct the object.
-		$router = new WebServiceApplicationWebRouter($input, $this->getMockWeb());
-
-		// Verify that the values injected into the constructor are present.
-		$this->assertEquals('ok', TestReflection::getValue($router, 'input')->test());
-	}
-
-	/**
-	 * Tests detectRequestFormat()
-	 *
-	 * @param   string   $input      Content-Type header string to test.
-	 * @param   integer  $version    Expected API version.
-	 * @param   string   $output     Expected API output format.
-	 * @param   string   $type       Expected API request type.
-	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
-	 *
-	 * @return  void
-	 *
-	 * @covers        WebServiceApplicationWebRouter::detectRequestFormat
-	 * @dataProvider  seedRequestFormatData
-	 * @since         1.0
-	 */
-	public function testDetectRequestFormat($input, $version, $output, $type, $exception)
-	{
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('InvalidArgumentException');
-		}
-
-		// Execute the code to test.
-		TestReflection::invoke($this->_instance, 'detectRequestFormat', $input);
-
-		// Verify the found values.
-		$this->assertEquals($version, TestReflection::getValue($this->_instance, 'apiVersion'));
-		$this->assertEquals($output, TestReflection::getValue($this->_instance, 'apiOutput'));
-		$this->assertEquals($type, TestReflection::getValue($this->_instance, 'apiType'));
-	}
-
-	/**
-	 * Tests fetchContentType()
-	 *
-	 * @param   string  $input     Content-Type header string to test.
-	 * @param   string  $expected  Expected fetched string.
-	 *
-	 * @return  void
-	 *
-	 * @covers        WebServiceApplicationWebRouter::fetchContentType
-	 * @dataProvider  seedContentTypeData
-	 * @since         1.0
-	 */
-	public function testFetchContentType($input, $expected)
-	{
-		// Set the input value.
-		$_SERVER['CONTENT_TYPE'] = $input;
-
-		// Execute the code to test.
-		$actual = TestReflection::invoke($this->_instance, 'fetchContentType', $input);
-
-		// Clean up after ourselves.
-		$_SERVER['CONTENT_TYPE'] = null;
-
-		// Verify the value.
-		$this->assertEquals($expected, $actual);
-	}
-
-	/**
-	 * Tests fetchControllerClass()
-	 *
-	 * @param   string   $base       Controller class base name.
-	 * @param   string   $route      Request route for which to fetch the controller class.
-	 * @param   string   $method     HTTP request method.
-	 * @param   string   $expected   Expected controller class name.
-	 * @param   string   $remainder  Expected route remainder to be placed in @route within the JInput object.
-	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
-	 *
-	 * @return  void
-	 *
-	 * @covers        WebServiceApplicationWebRouter::fetchControllerClass
-	 * @dataProvider  seedFetchControllerClassData
-	 * @since         1.0
-	 */
-	public function testFetchControllerClass($base, $route, $method, $expected, $remainder, $exception)
-	{
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('InvalidArgumentException');
-		}
-
-		// Execute the code to test.
-		$actual = TestReflection::invoke($this->_instance, 'fetchControllerClass', $base, new JURI($route), $method);
-
-		// Verify the value.
-		$this->assertEquals($expected, $actual);
-		$this->assertEquals($remainder, TestReflection::getValue($this->_instance, 'input')->get->get('@route'));
-	}
-
-	/**
-	 * Tests fetchRequestMethod()
-	 *
-	 * @param   string   $input      Request Method string to test.
-	 * @param   string   $override   Method override string to use in the query string.
-	 * @param   string   $expected   Expected fetched string.
-	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
-	 *
-	 * @return  void
-	 *
-	 * @covers        WebServiceApplicationWebRouter::fetchRequestMethod
-	 * @dataProvider  seedRequestMethodData
-	 * @since         1.0
-	 */
-	public function testFetchRequestMethod($input, $override, $expected, $exception)
-	{
-		// Set the input values.
-		$_SERVER['REQUEST_METHOD'] = $input;
-		$_GET['_method'] = $override;
-
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('InvalidArgumentException');
-		}
-
-		// Execute the code to test.
-		$actual = TestReflection::invoke($this->_instance, 'fetchRequestMethod');
-
-		// Clean up after ourselves.
-		$_SERVER['REQUEST_METHOD'] = null;
-		$_GET['_method'] = null;
-
-		// Verify the value.
-		$this->assertEquals($expected, $actual);
-	}
-
-	/**
-	 * Tests getController()
-	 *
-	 * @return  void
-	 *
-	 * @covers  WebServiceApplicationWebRouter::getController
-	 * @since   1.0
-	 */
-	public function testGetController()
-	{
-		$this->markTestIncomplete("getController test not implemented");
-
-		$this->_instance->getController();
 	}
 
 	/**
 	 * Tests rewriteRoute()
 	 *
-	 * @param   string  $input     Route to rewrite.
-	 * @param   string  $expected  Expected route string.
+	 * @param   string  $input            Input string to test.
+	 * @param   string  $expected         Expected fetched string.
+	 * @param   string  $expectedVersion  Expected api version
+	 * @param   string  $expectedType     Expected request type
 	 *
 	 * @return  void
 	 *
@@ -328,10 +146,80 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	 * @dataProvider  seedRewriteRouteData
 	 * @since         1.0
 	 */
-	public function testRewriteRoute($input, $expected)
+	public function testRewriteRoute($input,  $expected, $expectedVersion, $expectedType)
 	{
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'rewriteRoute', $input);
+
+		// Verify the value.
+		$this->assertEquals($expected, $actual);
+
+		// Get private values
+		$apiVersion = TestReflection::getValue($this->_instance, 'apiVersion');
+		$apiType = TestReflection::getValue($this->_instance, 'apiType');
+
+		// Verify private values
+		$this->assertEquals($apiVersion, $expectedVersion);
+		$this->assertEquals($apiType, $expectedType);
+	}
+
+	/**
+	 * Provides test data for testing fectch controller sufix
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	public function seedFetchControllerSuffixData()
+	{
+		// Input, Expected
+		return array(
+			array('GET', 'Get', null, false),
+			array('POST', 'Get', "get", false),
+			array('POST', 'Create', null, false),
+			array('POST', 'Create', "post", false),
+			array('PUT', 'Update', null, false),
+			array('POST', 'Update', "put", false),
+			array('PATCH', 'Update', null, false),
+			array('POST', 'Update', "patch", false),
+			array('DELETE', 'Delete', null, false),
+			array('POST', 'Delete', "delete", false),
+			array('HEAD', 'Head', null, false),
+			array('POST', 'Head', "head", false),
+			array('OPTIONS', 'Options', null, false),
+			array('POST', 'Options', "options", false),
+			array('POST', 'Create', "unknown_method", false),
+			array('UNKNOWN', 'Create', "unknown_method", true),
+		);
+	}
+
+	/**
+	 * Tests fetchControllerSuffix()
+	 *
+	 * @param   string   $input      Input string to test.
+	 * @param   string   $expected   Expected fetched string.
+	 * @param   mixed    $method     Method to override POST request
+	 * @param   boolean  $exception  True if an RuntimeException is expected based on invalid input
+	 *
+	 * @return  void
+	 *
+	 * @covers        WebServiceApplicationWebRouter::fetchControllerSuffix
+	 * @dataProvider  seedFetchControllerSuffixData
+	 * @since         1.0
+	 */
+	public function testFetchControllerSuffix($input,  $expected, $method, $exception)
+	{
+		$_SERVER['REQUEST_METHOD'] = $input;
+		$_GET['_method'] = $method;
+
+		// If we are expecting an exception set it.
+		if ($exception)
+		{
+			$this->setExpectedException('RuntimeException');
+		}
+
+		// Execute the code to test.
+		$actual = TestReflection::invoke($this->_instance, 'fetchControllerSuffix');
 
 		// Verify the value.
 		$this->assertEquals($expected, $actual);
@@ -350,7 +238,7 @@ class WebServiceApplicationWebRouterTest extends TestCase
 
 		$testInput = new JInput;
 		$testMock = $this->getMockWeb();
-		$this->_instance = new WebServiceApplicationWebRouter($testInput, $testMock);
+		$this->_instance = new WebServiceApplicationWebRouter($testMock, $testInput);
 	}
 
 	/**

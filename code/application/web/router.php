@@ -50,7 +50,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	public function execute($route)
 	{
 		// Make route to match our API structure
-		$this->reorderRoute($route);
+		$route = $this->reorderRoute($route);
 
 		// Parse route to get only the main
 		$route = $this->rewriteRoute($route);
@@ -197,9 +197,9 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		}
 
 		$postMethod = $this->input->get->getWord('_method');
-		if (strcmp(strtoupper($this->input->server->getMethod()), 'POST') === 0  && $postMethod)
+		if (strcmp(strtoupper($this->input->server->getMethod()), 'POST') === 0  && $postMethod && isset($this->suffixMap[strtoupper($postMethod)]))
 		{
-			return ucfirst($postMethod);
+			return ucfirst($this->suffixMap[strtoupper($postMethod)]);
 		}
 
 		return ucfirst($this->suffixMap[$this->input->getMethod()]);
