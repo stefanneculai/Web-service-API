@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     WebService.Tests
  * @subpackage  Application
@@ -6,6 +7,8 @@
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
+
+require_once __DIR__ . '/../stubs/webMock.php';
 
 /**
  * Test Case class for WebServiceErrors
@@ -65,13 +68,13 @@ class WebServiceErrorsTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array('', null, true),
-				array(null, 200, false),
+				array('', 400, true),
+				array(null, 400, false),
 				array('true', 200, false),
-				array('false', 401, false),
-				array('error', null, true),
+				array('false', 400, false),
+				array('error', 400, true),
 				array('TRUE', 200, false),
-				array('FALSE', 401, false)
+				array('FALSE', 400, false)
 		);
 	}
 
@@ -93,17 +96,18 @@ class WebServiceErrorsTest extends TestCase
 		// Set the input values.
 		$_GET['suppress_response_codes'] = $input;
 
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('InvalidArgumentException');
-		}
-
 		// Execute the code to test.
 		TestReflection::invoke($this->_instance, 'checkSupressResponseCodes');
 
 		// Clean up after ourselves.
 		$_GET['suppress_response_codes'] = null;
+
+		if ($exception)
+		{
+			$errors = TestReflection::invoke($this->_instance, 'getErrors');
+			$this->assertEquals(1, count($errors));
+			return;
+		}
 
 		// Verify the value.
 		$this->assertEquals($expected, TestReflection::getValue($this->_instance, 'responseCode'));
@@ -119,23 +123,23 @@ class WebServiceErrorsTest extends TestCase
 	public function seedAddErrorData()
 	{
 		$errorsMap = json_decode("{
-					\"301\":
+					\"1001\":
 						{
-							\"code\": \"301\",
-							\"message\": \"Message for code 301\",
-							\"more_info\": \"More info fore code 301\",
-							\"response_code\": \"401\"
+							\"code\": \"1001\",
+							\"message\": \"Message for code 1001\",
+							\"more_info\": \"More info fore code 1001\",
+							\"response_code\": \"400\"
 						}
 					}");
 
 		$error['code'] = "foo";
 		$error['message'] = 'This error is not known';
 		$error['more_info'] = 'A link where to find more info about an unknown error';
-		$error['response_code'] = '401';
+		$error['response_code'] = '400';
 
 		// Input, Expected, Exception
 		return array(
-				array("301", $errorsMap, get_object_vars($errorsMap->{"301"})),
+				array("1001", $errorsMap, get_object_vars($errorsMap->{"1001"})),
 				array("foo", $errorsMap, $error)
 		);
 	}
@@ -155,6 +159,8 @@ class WebServiceErrorsTest extends TestCase
 	 */
 	public function testAddError($input,  $errorMap, $expected)
 	{
+		TestReflection::setValue($this->_instance, 'errorsMap', $errorMap);
+
 		// Execute the code to test.
 		TestReflection::invoke($this->_instance, 'addError', $input);
 		$actual = array_pop(TestReflection::getValue($this->_instance, 'errorsArray'));
@@ -162,7 +168,7 @@ class WebServiceErrorsTest extends TestCase
 		// Verify the value.
 		$this->assertEquals($expected, $actual);
 		$this->assertEquals(true, TestReflection::getValue($this->_instance, 'errors'));
-		$this->assertEquals(401, TestReflection::getValue($this->_instance, 'responseCode'));
+		$this->assertEquals(400, TestReflection::getValue($this->_instance, 'responseCode'));
 	}
 
 	/**
@@ -178,7 +184,7 @@ class WebServiceErrorsTest extends TestCase
 		$expected['code'] = "foo";
 		$expected['message'] = 'This error is not known';
 		$expected['more_info'] = 'A link where to find more info about an unknown error';
-		$expected['response_code'] = '401';
+		$expected['response_code'] = '400';
 
 		$actual = TestReflection::invoke($this->_instance, 'unknownError', $expected['code']);
 

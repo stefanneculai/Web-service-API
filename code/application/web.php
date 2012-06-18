@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+include_once 'web/errors.php';
+
 /**
  * Web Service Api web application class.
  *
@@ -69,8 +71,8 @@ class WebServiceApplicationWeb extends JApplicationWeb
 
 		parent::__construct($input, $config, $client);
 
-		include 'web/errors.php';
 		$this->errors = new WebServiceErrors($this, $this->input);
+		$this->errors->checkSupressResponseCodes();
 	}
 
 	/**
@@ -142,6 +144,14 @@ class WebServiceApplicationWeb extends JApplicationWeb
 			$this->dbo = JFactory::getDbo();
 			$this->session = JFactory::getSession();
 			JFactory::$application = $this;
+
+			// There is an error
+			if ($this->errors->errorsExist())
+			{
+				$this->setBody(json_encode($this->errors->getErrors()));
+				$this->setHeader('status', $this->errors->getResponseCode(), true);
+				return;
+			}
 
 			$this->router->addMap('/content', 'content');
 			$this->router->addMap('/content/:content_id', 'content');

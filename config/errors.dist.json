@@ -1,17 +1,49 @@
 {
 	"301": 
 	{
-		"code": "301",
-		"message": "Message for code 301",
-		"more_info": "More info fore code 301",
-		"response_code": "401"
+		"code": "JWS001",
+		"message": "Content id should be a positive value.",
+		"more_info": "",
+		"response_code": "400"
 	},
 	
-	"201": 
+	"302": 
 	{
-		"code": "201",
-		"message": "Message for code 201",
-		"more_info": "More info fore code 201",
-		"response_code": "401"
+		"code": "JWS002",
+		"message": "Offset should be a positive number. Default value: 0.",
+		"more_info": "",
+		"response_code": "400"
+	},
+	
+	"303": 
+	{
+		"code": "JWS003",
+		"message": "Limit should be a positive number. Default value: 20.",
+		"more_info": "",
+		"response_code": "400"
+	},
+	
+	"304": 
+	{
+		"code": "JWS004",
+		"message": "Since should be a valid date. Default value: 01-01-1970.",
+		"more_info": "",
+		"response_code": "400"
+	},
+	
+	"305": 
+	{
+		"code": "JWS005",
+		"message": "Before should be a valid date. Default value: now.",
+		"more_info": "",
+		"response_code": "400"
+	},
+	
+	"306": 
+	{
+		"code": "JWS006",
+		"message": "suppress_response_codes should be set to true or false. Default value: false.",
+		"more_info": "",
+		"response_code": "400"
 	}
 }

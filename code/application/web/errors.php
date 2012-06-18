@@ -17,10 +17,10 @@
 class WebServiceErrors
 {
 	/**
-	 * @var    integer  Response code. 200 for OK and 401 for Unauthorized
+	 * @var    integer  Response code. 200 for OK and 400 for Bad Request
 	 * @since  1.0
 	 */
-	protected $responseCode = 200;
+	protected $responseCode = 400;
 
 	/**
 	 * The application object.
@@ -74,6 +74,7 @@ class WebServiceErrors
 		$this->app = isset($app) ? $app : $this->loadApplication();
 		$this->input = isset($input) ? $input : $this->loadInput();
 
+		// Read the configuration file for errors
 		$this->errorsMap = $this->fetchErrorsData();
 	}
 
@@ -89,7 +90,6 @@ class WebServiceErrors
 	public function addError($code)
 	{
 		$this->errors = true;
-		$this->responseCode = 401;
 
 		if (property_exists($this->errorsMap, $code))
 		{
@@ -126,6 +126,18 @@ class WebServiceErrors
 	}
 
 	/**
+	 * An integer with the response code
+	 *
+	 * @return  integer
+	 *
+	 * @since   1.0
+	 */
+	public function getResponseCode()
+	{
+		return $this->responseCode;
+	}
+
+	/**
 	 * Unknown error code
 	 *
 	 * @param   string  $code  The code of the error
@@ -139,7 +151,7 @@ class WebServiceErrors
 		$error['code'] = $code;
 		$error['message'] = 'This error is not known';
 		$error['more_info'] = 'A link where to find more info about an unknown error';
-		$error['response_code'] = '401';
+		$error['response_code'] = '400';
 
 		return $error;
 	}
@@ -151,7 +163,7 @@ class WebServiceErrors
 	 *
 	 * @since   1.0
 	 */
-	protected function checkSupressResponseCodes()
+	public function checkSupressResponseCodes()
 	{
 		$errCode = $this->input->get->getString('suppress_response_codes');
 
@@ -167,11 +179,12 @@ class WebServiceErrors
 
 			if (strcmp($errCode, 'false') === 0)
 			{
-				$this->responseCode = 401;
+				$this->responseCode = 400;
 				return;
 			}
 
-			throw new InvalidArgumentException('suppress_response_codes should be set to true or false', $this->responseCode);
+			$this->addError("306");
+			return;
 		}
 	}
 

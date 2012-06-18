@@ -90,7 +90,6 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		{
 			$this->app->errors->addError("301");
 			return;
-			//throw new InvalidArgumentException('Unknown content path.', $this->responseCode);
 		}
 
 		// All content is refered
@@ -121,7 +120,8 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 				return $offset;
 			}
 
-			throw new InvalidArgumentException('Offset should be a positive number. By default the limit is set to ' . $this->offset, $this->responseCode);
+			$this->app->errors->addError("302");
+			return;
 		}
 		else
 		{
@@ -148,10 +148,8 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 				return $limit;
 			}
 
-			throw new InvalidArgumentException(
-					'Limit should be a positive number. By default the limit is set to ' . $this->limit,
-					$this->responseCode
-					);
+			$this->app->errors->addError("303");
+			return;
 		}
 		else
 		{
@@ -236,7 +234,8 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 				return $date->toSql();
 			}
 
-			throw new InvalidArgumentException('Since should be a valid date. By default all the results are returned.', $this->responseCode);
+			$this->app->errors->addError("304");
+			return;
 		}
 		else
 		{
@@ -265,48 +264,14 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 				return $date->toSql();
 			}
 
-			throw new InvalidArgumentException(
-					'Before should be a valid date. By default all the results until the current date are returned.',
-					$this->responseCode
-					);
+			$this->app->errors->addError("305");
+			return;
 		}
 		else
 		{
 			$date = new JDate($this->before);
 			return $date->toSql();
 		}
-	}
-
-	/**
-	 * Check the input for supress_response_codes = true in order to supress the error codes.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	protected function checkSupressResponseCodes()
-	{
-		$errCode = $this->input->get->getString('suppress_response_codes');
-
-		if (isset($errCode))
-		{
-			$errCode = strtolower($errCode);
-
-			if (strcmp($errCode, 'true') === 0)
-			{
-				$this->responseCode = 200;
-				return;
-			}
-
-			if (strcmp($errCode, 'false') === 0)
-			{
-				$this->responseCode = 401;
-				return;
-			}
-
-			throw new InvalidArgumentException('suppress_response_codes should be set to true or false', $this->responseCode);
-		}
-
 	}
 
 	/**
@@ -318,9 +283,6 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	 */
 	protected function init()
 	{
-
-		$this->checkSupressResponseCodes();
-
 		// Content id
 		$this->id = $this->getContentId();
 
@@ -355,8 +317,10 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		// Init request
 		$this->init();
 
-		if($this->app->errors->errorsExist() == true){
+		if ($this->app->errors->errorsExist() == true)
+		{
 			$this->app->setBody(json_encode($this->app->errors->getErrors()));
+			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
 			return;
 		}
 
@@ -452,7 +416,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		// There is no content for the request
 		if ($data == false)
 		{
-			$data = "No such content";
+			$data = new stdClass;
 		}
 
 		// Output the results
