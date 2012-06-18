@@ -155,7 +155,7 @@ class WebServiceControllerV1JsonContentUpdate extends JControllerBase
 		$this->init();
 
 		// Returned data
-		$data = $this->updateContent($this->id);
+		$data = $this->updateContent();
 
 		// Parse the returned data
 		$this->parseData($data);

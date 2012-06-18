@@ -354,7 +354,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		$this->init();
 
 		// Returned data
-		$data = $this->getContent($this->id);
+		$data = $this->getContent();
 
 		// Format the results properly
 		$this->parseData($data);
