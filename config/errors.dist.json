@@ -45,5 +45,13 @@
 		"message": "suppress_response_codes should be set to true or false. Default value: false.",
 		"more_info": "",
 		"response_code": "400"
+	},
+	
+	"307": 
+	{
+		"code": "JWS007",
+		"message": "Order fields are incorrect. Check the available fields using options.",
+		"more_info": "",
+		"response_code": "400"
 	}
 }

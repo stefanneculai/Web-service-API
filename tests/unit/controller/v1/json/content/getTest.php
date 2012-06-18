@@ -62,12 +62,15 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 */
 	public function seedGetOrderData()
 	{
+
 		// Input, Expected, Exception
 		return array(
-				array('', null, false),
-				array('field1', array('field1'), false),
-				array('field1, field2', array('field1', 'field2'), false),
-				array(null, null, false)
+				array('', null),
+				array('field1', array('field1')),
+				array('field1, field2', array('field1', 'field2')),
+				array(null, null),
+				array('foo, bar',null, true),
+				array('wrong_field','wrong_field', true)
 		);
 	}
 
@@ -84,22 +87,38 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 * @dataProvider  seedGetOrderData
 	 * @since         1.0
 	 */
-	public function testGetOrder($input,  $expected, $exception)
+	public function testGetOrder($input,  $expected, $exception=false)
 	{
+		$fieldsMap = array(
+			'id' => 'id',
+			'created_at' => 'created_at',
+			'user_id' => 'user_id',
+			'field1' => 'field1',
+			'field2' => 'field2',
+			'field3' => 'field3',
+			'field4' => 'field4',
+			'field5' => 'field5'
+		);
+
 		// Set the input values.
 		$_GET['order'] = $input;
 
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('InvalidArgumentException');
-		}
+		// Set fields map
+		TestReflection::setValue($this->_instance, 'fieldsMap', $fieldsMap);
 
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getOrder');
 
 		// Clean up after ourselves.
 		$_GET['order'] = null;
+
+		if ($exception)
+		{
+			$app = TestReflection::getValue($this->_instance, 'app');
+			$errors = TestReflection::invoke($app->errors, 'getErrors');
+			$this->assertEquals(1, count($errors));
+			return;
+		}
 
 		// Verify the value.
 		$this->assertEquals($expected, $actual);

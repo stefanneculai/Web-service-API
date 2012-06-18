@@ -17,6 +17,21 @@
 class WebServiceControllerV1JsonContentGet extends JControllerBase
 {
 	/**
+	 * @var    array  The fields and their db match
+	 * @since  1.0
+	 */
+	protected $fieldsMap = array(
+		'id' => 'id',
+		'created_at' => 'created_at',
+		'user_id' => 'user_id',
+		'field1' => 'field1',
+		'field2' => 'field2',
+		'field3' => 'field3',
+		'field4' => 'field4',
+		'field5' => 'field5'
+	);
+
+	/**
 	 * @var    string  The limit of the results
 	 * @since  1.0
 	 */
@@ -202,6 +217,15 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		{
 			$order = preg_split('#[\s,]+#', $order, null, PREG_SPLIT_NO_EMPTY);
 
+			foreach ($order as $key => $field)
+			{
+				if (!array_key_exists($field, $this->fieldsMap))
+				{
+					$this->app->errors->addError("307");
+					return;
+				}
+			}
+
 			if ($order == false)
 			{
 				return null;
@@ -357,7 +381,6 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		$modelState->set('filter.since', $this->since);
 		$modelState->set('filter.before', $this->before);
 
-		// TODO should check if order exists in fields
 		// Sort order
 		if ($this->order != null)
 		{
