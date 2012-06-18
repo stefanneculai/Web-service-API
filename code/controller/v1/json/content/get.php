@@ -7,6 +7,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+include_once JPATH_BASE . '/model/model.php';
+include_once __DIR__ . '/base.php';
+
 /**
  * WebService GET content class
  *
@@ -14,23 +17,8 @@
  * @subpackage  Controller
  * @since       1.0
  */
-class WebServiceControllerV1JsonContentGet extends JControllerBase
+class WebServiceControllerV1JsonContentGet extends WebServiceControllerContentBase
 {
-	/**
-	 * @var    array  The fields and their db match
-	 * @since  1.0
-	 */
-	protected $fieldsMap = array(
-		'id' => 'id',
-		'created_at' => 'created_at',
-		'user_id' => 'user_id',
-		'field1' => 'field1',
-		'field2' => 'field2',
-		'field3' => 'field3',
-		'field4' => 'field4',
-		'field5' => 'field5'
-	);
-
 	/**
 	 * @var    string  The limit of the results
 	 * @since  1.0
@@ -80,12 +68,6 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	protected $before = 'now';
 
 	/**
-	 * @var    integer  Supress response codes. 401 for Unauthorized; 200 for OK
-	 * @since  1.0
-	 */
-	protected $responseCode = 401;
-
-	/**
 	 * Get the content ID from the input. It may also return '*' refeering all the content
 	 *
 	 * @return  string
@@ -130,7 +112,7 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 
 		if (isset($offset))
 		{
-			if ( is_numeric($offset) && $offset > 0)
+			if ( is_numeric($offset) && $offset >= 0)
 			{
 				return $offset;
 			}
@@ -364,9 +346,6 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	 */
 	protected function getContent()
 	{
-		// Content model
-		include_once JPATH_BASE . '/model/model.php';
-
 		// New content model
 		$model = new WebServiceContentModelBase;
 

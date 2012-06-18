@@ -29,7 +29,7 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	/**
 	 * @var    array  Optional fields
 	 * @since  1.0
-	*/
+	 */
 	protected $optionalData = array(
 			'field4' => '',
 			'field5' => ''

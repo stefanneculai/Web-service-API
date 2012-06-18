@@ -198,7 +198,8 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 				array(null, 0, false),
 				array(10, 10, false),
 				array(200, 200, false),
-				array(-1, null, true)
+				array(-1, null, true),
+				array(0, 0, false)
 		);
 	}
 
