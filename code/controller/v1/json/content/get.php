@@ -88,7 +88,9 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 		// Content is not refered by a number id
 		if (count($routeParts) > 0 && (!is_numeric($routeParts[0]) || $routeParts[0] < 0) && !empty($routeParts[0]))
 		{
-			throw new InvalidArgumentException('Unknown content path.', $this->responseCode);
+			$this->app->errors->addError("301");
+			return;
+			//throw new InvalidArgumentException('Unknown content path.', $this->responseCode);
 		}
 
 		// All content is refered
@@ -352,6 +354,11 @@ class WebServiceControllerV1JsonContentGet extends JControllerBase
 	{
 		// Init request
 		$this->init();
+
+		if($this->app->errors->errorsExist() == true){
+			$this->app->setBody(json_encode($this->app->errors->getErrors()));
+			return;
+		}
 
 		// Returned data
 		$data = $this->getContent();

@@ -35,6 +35,12 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	protected $router;
 
 	/**
+	 * @var    WebServiceErrors  An error object for the application to use.
+	 * @since  1.0
+	 */
+	public $errors;
+
+	/**
 	 * The start time for measuring the execution time.
 	 *
 	 * @var    float
@@ -62,6 +68,9 @@ class WebServiceApplicationWeb extends JApplicationWeb
 		$this->_startTime = microtime(true);
 
 		parent::__construct($input, $config, $client);
+
+		include 'web/errors.php';
+		$this->errors = new WebServiceErrors($this, $this->input);
 	}
 
 	/**
@@ -130,13 +139,9 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	{
 		try
 		{
-			include 'web/errors.php';
-
 			$this->dbo = JFactory::getDbo();
 			$this->session = JFactory::getSession();
 			JFactory::$application = $this;
-
-			$response = new WebServiceErrrors($this, $this->input);
 
 			$this->router->addMap('/content', 'content');
 			$this->router->addMap('/content/:content_id', 'content');

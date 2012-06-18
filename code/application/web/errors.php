@@ -114,6 +114,18 @@ class WebServiceErrors
 	}
 
 	/**
+	 * A boolean that tells if there are errors or not
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 */
+	public function errorsExist()
+	{
+		return $this->errors;
+	}
+
+	/**
 	 * Unknown error code
 	 *
 	 * @param   string  $code  The code of the error
