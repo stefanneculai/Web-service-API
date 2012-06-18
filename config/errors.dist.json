@@ -1,0 +1,17 @@
+{
+	"301": 
+	{
+		"code": "301",
+		"message": "Message for code 301",
+		"more_info": "More info fore code 301",
+		"response_code": "401"
+	},
+	
+	"201": 
+	{
+		"code": "201",
+		"message": "Message for code 201",
+		"more_info": "More info fore code 201",
+		"response_code": "401"
+	}
+}

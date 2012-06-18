@@ -25,6 +25,7 @@ if (!defined('JPATH_TESTS'))
 
 // Import the platform.
 require_once __DIR__ . '/../code/bootstrap.php';
+require_once __DIR__ . '/../code/application/web/errors.php';
 
 // Register the core Joomla test classes.
 JLoader::registerPrefix('Test', JPATH_PLATFORM . '/../tests/core');

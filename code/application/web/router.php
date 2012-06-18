@@ -10,7 +10,7 @@
 /**
  * Web Service application router.
  *
- * @package     WebSercice.Application
+ * @package     WebService.Application
  * @subpackage  Application
  * @since       1.0
  */

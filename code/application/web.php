@@ -130,9 +130,13 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	{
 		try
 		{
+			include 'web/errors.php';
+
 			$this->dbo = JFactory::getDbo();
 			$this->session = JFactory::getSession();
 			JFactory::$application = $this;
+
+			$response = new WebServiceErrrors($this, $this->input);
 
 			$this->router->addMap('/content', 'content');
 			$this->router->addMap('/content/:content_id', 'content');
