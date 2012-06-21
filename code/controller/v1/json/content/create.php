@@ -54,8 +54,7 @@ class WebServiceControllerV1JsonContentCreate extends WebServiceControllerConten
 			}
 			else
 			{
-				$this->app->errors->addError("308");
-				return;
+				$this->app->errors->addError("308", array($key));
 			}
 		}
 	}

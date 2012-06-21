@@ -79,21 +79,55 @@ class WebServiceErrors
 	}
 
 	/**
+	 * Add custom parameters to the error message
+	 *
+	 * @param   array  $errorObj  An associative array with the error message
+	 * @param   array  $params    The parameters to pass to the error message
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	private function customMessage($errorObj, $params)
+	{
+		for ($i = 1;; $i++)
+		{
+			if (strstr($errorObj['message'], '$' . $i) !== false)
+			{
+				$errorObj['message'] = str_replace('$' . $i, $params[$i - 1], $errorObj['message']);
+			}
+			else
+			{
+				return $errorObj;
+			}
+		}
+	}
+
+	/**
 	 * Add error to the error list
 	 *
-	 * @param   string  $code  The code of the error
+	 * @param   string  $code    The code of the error
+	 * @param   array   $params  An array with parameters to pass to the error message
 	 *
 	 * @return  void
 	 *
 	 * @since   1.0
 	 */
-	public function addError($code)
+	public function addError($code, $params = array())
 	{
 		$this->errors = true;
 
 		if (property_exists($this->errorsMap, $code))
 		{
-			array_push($this->errorsArray, get_object_vars($this->errorsMap->{$code}));
+			if (count($params) > 0)
+			{
+				$message = get_object_vars($this->errorsMap->{$code});
+				array_push($this->errorsArray, $this->customMessage($message, $params));
+			}
+			else
+			{
+				array_push($this->errorsArray, get_object_vars($this->errorsMap->{$code}));
+			}
 		}
 		else
 		{

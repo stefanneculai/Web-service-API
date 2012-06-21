@@ -58,7 +58,7 @@
 	"308": 
 	{
 		"code": "JWS008",
-		"message": "Mandatory fields missing.",
+		"message": "Mandatory field $1 is missing.",
 		"more_info": "",
 		"response_code": "400"
 	},
