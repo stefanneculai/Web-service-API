@@ -7,6 +7,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+include_once JPATH_BASE . '/model/model.php';
+include_once __DIR__ . '/base.php';
+
 /**
  * WebService 'content' Delete method.
  *
@@ -14,9 +17,8 @@
  * @subpackage  Controller
  * @since       1.0
  */
-class WebServiceControllerV1JsonContentDelete extends JControllerBase
+class WebServiceControllerV1JsonContentDelete extends WebServiceControllerContentBase
 {
-
 	/**
 	 * @var    string  The content id. It may be numeric id or '*' if all content is needed
 	 * @since  1.0
@@ -36,12 +38,6 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 	protected $before = 'now';
 
 	/**
-	 * @var    integer  Supress response codes. 401 for Unauthorized; 200 for OK
-	 * @since  1.0
-	 */
-	protected $responseCode = 401;
-
-	/**
 	 * Get route parts from the input or the default one
 	 *
 	 * @return  string
@@ -59,7 +55,8 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 		// Contet is not refered by a number id
 		if ( count($routeParts) > 0 && (!is_numeric($routeParts[0]) || $routeParts[0] < 0) && !empty($routeParts[0]))
 		{
-			throw new InvalidArgumentException('Unknown content path.', $this->responseCode);
+			$this->app->errors->addError("301");
+			return;
 		}
 
 		// All content is refered
@@ -91,7 +88,8 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 				return $date->toSql();
 			}
 
-			throw new InvalidArgumentException('Since should be a valid date. By default all the results are returned.', $this->responseCode);
+			$this->app->errors->addError("304");
+			return;
 		}
 		else
 		{
@@ -120,46 +118,13 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 				return $date->toSql();
 			}
 
-			throw new InvalidArgumentException(
-					'Before should be a valid date. By default all the results until the current date are returned.',
-					$this->responseCode
-					);
+			$this->app->errors->addError("305");
+			return;
 		}
 		else
 		{
 			$date = new JDate($this->before);
 			return $date->toSql();
-		}
-	}
-
-	/**
-	 * Check the input for supress_response_codes = true in order to supress the error codes.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	protected function checkSupressResponseCodes()
-	{
-		$errCode = $this->input->get->getString('suppress_response_codes');
-
-		if (isset($errCode))
-		{
-			$errCode = strtolower($errCode);
-
-			if (strcmp($errCode, 'true') === 0)
-			{
-				$this->responseCode = 200;
-				return;
-			}
-
-			if (strcmp($errCode, 'false') === 0)
-			{
-				$this->responseCode = 401;
-				return;
-			}
-
-			throw new InvalidArgumentException('suppress_response_codes should be set to true or false', $this->responseCode);
 		}
 	}
 
@@ -172,9 +137,6 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 	 */
 	protected function init()
 	{
-		// Check supress error codes
-		$this->checkSupressResponseCodes();
-
 		// Content id
 		$this->id = $this->getContentId();
 
@@ -197,6 +159,14 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 		// Init
 		$this->init();
 
+		// Check for errors
+		if ($this->app->errors->errorsExist() == true)
+		{
+			$this->app->setBody(json_encode($this->app->errors->getErrors()));
+			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
+			return;
+		}
+
 		// Delete content from Database
 		$data = $this->deleteContent();
 
@@ -213,9 +183,6 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 	 */
 	public function deleteContent()
 	{
-		// Content model
-		include_once JPATH_BASE . '/model/model.php';
-
 		// New content model
 		$model = new WebServiceContentModelBase;
 
@@ -238,7 +205,7 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 		}
 	}
 
-/**
+	/**
 	 * Parse the returned data from database
 	 *
 	 * @param   boolean  $data  Request was successful or not
@@ -252,12 +219,15 @@ class WebServiceControllerV1JsonContentDelete extends JControllerBase
 		// Request was done successfully
 		if ($data == true)
 		{
-			$this->app->setBody(json_encode('Content has been deleted'));
+			$this->app->setBody(json_encode(new stdClass));
 		}
 		// Request was not successfully
 		else
 		{
-			$this->app->setBody(json_encode('Content does not exist'));
+			$this->app->errors->addError("102");
+			$this->app->setBody(json_encode($this->app->errors->getErrors()));
+			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
+			return;
 		}
 	}
 }

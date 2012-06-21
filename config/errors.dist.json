@@ -85,5 +85,13 @@
 		"message": "Nothing to update.",
 		"more_info": "",
 		"response_code": "400"
+	},
+	
+	"102": 
+	{
+		"code": "JWS401",
+		"message": "Nothing to delete.",
+		"more_info": "",
+		"response_code": "400"
 	}
 }

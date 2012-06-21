@@ -7,6 +7,8 @@
 * @license     GNU General Public License version 2 or later; see LICENSE
 */
 
+require_once __DIR__ . '/../../../../application/stubs/webMock.php';
+
 /**
  * Test Case class for WebServiceControllerV1JsonContentDelete
 *
@@ -89,17 +91,20 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 		// Set the input values.
 		$_GET['@route'] = $input;
 
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('InvalidArgumentException');
-		}
-
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getContentId');
 
 		// Clean up after ourselves.
 		$_GET['@route'] = null;
+
+		// If we are expecting an exception set it.
+		if ($exception)
+		{
+			$app = TestReflection::getValue($this->_instance, 'app');
+			$errors = TestReflection::getValue($app->errors, 'errorsArray');
+			$this->assertEquals(1, count($errors));
+			return;
+		}
 
 		// Verify the value.
 		$this->assertEquals($expected, $actual);
@@ -157,17 +162,20 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 		// Set the input values.
 		$_GET['since'] = $input;
 
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('InvalidArgumentException');
-		}
-
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getSince');
 
 		// Clean up after ourselves.
 		$_GET['since'] = null;
+
+		// If we are expecting an exception set it.
+		if ($exception)
+		{
+			$app = TestReflection::getValue($this->_instance, 'app');
+			$errors = TestReflection::getValue($app->errors, 'errorsArray');
+			$this->assertEquals(1, count($errors));
+			return;
+		}
 
 		// Verify the value.
 		if ($over == false)
@@ -232,17 +240,20 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 		// Set the input values.
 		$_GET['before'] = $input;
 
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('InvalidArgumentException');
-		}
-
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getBefore');
 
 		// Clean up after ourselves.
 		$_GET['before'] = null;
+
+		// If we are expecting an exception set it.
+		if ($exception)
+		{
+			$app = TestReflection::getValue($this->_instance, 'app');
+			$errors = TestReflection::getValue($app->errors, 'errorsArray');
+			$this->assertEquals(1, count($errors));
+			return;
+		}
 
 		// Verify the value.
 		if ($over == false)
@@ -259,61 +270,6 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 	}
 
 	/**
-	 * Provides test data for request format detection.
-	 *
-	 * @return  array
-	 *
-	 * @since   1.0
-	 */
-	public function seedCheckSupressResponseCodesData()
-	{
-		// Input, Expected, Exception
-		return array(
-				array('', null, true),
-				array(null, 401, false),
-				array('true', 200, false),
-				array('false', 401, false),
-				array('error', null, true),
-				array('TRUE', 200, false),
-				array('FALSE', 401, false)
-		);
-	}
-
-	/**
-	 * Tests checkSupressResponseCodes()
-	 *
-	 * @param   string   $input      Input string to test.
-	 * @param   string   $expected   Expected fetched string.
-	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
-	 *
-	 * @return  void
-	 *
-	 * @covers        WebServiceControllerV1JsonContentDelete::checkSupressResponseCodes
-	 * @dataProvider  seedCheckSupressResponseCodesData
-	 * @since         1.0
-	 */
-	public function testCheckSupressResponseCodes($input,  $expected, $exception)
-	{
-		// Set the input values.
-		$_GET['suppress_response_codes'] = $input;
-
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('InvalidArgumentException');
-		}
-
-		// Execute the code to test.
-		TestReflection::invoke($this->_instance, 'checkSupressResponseCodes');
-
-		// Clean up after ourselves.
-		$_GET['suppress_response_codes'] = null;
-
-		// Verify the value.
-		$this->assertEquals($expected, TestReflection::getValue($this->_instance, 'responseCode'));
-	}
-
-	/**
 	 * Prepares the environment before running a test.
 	 *
 	 * @return  void
@@ -325,7 +281,7 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 		parent::setUp();
 
 		$testInput = new JInput;
-		$testMock = $this->getMockWeb();
+		$testMock = WebServiceApplicationWebMock::create($this);
 		$this->_instance = new WebServiceControllerV1JsonContentDelete($testInput, $testMock);
 	}
 
