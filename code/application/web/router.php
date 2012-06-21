@@ -49,6 +49,9 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	 */
 	public function execute($route)
 	{
+		// Allow poor clients to make advanced requests
+		$this->setMethodInPostRequest(true);
+
 		// Make route to match our API structure
 		$route = $this->reorderRoute($route);
 
@@ -178,30 +181,5 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		$route = implode('/', $parts);
 
 		return $route;
-	}
-
-	/**
-	 * Get the controller class suffix string.
-	 *
-	 * @return  string
-	 *
-	 * @since   12.3
-	 * @throws  RuntimeException
-	 */
-	protected function fetchControllerSuffix()
-	{
-		// Validate that we have a map to handle the given HTTP method.
-		if (!isset($this->suffixMap[$this->input->getMethod()]))
-		{
-			throw new RuntimeException(sprintf('Unable to support the HTTP method `%s`.', $this->input->getMethod()), 404);
-		}
-
-		$postMethod = $this->input->get->getWord('_method');
-		if (strcmp(strtoupper($this->input->server->getMethod()), 'POST') === 0  && $postMethod && isset($this->suffixMap[strtoupper($postMethod)]))
-		{
-			return ucfirst($this->suffixMap[strtoupper($postMethod)]);
-		}
-
-		return ucfirst($this->suffixMap[$this->input->getMethod()]);
 	}
 }
