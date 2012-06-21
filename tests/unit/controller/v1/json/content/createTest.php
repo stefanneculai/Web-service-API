@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+require_once __DIR__ . '/../../../../application/stubs/webMock.php';
+
 /**
  * Test Case class for WebServiceControllerV1JsonContentCreate
 *
@@ -57,62 +59,7 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	 *
 	 * @since   1.0
 	 */
-	public function seedCheckSupressResponseCodesData()
-	{
-		// Input, Expected, Exception
-		return array(
-				array('', null, true),
-				array(null, 401, false),
-				array('true', 200, false),
-				array('false', 401, false),
-				array('error', null, true),
-				array('TRUE', 200, false),
-				array('FALSE', 401, false)
-		);
-	}
-
-	/**
-	 * Tests checkSupressResponseCodes()
-	 *
-	 * @param   string   $input      Input string to test.
-	 * @param   string   $expected   Expected fetched string.
-	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
-	 *
-	 * @return  void
-	 *
-	 * @covers        WebServiceControllerV1JsonContentCreate::checkSupressResponseCodes
-	 * @dataProvider  seedCheckSupressResponseCodesData
-	 * @since         1.0
-	 */
-	public function testCheckSupressResponseCodes($input,  $expected, $exception)
-	{
-		// Set the input values.
-		$_GET['suppress_response_codes'] = $input;
-
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('InvalidArgumentException');
-		}
-
-		// Execute the code to test.
-		TestReflection::invoke($this->_instance, 'checkSupressResponseCodes');
-
-		// Clean up after ourselves.
-		$_GET['suppress_response_codes'] = null;
-
-		// Verify the value.
-		$this->assertEquals($expected, TestReflection::getValue($this->_instance, 'responseCode'));
-	}
-
-	/**
-	 * Provides test data for request format detection.
-	 *
-	 * @return  array
-	 *
-	 * @since   1.0
-	 */
-	public function seedGetMandatoryDataData()
+	public function seedGetMandatoryFieldsData()
 	{
 		// Input, Expected, Exception
 		return array(
@@ -125,7 +72,7 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	}
 
 	/**
-	 * Tests getMandatoryData()
+	 * Tests getMandatoryFields()
 	 *
 	 * @param   string   $input      Input string to test.
 	 * @param   string   $expected   Expected fetched string.
@@ -133,25 +80,19 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentCreate::getMandatoryData
-	 * @dataProvider  seedGetMandatoryDataData
+	 * @covers        WebServiceControllerV1JsonContentCreate::getMandatoryFields
+	 * @dataProvider  seedGetMandatoryFieldsData
 	 * @since         1.0
 	 */
-	public function testGetMandatoryData($input,  $expected, $exception)
+	public function testGetMandatoryFields($input,  $expected, $exception)
 	{
 		foreach ($input as $key => $value)
 		{
 			$_GET[$key] = $value;
 		}
 
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('InvalidArgumentException');
-		}
-
 		// Execute the code to test.
-		TestReflection::invoke($this->_instance, 'getMandatoryData');
+		TestReflection::invoke($this->_instance, 'getMandatoryFields');
 
 		// Clean up after ourselves.
 		foreach ($input as $key => $value)
@@ -159,8 +100,17 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 			$_GET[$key] = null;
 		}
 
+		// If we are expecting an exception set it.
+		if ($exception)
+		{
+			$app = TestReflection::getValue($this->_instance, 'app');
+			$errors = TestReflection::getValue($app->errors, 'errorsArray');
+			$this->assertEquals(1, count($errors));
+			return;
+		}
+
 		// Verify the value.
-		$this->assertEquals($expected, TestReflection::getValue($this->_instance, 'mandatoryData'));
+		$this->assertEquals($expected, TestReflection::getValue($this->_instance, 'mandatoryFields'));
 	}
 
 	/**
@@ -170,7 +120,7 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	 *
 	 * @since   1.0
 	 */
-	public function seedGetOptionalDataData()
+	public function seedGetOptionalFieldsData()
 	{
 		// Input, Expected, Exception
 		return array(
@@ -184,7 +134,7 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	}
 
 	/**
-	 * Tests getOptionalData()
+	 * Tests getOptionalFields()
 	 *
 	 * @param   string   $input      Input string to test.
 	 * @param   string   $expected   Expected fetched string.
@@ -192,25 +142,19 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentCreate::getOptionalData
-	 * @dataProvider  seedGetOptionalDataData
+	 * @covers        WebServiceControllerV1JsonContentCreate::getOptionalFields
+	 * @dataProvider  seedGetOptionalFieldsData
 	 * @since         1.0
 	 */
-	public function testGetOptionalData($input,  $expected, $exception)
+	public function testGetOptionalFields($input,  $expected, $exception)
 	{
 		foreach ($input as $key => $value)
 		{
 			$_GET[$key] = $value;
 		}
 
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('InvalidArgumentException');
-		}
-
 		// Execute the code to test.
-		TestReflection::invoke($this->_instance, 'getOptionalData');
+		TestReflection::invoke($this->_instance, 'getOptionalFields');
 
 		// Clean up after ourselves.
 		foreach ($input as $key => $value)
@@ -218,8 +162,17 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 			$_GET[$key] = null;
 		}
 
+		// If we are expecting an exception set it.
+		if ($exception)
+		{
+			$app = TestReflection::getValue($this->_instance, 'app');
+			$errors = TestReflection::getValue($app->errors, 'errorsArray');
+			$this->assertEquals(1, count($errors));
+			return;
+		}
+
 		// Verify the value.
-		$this->assertEquals($expected, TestReflection::getValue($this->_instance, 'optionalData'));
+		$this->assertEquals($expected, TestReflection::getValue($this->_instance, 'optionalFields'));
 	}
 
 	/**
@@ -234,7 +187,7 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 		parent::setUp();
 
 		$testInput = new JInput;
-		$testMock = $this->getMockWeb();
+		$testMock = WebServiceApplicationWebMock::create($this);
 		$this->_instance = new WebServiceControllerV1JsonContentCreate($testInput, $testMock);
 	}
 

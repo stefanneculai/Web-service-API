@@ -7,6 +7,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
+include_once JPATH_BASE . '/model/model.php';
+include_once __DIR__ . '/base.php';
+
 /**
  * WebService 'content' Create method.
  *
@@ -14,64 +17,8 @@
  * @subpackage  Controller
  * @since       1.0
  */
-class WebServiceControllerV1JsonContentCreate extends JControllerBase
+class WebServiceControllerV1JsonContentCreate extends WebServiceControllerContentBase
 {
-	/**
-	 * @var    array  Required fields
-	 * @since  1.0
-	 */
-	protected $mandatoryData = array(
-			'field1' => '',
-			'field2' => '',
-			'field3' => ''
-			);
-
-	/**
-	 * @var    array  Optional fields
-	 * @since  1.0
-	 */
-	protected $optionalData = array(
-			'field4' => '',
-			'field5' => ''
-			);
-
-	/**
-	 * @var    integer  Supress response codes. 401 for Unauthorized; 200 for OK
-	 * @since  1.0
-	 */
-	protected $responseCode = 401;
-
-	/**
-	 * Check the input for supress_response_codes = true in order to supress the error codes.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	protected function checkSupressResponseCodes()
-	{
-		$errCode = $this->input->get->getString('suppress_response_codes');
-
-		if (isset($errCode))
-		{
-			$errCode = strtolower($errCode);
-
-			if (strcmp($errCode, 'true') === 0)
-			{
-				$this->responseCode = 200;
-				return;
-			}
-
-			if (strcmp($errCode, 'false') === 0)
-			{
-				$this->responseCode = 401;
-				return;
-			}
-
-			throw new InvalidArgumentException('suppress_response_codes should be set to true or false', $this->responseCode);
-		}
-	}
-
 	/**
 	 * Init parameters
 	 *
@@ -81,14 +28,11 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	 */
 	protected function init()
 	{
-		// Supress error codes
-		$this->checkSupressResponseCodes();
-
 		// Init mandatory fields
-		$this->getMandatoryData();
+		$this->getMandatoryFields();
 
 		// Init optional fields
-		$this->getOptionalData();
+		$this->getOptionalFields();
 	}
 
 	/**
@@ -98,19 +42,20 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	 *
 	 * @since   1.0
 	 */
-	protected function getMandatoryData()
+	protected function getMandatoryFields()
 	{
 		// Search for mandatory fields in input query
-		foreach ($this->mandatoryData as $key => $value )
+		foreach ($this->mandatoryFields as $key => $value )
 		{
 			$field = $this->input->get->getString($key);
 			if ( isset($field) )
 			{
-				$this->mandatoryData[$key] = $field;
+				$this->mandatoryFields[$key] = $field;
 			}
 			else
 			{
-				throw new InvalidArgumentException($key . ' field is mandatory.', $this->responseCode);
+				$this->app->errors->addError("308");
+				return;
 			}
 		}
 	}
@@ -122,15 +67,15 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	 *
 	 * @since   1.0
 	 */
-	protected function getOptionalData()
+	protected function getOptionalFields()
 	{
 		// Search for optional fields in input query
-		foreach ($this->optionalData as $key => $value )
+		foreach ($this->optionalFields as $key => $value )
 		{
 			$field = $this->input->get->getString($key);
 			if ( isset($field) )
 			{
-				$this->optionalData[$key] = $field;
+				$this->optionalFields[$key] = $field;
 			}
 		}
 	}
@@ -147,6 +92,13 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 		// Init
 		$this->init();
 
+		if ($this->app->errors->errorsExist() == true)
+		{
+			$this->app->setBody(json_encode($this->app->errors->getErrors()));
+			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
+			return;
+		}
+
 		$data = $this->createContent();
 
 		$this->parseData($data);
@@ -161,11 +113,9 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	 */
 	protected function createContent()
 	{
-		// Content model
-		include_once JPATH_BASE . '/model/model.php';
 
-		$fields = implode(',', array_keys($this->mandatoryData));
-		$fields = $fields . ',' . implode(',', array_keys($this->optionalData));
+		$fields = implode(',', array_keys($this->mandatoryFields));
+		$fields = $fields . ',' . implode(',', array_keys($this->optionalFields));
 
 		// New content model
 		$model = new WebServiceContentModelBase;
@@ -180,13 +130,13 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 		$modelState->set('content.fields', $fields);
 
 		// Set each mandatory field
-		foreach ($this->mandatoryData as $fieldName => $fieldContent)
+		foreach ($this->mandatoryFields as $fieldName => $fieldContent)
 		{
 			$modelState->set('fields.' . $fieldName, $fieldContent);
 		}
 
 		// Set each optional field
-		foreach ($this->optionalData as $fieldName => $fieldContent)
+		foreach ($this->optionalFields as $fieldName => $fieldContent)
 		{
 			$modelState->set('fields.' . $fieldName, $fieldContent);
 		}
@@ -200,7 +150,7 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	/**
 	 * Parse the returned data from database
 	 *
-	 * @param   mixed  $data  Data may be JContent, array of JContent or false
+	 * @param   mixed  $data  Fields may be JContent, array of JContent or false
 	 *
 	 * @return  void
 	 *
@@ -210,7 +160,7 @@ class WebServiceControllerV1JsonContentCreate extends JControllerBase
 	{
 		$item = (array) $data->dump();
 
-		$this->app->setBody(json_encode($item['content_id']));
+		$this->app->setBody(json_encode($item));
 	}
 
 }
