@@ -51,6 +51,14 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	private $_startTime;
 
 	/**
+	 * Array of stdClass objects containing the routes for the application
+	 *
+	 * @var    array
+	 * @since  1.0
+	 */
+	protected $routes;
+
+	/**
 	 * Overrides the parent constructor to set the execution start time.
 	 *
 	 * @param   mixed  $input   An optional argument to provide dependency injection for the application's
@@ -153,8 +161,8 @@ class WebServiceApplicationWeb extends JApplicationWeb
 				return;
 			}
 
-			$this->router->addMap('/content', 'content');
-			$this->router->addMap('/content/:content_id', 'content');
+			$this->routes = $this->fetchRoutes();
+			$this->addRoutes($this->routes);
 
 			// Get the controller instance based on the request.
 			$this->router->execute($this->get('uri.route'));
@@ -218,6 +226,77 @@ class WebServiceApplicationWeb extends JApplicationWeb
 		}
 
 		return $config;
+	}
+
+	/**
+	 * Fetch the routes for the application.
+	 *
+	 * @return  object  An object to be loaded into the application configuration.
+	 *
+	 * @since   1.0
+	 * @throws  RuntimeException if file cannot be read.
+	 */
+	protected function fetchRoutes()
+	{
+		// Initialise variables.
+		$routes = array();
+
+		// Ensure that required path constants are defined.
+		if (!defined('JPATH_CONFIGURATION'))
+		{
+			$path = getenv('WEBSERVICE_CONFIG');
+			if ($path)
+			{
+				define('JPATH_CONFIGURATION', realpath($path));
+			}
+			else
+			{
+				define('JPATH_CONFIGURATION', realpath(dirname(JPATH_BASE) . '/config'));
+			}
+		}
+
+		// Set the configuration file path for the application.
+		if (file_exists(JPATH_CONFIGURATION . '/routes.json'))
+		{
+			$file = JPATH_CONFIGURATION . '/routes.json';
+		}
+		else
+		{
+			// Default to the distribution configuration.
+			$file = JPATH_CONFIGURATION . '/routes.dist.json';
+		}
+
+		if (!is_readable($file))
+		{
+			throw new RuntimeException('Routes file does not exist or is unreadable.');
+		}
+
+		// Load the configuration file into an object.
+		$routes = json_decode(file_get_contents($file));
+
+		if ($routes == null)
+		{
+			throw new RuntimeException('Routes file cannot be decoded.');
+		}
+
+		return $routes;
+	}
+
+	/**
+	 * Method to set the routes for the application
+	 *
+	 * @param   array  $routes  An array of routes to add to the application
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	protected function addRoutes($routes)
+	{
+		foreach ($routes as $key => $route)
+		{
+			$this->router->addMap($route->route, $route->controller);
+		}
 	}
 
 	/**

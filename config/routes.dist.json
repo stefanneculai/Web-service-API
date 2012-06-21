@@ -1,0 +1,11 @@
+[
+	{
+		"route" : "/content",
+		"controller": "content"
+	},
+	
+	{
+		"route" : "/content/:content_id",
+		"controller": "content"
+	}
+]
