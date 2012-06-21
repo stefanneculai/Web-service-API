@@ -61,5 +61,29 @@
 		"message": "Mandatory fields missing.",
 		"more_info": "",
 		"response_code": "400"
+	},
+	
+	"309": 
+	{
+		"code": "JWS009",
+		"message": "A specific content id should be refeered.",
+		"more_info": "",
+		"response_code": "400"
+	},
+	
+	"100": 
+	{
+		"code": "JWS400",
+		"message": "Error while updating the content.",
+		"more_info": "",
+		"response_code": "400"
+	},
+	
+	"101": 
+	{
+		"code": "JWS401",
+		"message": "Nothing to update.",
+		"more_info": "",
+		"response_code": "400"
 	}
 }
