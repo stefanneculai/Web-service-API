@@ -378,7 +378,7 @@ class WebServiceControllerV1JsonContentGet extends WebServiceControllerContentBa
 				return false;
 			}
 
-			$data = $model->pruneFields(array($item), $this->fields);
+			$data = $this->pruneFields(array($item), $this->fields);
 
 			return $data;
 		}
@@ -398,7 +398,7 @@ class WebServiceControllerV1JsonContentGet extends WebServiceControllerContentBa
 				return false;
 			}
 
-			$data = $model->pruneFields($items, $this->fields);
+			$data = $this->pruneFields($items, $this->fields);
 
 			return $data;
 		}
@@ -423,5 +423,46 @@ class WebServiceControllerV1JsonContentGet extends WebServiceControllerContentBa
 
 		// Output the results
 		$this->app->setBody(json_encode($data));
+	}
+
+	/**
+	 * Prunes fields in an array of JContent objects to a set list.
+	 *
+	 * @param   array  $list    An array of Jcontent.
+	 * @param   array  $fields  An array of the field names to preserve (strip all others).
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	protected function pruneFields($list, $fields)
+	{
+		if ($fields)
+		{
+			// Flip the fields so we can find the intersection by the array keys.
+			$fields = array_flip($fields);
+
+			/* @var $object JContent */
+			foreach ($list as $key => $object)
+			{
+
+				// Suck out only the fields we want from the object dump.
+				$list[$key] = array_uintersect_assoc(
+						(array) $object->dump(), $fields,
+						create_function(null, 'return 0;')
+						);
+			}
+		}
+		else
+		{
+			foreach ($list as $key => $object)
+			{
+
+				// Suck out only the fields we want from the object dump.
+				$list[$key] = (array) $object->dump();
+			}
+		}
+
+		return $list;
 	}
 }
