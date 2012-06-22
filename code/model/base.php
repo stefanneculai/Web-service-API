@@ -15,7 +15,7 @@
  * @subpackage  Model
  * @since       1.0
  */
-class WebServiceContentModelBase extends JModelBase
+class WebServiceModelBase extends JModelBase
 {
 	/**
 	 * The content factory.

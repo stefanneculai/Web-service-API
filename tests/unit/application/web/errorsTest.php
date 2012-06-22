@@ -8,8 +8,6 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-require_once __DIR__ . '/../stubs/webMock.php';
-
 /**
  * Test Case class for WebServiceErrors
  *
@@ -17,7 +15,7 @@ require_once __DIR__ . '/../stubs/webMock.php';
  * @subpackage  Application
  * @since       1.0
  */
-class WebServiceErrorsTest extends TestCase
+class WebServiceApplicationWebErrorsTest extends TestCase
 {
 	/**
 	 * An instance of the class to test.
@@ -40,7 +38,7 @@ class WebServiceErrorsTest extends TestCase
 
 		$testInput = new JInput;
 		$testMock = $this->getMockWeb();
-		$this->_instance = new WebServiceErrors($testMock, $testInput);
+		$this->_instance = new WebServiceApplicationWebErrors($testMock, $testInput);
 	}
 
 	/**

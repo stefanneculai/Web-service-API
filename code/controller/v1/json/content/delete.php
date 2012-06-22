@@ -7,9 +7,6 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-include_once JPATH_BASE . '/model/model.php';
-include_once __DIR__ . '/base.php';
-
 /**
  * WebService 'content' Delete method.
  *
@@ -17,7 +14,7 @@ include_once __DIR__ . '/base.php';
  * @subpackage  Controller
  * @since       1.0
  */
-class WebServiceControllerV1JsonContentDelete extends WebServiceControllerContentBase
+class WebServiceControllerV1JsonContentDelete extends WebServiceControllerV1JsonContentBase
 {
 	/**
 	 * @var    string  The content id. It may be numeric id or '*' if all content is needed

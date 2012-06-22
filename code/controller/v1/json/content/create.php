@@ -7,9 +7,6 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-include_once JPATH_BASE . '/model/model.php';
-include_once __DIR__ . '/base.php';
-
 /**
  * WebService 'content' Create method.
  *
@@ -17,7 +14,7 @@ include_once __DIR__ . '/base.php';
  * @subpackage  Controller
  * @since       1.0
  */
-class WebServiceControllerV1JsonContentCreate extends WebServiceControllerContentBase
+class WebServiceControllerV1JsonContentCreate extends WebServiceControllerV1JsonContentBase
 {
 	/**
 	 * Init parameters

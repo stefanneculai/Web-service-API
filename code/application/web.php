@@ -7,8 +7,6 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-include_once 'web/errors.php';
-
 /**
  * Web Service Api web application class.
  *
@@ -79,7 +77,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 
 		parent::__construct($input, $config, $client);
 
-		$this->errors = new WebServiceErrors($this, $this->input);
+		$this->errors = new WebServiceApplicationWebErrors($this, $this->input);
 		$this->errors->checkSupressResponseCodes();
 	}
 

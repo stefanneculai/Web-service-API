@@ -14,7 +14,7 @@
  * @subpackage  Controller
  * @since       1.0
  */
-abstract class WebServiceControllerContentBase extends JControllerBase
+abstract class WebServiceControllerV1JsonContentBase extends JControllerBase
 {
 	/**
 	 * @var    array  The fields and their database match

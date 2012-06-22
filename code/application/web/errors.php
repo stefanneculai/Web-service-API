@@ -14,7 +14,7 @@
  * @subpackage  Application
  * @since       1.0
  */
-class WebServiceErrors
+class WebServiceApplicationWebErrors
 {
 	/**
 	 * @var    integer  Response code. 200 for OK and 400 for Bad Request

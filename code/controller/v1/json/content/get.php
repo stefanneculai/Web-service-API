@@ -7,9 +7,6 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-include_once JPATH_BASE . '/model/model.php';
-include_once __DIR__ . '/base.php';
-
 /**
  * WebService GET content class
  *
@@ -17,7 +14,7 @@ include_once __DIR__ . '/base.php';
  * @subpackage  Controller
  * @since       1.0
  */
-class WebServiceControllerV1JsonContentGet extends WebServiceControllerContentBase
+class WebServiceControllerV1JsonContentGet extends WebServiceControllerV1JsonContentBase
 {
 	/**
 	 * @var    string  The limit of the results
@@ -347,7 +344,7 @@ class WebServiceControllerV1JsonContentGet extends WebServiceControllerContentBa
 	protected function getContent()
 	{
 		// New content model
-		$model = new WebServiceContentModelBase;
+		$model = new WebServiceModelBase;
 
 		// Get content state
 		$modelState = $model->getState();
