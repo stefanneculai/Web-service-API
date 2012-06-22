@@ -14,7 +14,7 @@
  * @subpackage  Controller
  * @since       1.0
  */
-class WebServiceControllerV1JsonContentGet extends WebServiceControllerV1JsonContentBase
+class WebServiceControllerV1JsonGeneralGet extends WebServiceControllerV1Base
 {
 	/**
 	 * @var    string  The limit of the results
@@ -286,6 +286,9 @@ class WebServiceControllerV1JsonContentGet extends WebServiceControllerV1JsonCon
 	 */
 	protected function init()
 	{
+		// Set the fields
+		$this->readFields();
+
 		// Content id
 		$this->id = $this->getContentId();
 
@@ -298,8 +301,19 @@ class WebServiceControllerV1JsonContentGet extends WebServiceControllerV1JsonCon
 		// Returned fields
 		$this->fields = $this->getFields();
 
+		// Map fields according to the application database
+		if ($this->fields != null)
+		{
+			$this->fields = $this->mapFieldsIn($this->fields);
+		}
+
 		// Results order
 		$this->order = $this->getOrder();
+
+		if ($this->order != null)
+		{
+			$this->order = $this->mapFieldsIn($this->order);
+		}
 
 		// Since
 		$this->since = $this->getSince();
@@ -350,18 +364,12 @@ class WebServiceControllerV1JsonContentGet extends WebServiceControllerV1JsonCon
 		$modelState = $model->getState();
 
 		// Set content type that we need
-		$modelState->set('content.type', 'general');
+		$modelState->set('content.type', $this->type);
 		$modelState->set('content.id', $this->id);
 
 		// Set date limitations
 		$modelState->set('filter.since', $this->since);
 		$modelState->set('filter.before', $this->before);
-
-		// Sort order
-		if ($this->order != null)
-		{
-			$modelState->set('filter.order', implode('\',\'', $this->order));
-		}
 
 		// A specific content is requested
 		if (strcmp($this->id, '*') !== 0)
@@ -369,15 +377,15 @@ class WebServiceControllerV1JsonContentGet extends WebServiceControllerV1JsonCon
 			// Get the requested data
 			$item = $model->getItem();
 
+			print_r($item->dump());
+
 			// No item found
 			if ($item == false)
 			{
 				return false;
 			}
 
-			$data = $this->pruneFields(array($item), $this->fields);
-
-			return $data;
+			return $item;
 		}
 		// All content is requested
 		else
@@ -395,9 +403,7 @@ class WebServiceControllerV1JsonContentGet extends WebServiceControllerV1JsonCon
 				return false;
 			}
 
-			$data = $this->pruneFields($items, $this->fields);
-
-			return $data;
+			return $items;
 		}
 	}
 
@@ -418,48 +424,14 @@ class WebServiceControllerV1JsonContentGet extends WebServiceControllerV1JsonCon
 			$data = new stdClass;
 		}
 
+		if (count($this->order) > 0)
+		{
+			usort($data, array($this, "orderData"));
+		}
+
+		$data = $this->pruneFields($data, $this->fields);
+
 		// Output the results
 		$this->app->setBody(json_encode($data));
-	}
-
-	/**
-	 * Prunes fields in an array of JContent objects to a set list.
-	 *
-	 * @param   array  $list    An array of Jcontent.
-	 * @param   array  $fields  An array of the field names to preserve (strip all others).
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	protected function pruneFields($list, $fields)
-	{
-		if ($fields)
-		{
-			// Flip the fields so we can find the intersection by the array keys.
-			$fields = array_flip($fields);
-
-			/* @var $object JContent */
-			foreach ($list as $key => $object)
-			{
-
-				// Suck out only the fields we want from the object dump.
-				$list[$key] = array_uintersect_assoc(
-						(array) $object->dump(), $fields,
-						create_function(null, 'return 0;')
-						);
-			}
-		}
-		else
-		{
-			foreach ($list as $key => $object)
-			{
-
-				// Suck out only the fields we want from the object dump.
-				$list[$key] = (array) $object->dump();
-			}
-		}
-
-		return $list;
 	}
 }

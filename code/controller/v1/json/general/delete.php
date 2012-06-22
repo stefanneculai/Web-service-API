@@ -14,7 +14,7 @@
  * @subpackage  Controller
  * @since       1.0
  */
-class WebServiceControllerV1JsonContentDelete extends WebServiceControllerV1JsonContentBase
+class WebServiceControllerV1JsonGeneralDelete extends WebServiceControllerV1Base
 {
 	/**
 	 * @var    string  The content id. It may be numeric id or '*' if all content is needed

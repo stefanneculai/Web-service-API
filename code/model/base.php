@@ -164,13 +164,6 @@ class WebServiceModelBase extends JModelBase
 			$query->where($query->qn('a.created_date') . ' < ' . '\'' . $this->state->get('filter.before') . '\'');
 		}
 
-		// Check if we should set order
-		if (!is_null($this->state->get('filter.order')))
-		{
-			$order = preg_split('#[\s,]+#', $this->state->get('filter.order'), null, PREG_SPLIT_NO_EMPTY);
-			$query->order($order);
-		}
-
 		return $query;
 	}
 
@@ -179,7 +172,7 @@ class WebServiceModelBase extends JModelBase
 	 *
 	 * @return  JContent  A content object.
 	 *
-	 * @since   10.1
+	 * @since   1.0
 	 * @throws  InvalidArgumentException
 	 * @throws  RuntimeException
 	 * @throws  UnexpectedValueException
@@ -227,7 +220,7 @@ class WebServiceModelBase extends JModelBase
 	 *
 	 * @return  JContent  A content object.
 	 *
-	 * @since   10.1
+	 * @since   1.0
 	 * @throws  InvalidArgumentException
 	 * @throws  RuntimeException
 	 * @throws  UnexpectedValueException
@@ -366,7 +359,7 @@ class WebServiceModelBase extends JModelBase
 	 *
 	 * @return  JContent  A content object.
 	 *
-	 * @since   10.1
+	 * @since   1.0
 	 * @throws  InvalidArgumentException
 	 * @throws  RuntimeException
 	 * @throws  UnexpectedValueException

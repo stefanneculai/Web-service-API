@@ -10,19 +10,19 @@
 require_once __DIR__ . '/../../../../application/stubs/webMock.php';
 
 /**
- * Test Case class for WebServiceControllerV1JsonContentUpdate
+ * Test Case class for WebServiceControllerV1JsonGeneralUpdate
 *
 * @package     WebService.Tests
 * @subpackage  Application
 * @since       1.0
 */
-class WebServiceControllerV1JsonContentUpdateTest extends TestCase
+class WebServiceControllerV1JsonGeneralUpdateTest extends TestCase
 {
 
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    WebServiceControllerV1JsonContentUpdate
+	 * @var    WebServiceControllerV1JsonGeneralUpdate
 	 * @since  1.0
 	 */
 	private $_instance;
@@ -32,7 +32,7 @@ class WebServiceControllerV1JsonContentUpdateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceControllerV1JsonContentUpdateTest::__construct
+	 * @covers  WebServiceControllerV1JsonGeneralUpdateTest::__construct
 	 * @since   1.0
 	 */
 	public function test__construct()
@@ -46,7 +46,7 @@ class WebServiceControllerV1JsonContentUpdateTest extends TestCase
 		);
 
 		// Construct the object.
-		$controller = new WebServiceControllerV1JsonContentUpdate($input, $this->getMockWeb());
+		$controller = new WebServiceControllerV1JsonGeneralUpdate('general', $input, $this->getMockWeb());
 
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('ok', TestReflection::getValue($controller, 'input')->test());
@@ -82,7 +82,7 @@ class WebServiceControllerV1JsonContentUpdateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentUpdate::getContentId
+	 * @covers        WebServiceControllerV1JsonGeneralUpdate::getContentId
 	 * @dataProvider  seedGetContentIdData
 	 * @since         1.0
 	 */
@@ -119,27 +119,29 @@ class WebServiceControllerV1JsonContentUpdateTest extends TestCase
 	 */
 	public function seedGetDataFieldsData()
 	{
+		$dataFields = array('field1' => null, 'field2' => null, 'field3' => null, 'field4' => null, 'field5' => null);
+
 		// Input, Expected, Exception
 		return array(
 				array(
+						$dataFields,
 						array(),
-						array('field1' => null, 'field2' => null, 'field3' => null, 'field4' => null, 'field5' => null,),
-						false
+						array('field1' => null, 'field2' => null, 'field3' => null, 'field4' => null, 'field5' => null,)
 					),
 				array(
+						$dataFields,
 						array('field1' => null),
-						array('field1' => null, 'field2' => null, 'field3' => null, 'field4' => null, 'field5' => null,),
-						false
+						array('field1' => null, 'field2' => null, 'field3' => null, 'field4' => null, 'field5' => null,)
 					),
 				array(
+						$dataFields,
 						array('field1' => 'test', 'field2' => 'test2'),
-						array('field1' => 'test', 'field2' => 'test2', 'field3' => null, 'field4' => null, 'field5' => null,),
-						false
+						array('field1' => 'test', 'field2' => 'test2', 'field3' => null, 'field4' => null, 'field5' => null,)
 					),
 				array(
+						$dataFields,
 						array('field1' => 'test', 'field2' => 'test2'),
-						array('field1' => 'test', 'field2' => 'test2', 'field3' => null, 'field4' => null, 'field5' => null,),
-						false
+						array('field1' => 'test', 'field2' => 'test2', 'field3' => null, 'field4' => null, 'field5' => null,)
 					)
 		);
 	}
@@ -147,19 +149,19 @@ class WebServiceControllerV1JsonContentUpdateTest extends TestCase
 	/**
 	 * Tests getDataFields()
 	 *
-	 * @param   string   $input      Input string to test.
-	 * @param   string   $expected   Expected fetched string.
-	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
+	 * @param   array   $df        Data fields to set up
+	 * @param   string  $input     Input string to test.
+	 * @param   string  $expected  Expected fetched string.
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentUpdate::getDataFields
+	 * @covers        WebServiceControllerV1JsonGeneralUpdate::getDataFields
 	 * @dataProvider  seedGetDataFieldsData
 	 * @since         1.0
 	 */
-	public function testGetDataFields($input,  $expected, $exception)
+	public function testGetDataFields($df, $input,  $expected)
 	{
-		TestReflection::invoke($this->_instance, 'buildFields');
+		TestReflection::setValue($this->_instance, 'dataFields', $df);
 
 		foreach ($input as $key => $value)
 		{
@@ -173,15 +175,6 @@ class WebServiceControllerV1JsonContentUpdateTest extends TestCase
 		foreach ($input as $key => $value)
 		{
 			$_GET[$key] = null;
-		}
-
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$app = TestReflection::getValue($this->_instance, 'app');
-			$errors = TestReflection::getValue($app->errors, 'errorsArray');
-			$this->assertEquals(1, count($errors));
-			return;
 		}
 
 		// Verify the value.
@@ -201,7 +194,7 @@ class WebServiceControllerV1JsonContentUpdateTest extends TestCase
 
 		$testInput = new JInput;
 		$testMock = WebServiceApplicationWebMock::create($this);
-		$this->_instance = new WebServiceControllerV1JsonContentUpdate($testInput, $testMock);
+		$this->_instance = new WebServiceControllerV1JsonGeneralUpdate('general', $testInput, $testMock);
 	}
 
 	/**

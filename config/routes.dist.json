@@ -1,11 +1,11 @@
 [
 	{
-		"route" : "/content",
-		"controller": "content"
+		"route" : "/general",
+		"controller": "general"
 	},
 	
 	{
-		"route" : "/content/:content_id",
-		"controller": "content"
+		"route" : "/general/:general_id",
+		"controller": "general"
 	}
 ]

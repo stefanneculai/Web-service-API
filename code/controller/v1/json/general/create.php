@@ -14,8 +14,16 @@
  * @subpackage  Controller
  * @since       1.0
  */
-class WebServiceControllerV1JsonContentCreate extends WebServiceControllerV1JsonContentBase
+class WebServiceControllerV1JsonGeneralCreate extends WebServiceControllerV1Base
 {
+	/**
+	 *
+	 * @var    string  The content type
+	 *
+	 * @since  1.0
+	 */
+	protected $type = 'general';
+
 	/**
 	 * Init parameters
 	 *
@@ -25,6 +33,9 @@ class WebServiceControllerV1JsonContentCreate extends WebServiceControllerV1Json
 	 */
 	protected function init()
 	{
+		// Set the fields
+		$this->readFields();
+
 		// Init mandatory fields
 		$this->getMandatoryFields();
 
@@ -110,17 +121,17 @@ class WebServiceControllerV1JsonContentCreate extends WebServiceControllerV1Json
 	protected function createContent()
 	{
 
-		$fields = implode(',', array_keys($this->mandatoryFields));
-		$fields = $fields . ',' . implode(',', array_keys($this->optionalFields));
+		$fields = implode(',', $this->mapFieldsIn(array_keys($this->mandatoryFields)));
+		$fields = $fields . ',' . implode(',', $this->mapFieldsIn(array_keys($this->optionalFields)));
 
 		// New content model
-		$model = new WebServiceContentModelBase;
+		$model = new WebServiceModelBase;
 
 		// Get content state
 		$modelState = $model->getState();
 
 		// Set content type that we need
-		$modelState->set('content.type', 'general');
+		$modelState->set('content.type', $this->type);
 
 		// Set field list
 		$modelState->set('content.fields', $fields);
@@ -128,13 +139,13 @@ class WebServiceControllerV1JsonContentCreate extends WebServiceControllerV1Json
 		// Set each mandatory field
 		foreach ($this->mandatoryFields as $fieldName => $fieldContent)
 		{
-			$modelState->set('fields.' . $fieldName, $fieldContent);
+			$modelState->set('fields.' . $this->mapIn($fieldName), $fieldContent);
 		}
 
 		// Set each optional field
 		foreach ($this->optionalFields as $fieldName => $fieldContent)
 		{
-			$modelState->set('fields.' . $fieldName, $fieldContent);
+			$modelState->set('fields.' . $this->mapIn($fieldName), $fieldContent);
 		}
 
 		// Create item
@@ -154,9 +165,7 @@ class WebServiceControllerV1JsonContentCreate extends WebServiceControllerV1Json
 	 */
 	protected function parseData($data)
 	{
-		$item = (array) $data->dump();
-
-		$this->app->setBody(json_encode($item));
+		$this->app->setBody(json_encode($this->pruneFields($data, array('content_id'))));
 	}
 
 }

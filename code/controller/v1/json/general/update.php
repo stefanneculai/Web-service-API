@@ -14,7 +14,7 @@
  * @subpackage  Controller
  * @since       1.0
  */
-class WebServiceControllerV1JsonContentUpdate extends WebServiceControllerV1JsonContentBase
+class WebServiceControllerV1JsonGeneralUpdate extends WebServiceControllerV1Base
 {
 	/**
 	 * @var    string  The content id. It may be numeric id or '*' if all content is needed
@@ -110,6 +110,9 @@ class WebServiceControllerV1JsonContentUpdate extends WebServiceControllerV1Json
 	 */
 	protected function init()
 	{
+		// Set the fields
+		$this->readFields();
+
 		// Create the array with the fields that could be updated
 		$this->buildFields();
 
@@ -173,10 +176,10 @@ class WebServiceControllerV1JsonContentUpdate extends WebServiceControllerV1Json
 			return;
 		}
 
-		$fields = implode(',', array_keys($this->dataFields));
+		$fields = implode(',', $this->mapFieldsIn(array_keys($this->dataFields)));
 
 		// New content model
-		$model = new WebServiceContentModelBase;
+		$model = new WebServiceModelBase;
 
 		// Get content state
 		$modelState = $model->getState();
@@ -193,7 +196,7 @@ class WebServiceControllerV1JsonContentUpdate extends WebServiceControllerV1Json
 		// Set each field
 		foreach ($this->dataFields as $fieldName => $fieldContent)
 		{
-			$modelState->set('fields.' . $fieldName, $fieldContent);
+			$modelState->set('fields.' . $this->mapIn($fieldName), $fieldContent);
 		}
 
 		$item = $model->updateItem();
@@ -222,7 +225,8 @@ class WebServiceControllerV1JsonContentUpdate extends WebServiceControllerV1Json
 		}
 		else
 		{
-			$data = "Content was updated successfully";
+			$data = new stdClass;
+			$data->id = $this->id;
 		}
 
 		$this->app->setBody(json_encode($data));

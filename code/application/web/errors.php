@@ -233,7 +233,7 @@ class WebServiceApplicationWebErrors
 	protected function fetchErrorsData()
 	{
 		// Initialise variables.
-		$config = array();
+		$errors = array();
 
 		// Ensure that required path constants are defined.
 		if (!defined('JPATH_CONFIGURATION'))

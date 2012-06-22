@@ -11,19 +11,19 @@
 require_once __DIR__ . '/../../../../application/stubs/webMock.php';
 
 /**
- * Test Case class for WebServiceControllerV1JsonContentGet
+ * Test Case class for WebServiceControllerV1JsonGeneralGet
  *
  * @package     WebService.Tests
  * @subpackage  Application
  * @since       1.0
  */
-class WebServiceControllerV1JsonContentGetTest extends TestCase
+class WebServiceControllerV1JsonGeneralGetTest extends TestCase
 {
 
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    WebServiceControllerV1JsonContentGet
+	 * @var    WebServiceControllerV1JsonGeneralGet
 	 * @since  1.0
 	 */
 	private $_instance;
@@ -33,7 +33,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceControllerV1JsonContentGetTest::__construct
+	 * @covers  WebServiceControllerV1JsonGeneralGetTest::__construct
 	 * @since   1.0
 	 */
 	public function test__construct()
@@ -47,7 +47,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 		);
 
 		// Construct the object.
-		$controller = new WebServiceControllerV1JsonContentGet($input, $this->getMockWeb());
+		$controller = new WebServiceControllerV1JsonGeneralGet('general', $input, $this->getMockWeb());
 
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('ok', TestReflection::getValue($controller, 'input')->test());
@@ -83,7 +83,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentGet::getOrder
+	 * @covers        WebServiceControllerV1JsonGeneralGet::getOrder
 	 * @dataProvider  seedGetOrderData
 	 * @since         1.0
 	 */
@@ -155,7 +155,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentGet::getLimit
+	 * @covers        WebServiceControllerV1JsonGeneralGet::getLimit
 	 * @dataProvider  seedGetLimitData
 	 * @since         1.0
 	 */
@@ -212,7 +212,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentGet::getOffset
+	 * @covers        WebServiceControllerV1JsonGeneralGet::getOffset
 	 * @dataProvider  seedGetOffsetData
 	 * @since         1.0
 	 */
@@ -270,7 +270,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentGet::getContentId
+	 * @covers        WebServiceControllerV1JsonGeneralGet::getContentId
 	 * @dataProvider  seedGetContentIdData
 	 * @since         1.0
 	 */
@@ -341,7 +341,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentGet::getSince
+	 * @covers        WebServiceControllerV1JsonGeneralGet::getSince
 	 * @dataProvider  seedGetSinceData
 	 * @since         1.0
 	 */
@@ -422,7 +422,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentGet::getBefore
+	 * @covers        WebServiceControllerV1JsonGeneralGet::getBefore
 	 * @dataProvider  seedGetBeforeData
 	 * @since         1.0
 	 */
@@ -487,7 +487,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentGet::getFields
+	 * @covers        WebServiceControllerV1JsonGeneralGet::getFields
 	 * @dataProvider  seedGetFieldsData
 	 * @since         1.0
 	 */
@@ -528,7 +528,7 @@ class WebServiceControllerV1JsonContentGetTest extends TestCase
 
 		$testInput = new JInput;
 		$testMock = WebServiceApplicationWebMock::create($this);
-		$this->_instance = new WebServiceControllerV1JsonContentGet($testInput, $testMock);
+		$this->_instance = new WebServiceControllerV1JsonGeneralGet('general', $testInput, $testMock);
 	}
 
 	/**

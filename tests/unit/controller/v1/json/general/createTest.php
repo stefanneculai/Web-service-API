@@ -10,19 +10,19 @@
 require_once __DIR__ . '/../../../../application/stubs/webMock.php';
 
 /**
- * Test Case class for WebServiceControllerV1JsonContentCreate
+ * Test Case class for WebServiceControllerV1JsonGeneralCreate
 *
 * @package     WebService.Tests
 * @subpackage  Application
 * @since       1.0
 */
-class WebServiceControllerV1JsonContentCreateTest extends TestCase
+class WebServiceControllerV1JsonGeneralCreateTest extends TestCase
 {
 
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    WebServiceControllerV1JsonContentCreate
+	 * @var    WebServiceControllerV1JsonGeneralCreate
 	 * @since  1.0
 	 */
 	private $_instance;
@@ -32,7 +32,7 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceControllerV1JsonContentCreateTest::__construct
+	 * @covers  WebServiceControllerV1JsonGeneralCreateTest::__construct
 	 * @since   1.0
 	 */
 	public function test__construct()
@@ -46,7 +46,7 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 		);
 
 		// Construct the object.
-		$controller = new WebServiceControllerV1JsonContentCreate($input, $this->getMockWeb());
+		$controller = new WebServiceControllerV1JsonGeneralCreate('general', $input, $this->getMockWeb());
 
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('ok', TestReflection::getValue($controller, 'input')->test());
@@ -61,12 +61,14 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	 */
 	public function seedGetMandatoryFieldsData()
 	{
+		$mandatory = array('field1' => '', 'field2' => '', 'field3' => '');
+
 		// Input, Expected, Exception
 		return array(
-				array(array(), null, true),
-				array(array('field1' => 'test'), null, true),
-				array(array('field1' => 'test', 'field2' => 'test', 'field3' => null), null, true),
-				array(array('field1' => 'test', 'field2' => 'test', 'field3' => 'test'),
+				array($mandatory, array(), null, true, 3),
+				array($mandatory, array('field1' => 'test'), null, true, 2),
+				array($mandatory, array('field1' => 'test', 'field2' => 'test', 'field3' => null), null, true, 1),
+				array($mandatory, array('field1' => 'test', 'field2' => 'test', 'field3' => 'test'),
 						array('field1' => 'test', 'field2' => 'test', 'field3' => 'test'), false),
 		);
 	}
@@ -74,18 +76,22 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	/**
 	 * Tests getMandatoryFields()
 	 *
+	 * @param   array    $mandatory  Associative array with the mandatory fields
 	 * @param   string   $input      Input string to test.
 	 * @param   string   $expected   Expected fetched string.
 	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
+	 * @param   integer  $en         Exception number
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentCreate::getMandatoryFields
+	 * @covers        WebServiceControllerV1JsonGeneralCreate::getMandatoryFields
 	 * @dataProvider  seedGetMandatoryFieldsData
 	 * @since         1.0
 	 */
-	public function testGetMandatoryFields($input,  $expected, $exception)
+	public function testGetMandatoryFields($mandatory, $input,  $expected, $exception, $en=0)
 	{
+		TestReflection::setValue($this->_instance, 'mandatoryFields', $mandatory);
+
 		foreach ($input as $key => $value)
 		{
 			$_GET[$key] = $value;
@@ -105,7 +111,7 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 		{
 			$app = TestReflection::getValue($this->_instance, 'app');
 			$errors = TestReflection::getValue($app->errors, 'errorsArray');
-			$this->assertEquals(1, count($errors));
+			$this->assertEquals($en, count($errors));
 			return;
 		}
 
@@ -122,13 +128,15 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	 */
 	public function seedGetOptionalFieldsData()
 	{
+		$optional = array('field4' => '', 'field5' => '');
+
 		// Input, Expected, Exception
 		return array(
-				array(array(), array('field4' => '', 'field5' => ''), false),
-				array(array('field4' => 'test'), array('field4' => 'test', 'field5' => ''), false),
-				array(array('field4' => 'test', 'field5' => 'test'),
+				array($optional, array(), array('field4' => '', 'field5' => ''), false),
+				array($optional, array('field4' => 'test'), array('field4' => 'test', 'field5' => ''), false),
+				array($optional, array('field4' => 'test', 'field5' => 'test'),
 						array('field4' => 'test', 'field5' => 'test'), false),
-				array(array('field4' => 'test', 'field5' => 'test'),
+				array($optional, array('field4' => 'test', 'field5' => 'test'),
 						array('field4' => 'test', 'field5' => 'test'), false)
 		);
 	}
@@ -136,18 +144,21 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	/**
 	 * Tests getOptionalFields()
 	 *
+	 * @param   array    $optional   Associative array with the optional fields
 	 * @param   string   $input      Input string to test.
 	 * @param   string   $expected   Expected fetched string.
 	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentCreate::getOptionalFields
+	 * @covers        WebServiceControllerV1JsonGeneralCreate::getOptionalFields
 	 * @dataProvider  seedGetOptionalFieldsData
 	 * @since         1.0
 	 */
-	public function testGetOptionalFields($input,  $expected, $exception)
+	public function testGetOptionalFields($optional, $input,  $expected, $exception)
 	{
+		TestReflection::setValue($this->_instance, 'optionalFields', $optional);
+
 		foreach ($input as $key => $value)
 		{
 			$_GET[$key] = $value;
@@ -186,9 +197,10 @@ class WebServiceControllerV1JsonContentCreateTest extends TestCase
 	{
 		parent::setUp();
 
+		$type = 'general';
 		$testInput = new JInput;
 		$testMock = WebServiceApplicationWebMock::create($this);
-		$this->_instance = new WebServiceControllerV1JsonContentCreate($testInput, $testMock);
+		$this->_instance = new WebServiceControllerV1JsonGeneralCreate($type, $testInput, $testMock);
 	}
 
 	/**

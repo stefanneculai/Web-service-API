@@ -64,6 +64,8 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		// Get the controller name based on the route patterns and requested route.
 		$name = $this->parseRoute($route);
 
+		$type = $name;
+
 		// Get the effective route after matching the controller
 		$route = $this->removeControllerFromRoute($route);
 
@@ -74,7 +76,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		$name .= $this->fetchControllerSuffix();
 
 		// Get the controller object by name.
-		$controller = $this->fetchController($name);
+		$controller = $this->fetchController($name, $type);
 
 		// Execute the controller.
 		$controller->execute();
@@ -181,5 +183,33 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		$route = implode('/', $parts);
 
 		return $route;
+	}
+
+	/**
+	 * Get a JController object for a given name.
+	 *
+	 * @param   string  $name  The controller name (excluding prefix) for which to fetch and instance.
+	 * @param   string  $type  The type of the content
+	 *
+	 * @return  JController
+	 *
+	 * @since   12.3
+	 * @throws  RuntimeException
+	 */
+	protected function fetchController($name, $type)
+	{
+		// Derive the controller class name.
+		$class = $this->controllerPrefix . ucfirst($name);
+
+		// If the controller class does not exist panic.
+		if (!class_exists($class) || !is_subclass_of($class, 'JController'))
+		{
+			throw new RuntimeException(sprintf('Unable to locate controller `%s`.', $class), 404);
+		}
+
+		// Instantiate the controller.
+		$controller = new $class($type, $this->input, $this->app);
+
+		return $controller;
 	}
 }

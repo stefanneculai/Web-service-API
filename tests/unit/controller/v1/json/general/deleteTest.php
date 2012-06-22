@@ -10,19 +10,19 @@
 require_once __DIR__ . '/../../../../application/stubs/webMock.php';
 
 /**
- * Test Case class for WebServiceControllerV1JsonContentDelete
+ * Test Case class for WebServiceControllerV1JsonGeneralDelete
 *
 * @package     WebService.Tests
 * @subpackage  Application
 * @since       1.0
 */
-class WebServiceControllerV1JsonContentDeleteTest extends TestCase
+class WebServiceControllerV1JsonGeneralDeleteTest extends TestCase
 {
 
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    WebServiceControllerV1JsonContentDelete
+	 * @var    WebServiceControllerV1JsonGeneralDelete
 	 * @since  1.0
 	 */
 	private $_instance;
@@ -32,7 +32,7 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceControllerV1JsonContentDeleteTest::__construct
+	 * @covers  WebServiceControllerV1JsonGeneralDeleteTest::__construct
 	 * @since   1.0
 	 */
 	public function test__construct()
@@ -46,7 +46,7 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 		);
 
 		// Construct the object.
-		$controller = new WebServiceControllerV1JsonContentDelete($input, $this->getMockWeb());
+		$controller = new WebServiceControllerV1JsonGeneralDelete('general', $input, $this->getMockWeb());
 
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('ok', TestReflection::getValue($controller, 'input')->test());
@@ -82,7 +82,7 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentDelete::getContentId
+	 * @covers        WebServiceControllerV1JsonGeneralDelete::getContentId
 	 * @dataProvider  seedGetContentIdData
 	 * @since         1.0
 	 */
@@ -153,7 +153,7 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentDelete::getSince
+	 * @covers        WebServiceControllerV1JsonGeneralDelete::getSince
 	 * @dataProvider  seedGetSinceData
 	 * @since         1.0
 	 */
@@ -231,7 +231,7 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonContentDelete::getBefore
+	 * @covers        WebServiceControllerV1JsonGeneralDelete::getBefore
 	 * @dataProvider  seedGetBeforeData
 	 * @since         1.0
 	 */
@@ -282,7 +282,7 @@ class WebServiceControllerV1JsonContentDeleteTest extends TestCase
 
 		$testInput = new JInput;
 		$testMock = WebServiceApplicationWebMock::create($this);
-		$this->_instance = new WebServiceControllerV1JsonContentDelete($testInput, $testMock);
+		$this->_instance = new WebServiceControllerV1JsonGeneralDelete('general', $testInput, $testMock);
 	}
 
 	/**
