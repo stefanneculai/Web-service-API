@@ -10,19 +10,19 @@
 require_once __DIR__ . '/../../../../application/stubs/webMock.php';
 
 /**
- * Test Case class for WebServiceControllerV1JsonGeneralUpdate
+ * Test Case class for WebServiceControllerV1JsonBaseUpdate
 *
 * @package     WebService.Tests
 * @subpackage  Application
 * @since       1.0
 */
-class WebServiceControllerV1JsonGeneralUpdateTest extends TestCase
+class WebServiceControllerV1JsonBaseUpdateTest extends TestCase
 {
 
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    WebServiceControllerV1JsonGeneralUpdate
+	 * @var    WebServiceControllerV1JsonBaseUpdate
 	 * @since  1.0
 	 */
 	private $_instance;
@@ -32,7 +32,7 @@ class WebServiceControllerV1JsonGeneralUpdateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceControllerV1JsonGeneralUpdateTest::__construct
+	 * @covers  WebServiceControllerV1JsonBaseUpdateTest::__construct
 	 * @since   1.0
 	 */
 	public function test__construct()
@@ -46,7 +46,7 @@ class WebServiceControllerV1JsonGeneralUpdateTest extends TestCase
 		);
 
 		// Construct the object.
-		$controller = new WebServiceControllerV1JsonGeneralUpdate('general', $input, $this->getMockWeb());
+		$controller = new WebServiceControllerV1JsonBaseUpdate('general', $input, $this->getMockWeb());
 
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('ok', TestReflection::getValue($controller, 'input')->test());
@@ -82,7 +82,7 @@ class WebServiceControllerV1JsonGeneralUpdateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonGeneralUpdate::getContentId
+	 * @covers        WebServiceControllerV1JsonBaseUpdate::getContentId
 	 * @dataProvider  seedGetContentIdData
 	 * @since         1.0
 	 */
@@ -155,7 +155,7 @@ class WebServiceControllerV1JsonGeneralUpdateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonGeneralUpdate::getDataFields
+	 * @covers        WebServiceControllerV1JsonBaseUpdate::getDataFields
 	 * @dataProvider  seedGetDataFieldsData
 	 * @since         1.0
 	 */
@@ -194,7 +194,7 @@ class WebServiceControllerV1JsonGeneralUpdateTest extends TestCase
 
 		$testInput = new JInput;
 		$testMock = WebServiceApplicationWebMock::create($this);
-		$this->_instance = new WebServiceControllerV1JsonGeneralUpdate('general', $testInput, $testMock);
+		$this->_instance = new WebServiceControllerV1JsonBaseUpdate('general', $testInput, $testMock);
 	}
 
 	/**

@@ -164,68 +164,6 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	}
 
 	/**
-	 * Provides test data for testing fectch controller sufix
-	 *
-	 * @return  array
-	 *
-	 * @since   1.0
-	 */
-	public function seedFetchControllerSuffixData()
-	{
-		// Input, Expected
-		return array(
-			array('GET', 'Get', null, false),
-			array('POST', 'Get', "get", false),
-			array('POST', 'Create', null, false),
-			array('POST', 'Create', "post", false),
-			array('PUT', 'Update', null, false),
-			array('POST', 'Update', "put", false),
-			array('PATCH', 'Update', null, false),
-			array('POST', 'Update', "patch", false),
-			array('DELETE', 'Delete', null, false),
-			array('POST', 'Delete', "delete", false),
-			array('HEAD', 'Head', null, false),
-			array('POST', 'Head', "head", false),
-			array('OPTIONS', 'Options', null, false),
-			array('POST', 'Options', "options", false),
-			array('POST', 'Create', "unknown_method", false),
-			array('UNKNOWN', 'Create', "unknown_method", true),
-		);
-	}
-
-	/**
-	 * Tests fetchControllerSuffix()
-	 *
-	 * @param   string   $input      Input string to test.
-	 * @param   string   $expected   Expected fetched string.
-	 * @param   mixed    $method     Method to override POST request
-	 * @param   boolean  $exception  True if an RuntimeException is expected based on invalid input
-	 *
-	 * @return  void
-	 *
-	 * @covers        WebServiceApplicationWebRouter::fetchControllerSuffix
-	 * @dataProvider  seedFetchControllerSuffixData
-	 * @since         1.0
-	 */
-	public function testFetchControllerSuffix($input,  $expected, $method, $exception)
-	{
-		$_SERVER['REQUEST_METHOD'] = $input;
-		$_GET['_method'] = $method;
-
-		// If we are expecting an exception set it.
-		if ($exception)
-		{
-			$this->setExpectedException('RuntimeException');
-		}
-
-		// Execute the code to test.
-		$actual = TestReflection::invoke($this->_instance, 'fetchControllerSuffix');
-
-		// Verify the value.
-		$this->assertEquals($expected, $actual);
-	}
-
-	/**
 	 * Prepares the environment before running a test.
 	 *
 	 * @return  void

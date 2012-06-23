@@ -10,19 +10,19 @@
 require_once __DIR__ . '/../../../../application/stubs/webMock.php';
 
 /**
- * Test Case class for WebServiceControllerV1JsonGeneralCreate
+ * Test Case class for WebServiceControllerV1JsonBaseCreate
 *
 * @package     WebService.Tests
 * @subpackage  Application
 * @since       1.0
 */
-class WebServiceControllerV1JsonGeneralCreateTest extends TestCase
+class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 {
 
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    WebServiceControllerV1JsonGeneralCreate
+	 * @var    WebServiceControllerV1JsonBaseCreate
 	 * @since  1.0
 	 */
 	private $_instance;
@@ -32,7 +32,7 @@ class WebServiceControllerV1JsonGeneralCreateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceControllerV1JsonGeneralCreateTest::__construct
+	 * @covers  WebServiceControllerV1JsonBaseCreateTest::__construct
 	 * @since   1.0
 	 */
 	public function test__construct()
@@ -46,7 +46,7 @@ class WebServiceControllerV1JsonGeneralCreateTest extends TestCase
 		);
 
 		// Construct the object.
-		$controller = new WebServiceControllerV1JsonGeneralCreate('general', $input, $this->getMockWeb());
+		$controller = new WebServiceControllerV1JsonBaseCreate('general', $input, $this->getMockWeb());
 
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('ok', TestReflection::getValue($controller, 'input')->test());
@@ -84,7 +84,7 @@ class WebServiceControllerV1JsonGeneralCreateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonGeneralCreate::getMandatoryFields
+	 * @covers        WebServiceControllerV1JsonBaseCreate::getMandatoryFields
 	 * @dataProvider  seedGetMandatoryFieldsData
 	 * @since         1.0
 	 */
@@ -151,7 +151,7 @@ class WebServiceControllerV1JsonGeneralCreateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonGeneralCreate::getOptionalFields
+	 * @covers        WebServiceControllerV1JsonBaseCreate::getOptionalFields
 	 * @dataProvider  seedGetOptionalFieldsData
 	 * @since         1.0
 	 */
@@ -200,7 +200,7 @@ class WebServiceControllerV1JsonGeneralCreateTest extends TestCase
 		$type = 'general';
 		$testInput = new JInput;
 		$testMock = WebServiceApplicationWebMock::create($this);
-		$this->_instance = new WebServiceControllerV1JsonGeneralCreate($type, $testInput, $testMock);
+		$this->_instance = new WebServiceControllerV1JsonBaseCreate($type, $testInput, $testMock);
 	}
 
 	/**
