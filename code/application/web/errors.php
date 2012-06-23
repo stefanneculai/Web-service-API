@@ -101,7 +101,9 @@ class WebServiceApplicationWebErrors
 				return $errorObj;
 			}
 		}
+		// @codeCoverageIgnoreStart
 	}
+		// @codeCoverageIgnoreEnd
 
 	/**
 	 * Add error to the error list
@@ -229,6 +231,7 @@ class WebServiceApplicationWebErrors
 	 *
 	 * @since   1.0
 	 * @throws  RuntimeException if file cannot be read.
+	 *
 	 */
 	protected function fetchErrorsData()
 	{

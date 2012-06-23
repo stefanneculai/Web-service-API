@@ -9,7 +9,7 @@
  */
 
 /**
- * Test Case class for WebServiceErrors
+ * Test Case class for WebServiceApplicationWebErrors
  *
  * @package     WebService.Tests
  * @subpackage  Application
@@ -20,10 +20,35 @@ class WebServiceApplicationWebErrorsTest extends TestCase
 	/**
 	 * An instance of the class to test.
 	 *
-	 * @var    WebServiceErrors
+	 * @var    WebServiceApplicationWebErrors
 	 * @since  1.0
 	 */
 	private $_instance;
+
+/**
+	 * Tests __construct()
+	 *
+	 * @return  void
+	 *
+	 * @covers  WebServiceApplicationWebErrors::__construct
+	 * @since   1.0
+	 */
+	public function test__construct()
+	{
+		// Create the mock.
+		$input = $this->getMock('JInput', array('test'), array(), '', false);
+		$input->expects($this->any())
+		->method('test')
+		->will(
+				$this->returnValue('ok')
+		);
+
+		// Construct the object.
+		$errorsClass = new WebServiceApplicationWebErrors($this->getMockWeb(), $input);
+
+		// Verify that the values injected into the constructor are present.
+		$this->assertEquals('ok', TestReflection::getValue($errorsClass, 'input')->test());
+	}
 
 	/**
 	 * Prepares the environment before running a test.
@@ -85,7 +110,7 @@ class WebServiceApplicationWebErrorsTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceErrors::checkSupressResponseCodes
+	 * @covers        WebServiceApplicationWebErrors::checkSupressResponseCodes
 	 * @dataProvider  seedCheckSupressResponseCodesData
 	 * @since         1.0
 	 */
@@ -127,6 +152,13 @@ class WebServiceApplicationWebErrorsTest extends TestCase
 							\"message\": \"Message for code 1001\",
 							\"more_info\": \"More info fore code 1001\",
 							\"response_code\": \"400\"
+						},
+					\"1002\":
+						{
+							\"code\": \"1001\",
+							\"message\": \"Message for code 1001 $1\",
+							\"more_info\": \"More info fore code 1001\",
+							\"response_code\": \"400\"
 						}
 					}");
 
@@ -151,7 +183,7 @@ class WebServiceApplicationWebErrorsTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceErrors::addError
+	 * @covers        WebServiceApplicationWebErrors::addError
 	 * @dataProvider  seedAddErrorData
 	 * @since         1.0
 	 */
@@ -170,11 +202,53 @@ class WebServiceApplicationWebErrorsTest extends TestCase
 	}
 
 	/**
+	 * Tests checkAddError()
+	 *
+	 * @return  void
+	 *
+	 * @covers        WebServiceApplicationWebErrors::addError
+	 * @covers        WebServiceApplicationWebErrors::customMessage
+	 *
+	 * @since         1.0
+	 */
+	public function testAddCustomError()
+	{
+		$errorsMap = json_decode("{
+					\"1001\":
+						{
+							\"code\": \"1001\",
+							\"message\": \"Message for code 1001\",
+							\"more_info\": \"More info fore code 1001\",
+							\"response_code\": \"400\"
+						},
+
+					\"1002\":
+						{
+							\"code\": \"1001\",
+							\"message\": \"Message for code 1001 $1\",
+							\"more_info\": \"More info fore code 1001\",
+							\"response_code\": \"400\"
+						}
+					}");
+
+		TestReflection::setValue($this->_instance, 'errorsMap', $errorsMap);
+
+		// Execute the code to test.
+		TestReflection::invoke($this->_instance, 'addError', "1002", array("foo"));
+		$actual = array_pop(TestReflection::getValue($this->_instance, 'errorsArray'));
+
+		// Verify the value.
+		$this->assertEquals("Message for code 1001 foo", $actual['message']);
+		$this->assertEquals(true, TestReflection::getValue($this->_instance, 'errors'));
+		$this->assertEquals(400, TestReflection::getValue($this->_instance, 'responseCode'));
+	}
+
+	/**
 	 * Tests unknownError()
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceErrors::unknownError
+	 * @covers        WebServiceApplicationWebErrors::unknownError
 	 * @since         1.0
 	 */
 	public function testUnknownError()
@@ -194,7 +268,7 @@ class WebServiceApplicationWebErrorsTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceErrors::getErrors
+	 * @covers        WebServiceApplicationWebErrors::getErrors
 	 * @since         1.0
 	 */
 	public function testGetErrors()
@@ -205,5 +279,39 @@ class WebServiceApplicationWebErrorsTest extends TestCase
 		$actual = TestReflection::invoke($this->_instance, 'getErrors');
 
 		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * Tests errorsExist()
+	 *
+	 * @return  void
+	 *
+	 * @covers        WebServiceApplicationWebErrors::errorsExist
+	 * @since         1.0
+	 */
+	public function testErrorsExist()
+	{
+		TestReflection::setValue($this->_instance, 'errors', false);
+
+		$actual = TestReflection::invoke($this->_instance, 'errorsExist');
+
+		$this->assertEquals(false, $actual);
+	}
+
+/**
+	 * Tests getResponseCode()
+	 *
+	 * @return  void
+	 *
+	 * @covers        WebServiceApplicationWebErrors::getResponseCode
+	 * @since         1.0
+	 */
+	public function testGetResponseCode()
+	{
+		TestReflection::setValue($this->_instance, 'responseCode', 100);
+
+		$actual = TestReflection::invoke($this->_instance, 'getResponseCode');
+
+		$this->assertEquals(100, $actual);
 	}
 }

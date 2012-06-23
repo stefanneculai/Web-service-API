@@ -46,6 +46,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	 * @since   1.0
 	 * @throws  InvalidArgumentException
 	 * @throws  RuntimeException
+	 *
 	 */
 	public function execute($route)
 	{
@@ -195,6 +196,8 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	 *
 	 * @since   12.3
 	 * @throws  RuntimeException
+	 *
+	 * @codeCoverageIgnore
 	 */
 	protected function fetchController($name, $type)
 	{

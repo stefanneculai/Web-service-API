@@ -1,66 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="WebServiceApplicationWebRouterTest" file="/opt/lampp/htdocs/joomla_development/ws/tests/unit/application/web/routerTest.php" fullPackage="WebService.Tests.Application" package="WebService.Tests" subpackage="Application" tests="51" assertions="292" failures="0" errors="0" time="1.229549">
-    <testcase name="test__construct" class="WebServiceApplicationWebRouterTest" file="/opt/lampp/htdocs/joomla_development/ws/tests/unit/application/web/routerTest.php" line="159" assertions="10" time="0.132279"/>
-    <testsuite name="WebServiceApplicationWebRouterTest::testDetectRequestFormat" tests="16" assertions="106" failures="0" errors="0" time="0.346903">
-      <testcase name="testDetectRequestFormat with data set #0" assertions="7" time="0.022302"/>
-      <testcase name="testDetectRequestFormat with data set #1" assertions="7" time="0.022386"/>
-      <testcase name="testDetectRequestFormat with data set #2" assertions="7" time="0.021907"/>
-      <testcase name="testDetectRequestFormat with data set #3" assertions="7" time="0.021109"/>
-      <testcase name="testDetectRequestFormat with data set #4" assertions="7" time="0.021427"/>
-      <testcase name="testDetectRequestFormat with data set #5" assertions="7" time="0.021538"/>
-      <testcase name="testDetectRequestFormat with data set #6" assertions="7" time="0.021304"/>
-      <testcase name="testDetectRequestFormat with data set #7" assertions="7" time="0.022392"/>
-      <testcase name="testDetectRequestFormat with data set #8" assertions="7" time="0.022782"/>
-      <testcase name="testDetectRequestFormat with data set #9" assertions="7" time="0.022559"/>
-      <testcase name="testDetectRequestFormat with data set #10" assertions="7" time="0.020739"/>
-      <testcase name="testDetectRequestFormat with data set #11" assertions="7" time="0.020874"/>
-      <testcase name="testDetectRequestFormat with data set #12" assertions="7" time="0.021074"/>
-      <testcase name="testDetectRequestFormat with data set #13" assertions="5" time="0.020614"/>
-      <testcase name="testDetectRequestFormat with data set #14" assertions="5" time="0.020660"/>
-      <testcase name="testDetectRequestFormat with data set #15" assertions="5" time="0.023235"/>
+  <testsuite name="C:\wamp\www\eclipse_www\ws\tests" tests="118" assertions="641" failures="0" errors="0" time="2.804591">
+    <testsuite name="WebServiceApplicationWebErrorsTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\application\web\errorsTest.php" fullPackage="WebService.Tests.Application" package="WebService.Tests" subpackage="Application" tests="15" assertions="86" failures="0" errors="0" time="0.434101">
+      <testcase name="test__construct" class="WebServiceApplicationWebErrorsTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\application\web\errorsTest.php" line="36" assertions="10" time="0.153481"/>
+      <testsuite name="WebServiceApplicationWebErrorsTest::testCheckSupressResponseCodes" tests="7" assertions="35" failures="0" errors="0" time="0.135415">
+        <testcase name="testCheckSupressResponseCodes with data set #0" assertions="5" time="0.020886"/>
+        <testcase name="testCheckSupressResponseCodes with data set #1" assertions="5" time="0.019093"/>
+        <testcase name="testCheckSupressResponseCodes with data set #2" assertions="5" time="0.018763"/>
+        <testcase name="testCheckSupressResponseCodes with data set #3" assertions="5" time="0.019164"/>
+        <testcase name="testCheckSupressResponseCodes with data set #4" assertions="5" time="0.019005"/>
+        <testcase name="testCheckSupressResponseCodes with data set #5" assertions="5" time="0.019246"/>
+        <testcase name="testCheckSupressResponseCodes with data set #6" assertions="5" time="0.019258"/>
+      </testsuite>
+      <testsuite name="WebServiceApplicationWebErrorsTest::testAddError" tests="2" assertions="14" failures="0" errors="0" time="0.046570">
+        <testcase name="testAddError with data set #0" assertions="7" time="0.023952"/>
+        <testcase name="testAddError with data set #1" assertions="7" time="0.022618"/>
+      </testsuite>
+      <testcase name="testAddCustomError" class="WebServiceApplicationWebErrorsTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\application\web\errorsTest.php" line="214" assertions="7" time="0.020213"/>
+      <testcase name="testUnknownError" class="WebServiceApplicationWebErrorsTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\application\web\errorsTest.php" line="254" assertions="5" time="0.021620"/>
+      <testcase name="testGetErrors" class="WebServiceApplicationWebErrorsTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\application\web\errorsTest.php" line="274" assertions="5" time="0.019908"/>
+      <testcase name="testErrorsExist" class="WebServiceApplicationWebErrorsTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\application\web\errorsTest.php" line="292" assertions="5" time="0.018488"/>
+      <testcase name="testGetResponseCode" class="WebServiceApplicationWebErrorsTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\application\web\errorsTest.php" line="309" assertions="5" time="0.018406"/>
     </testsuite>
-    <testsuite name="WebServiceApplicationWebRouterTest::testFetchContentType" tests="7" assertions="35" failures="0" errors="0" time="0.147389">
-      <testcase name="testFetchContentType with data set #0" assertions="5" time="0.022039"/>
-      <testcase name="testFetchContentType with data set #1" assertions="5" time="0.021204"/>
-      <testcase name="testFetchContentType with data set #2" assertions="5" time="0.021062"/>
-      <testcase name="testFetchContentType with data set #3" assertions="5" time="0.021249"/>
-      <testcase name="testFetchContentType with data set #4" assertions="5" time="0.021026"/>
-      <testcase name="testFetchContentType with data set #5" assertions="5" time="0.019597"/>
-      <testcase name="testFetchContentType with data set #6" assertions="5" time="0.021212"/>
+    <testsuite name="WebServiceApplicationWebRouterTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\application\web\routerTest.php" fullPackage="WebService.Tests.Application" package="WebService.Tests" subpackage="Application" tests="14" assertions="84" failures="0" errors="0" time="0.274188">
+      <testsuite name="WebServiceApplicationWebRouterTest::testReorderRoute" tests="5" assertions="27" failures="0" errors="0" time="0.097326">
+        <testcase name="testReorderRoute with data set #0" assertions="5" time="0.022495"/>
+        <testcase name="testReorderRoute with data set #1" assertions="5" time="0.017790"/>
+        <testcase name="testReorderRoute with data set #2" assertions="5" time="0.017853"/>
+        <testcase name="testReorderRoute with data set #3" assertions="6" time="0.019451"/>
+        <testcase name="testReorderRoute with data set #4" assertions="6" time="0.019737"/>
+      </testsuite>
+      <testsuite name="WebServiceApplicationWebRouterTest::testRemoveControllerFromRoute" tests="3" assertions="15" failures="0" errors="0" time="0.053800">
+        <testcase name="testRemoveControllerFromRoute with data set #0" assertions="5" time="0.018017"/>
+        <testcase name="testRemoveControllerFromRoute with data set #1" assertions="5" time="0.017824"/>
+        <testcase name="testRemoveControllerFromRoute with data set #2" assertions="5" time="0.017959"/>
+      </testsuite>
+      <testsuite name="WebServiceApplicationWebRouterTest::testRewriteRoute" tests="6" assertions="42" failures="0" errors="0" time="0.123061">
+        <testcase name="testRewriteRoute with data set #0" assertions="7" time="0.025444"/>
+        <testcase name="testRewriteRoute with data set #1" assertions="7" time="0.019306"/>
+        <testcase name="testRewriteRoute with data set #2" assertions="7" time="0.019347"/>
+        <testcase name="testRewriteRoute with data set #3" assertions="7" time="0.019467"/>
+        <testcase name="testRewriteRoute with data set #4" assertions="7" time="0.019620"/>
+        <testcase name="testRewriteRoute with data set #5" assertions="7" time="0.019877"/>
+      </testsuite>
     </testsuite>
-    <testsuite name="WebServiceApplicationWebRouterTest::testFetchControllerClass" tests="6" assertions="36" failures="0" errors="0" time="0.144260">
-      <testcase name="testFetchControllerClass with data set #0" assertions="6" time="0.030505"/>
-      <testcase name="testFetchControllerClass with data set #1" assertions="6" time="0.021588"/>
-      <testcase name="testFetchControllerClass with data set #2" assertions="6" time="0.023079"/>
-      <testcase name="testFetchControllerClass with data set #3" assertions="6" time="0.023665"/>
-      <testcase name="testFetchControllerClass with data set #4" assertions="6" time="0.023499"/>
-      <testcase name="testFetchControllerClass with data set #5" assertions="6" time="0.021924"/>
+    <testsuite name="WebServiceControllerV1JsonBaseCreateTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\json\base\createTest.php" fullPackage="WebService.Tests.Application" package="WebService.Tests" subpackage="Application" tests="9" assertions="50" failures="0" errors="0" time="0.258963">
+      <testcase name="test__construct" class="WebServiceControllerV1JsonBaseCreateTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\json\base\createTest.php" line="38" assertions="10" time="0.073995"/>
+      <testsuite name="WebServiceControllerV1JsonBaseCreateTest::testGetMandatoryFields" tests="4" assertions="20" failures="0" errors="0" time="0.088925">
+        <testcase name="testGetMandatoryFields with data set #0" assertions="5" time="0.021484"/>
+        <testcase name="testGetMandatoryFields with data set #1" assertions="5" time="0.021704"/>
+        <testcase name="testGetMandatoryFields with data set #2" assertions="5" time="0.021558"/>
+        <testcase name="testGetMandatoryFields with data set #3" assertions="5" time="0.024179"/>
+      </testsuite>
+      <testsuite name="WebServiceControllerV1JsonBaseCreateTest::testGetOptionalFields" tests="4" assertions="20" failures="0" errors="0" time="0.096043">
+        <testcase name="testGetOptionalFields with data set #0" assertions="5" time="0.027290"/>
+        <testcase name="testGetOptionalFields with data set #1" assertions="5" time="0.023339"/>
+        <testcase name="testGetOptionalFields with data set #2" assertions="5" time="0.022677"/>
+        <testcase name="testGetOptionalFields with data set #3" assertions="5" time="0.022737"/>
+      </testsuite>
     </testsuite>
-    <testsuite name="WebServiceApplicationWebRouterTest::testFetchRequestMethod" tests="15" assertions="75" failures="0" errors="0" time="0.327728">
-      <testcase name="testFetchRequestMethod with data set #0" assertions="5" time="0.021008"/>
-      <testcase name="testFetchRequestMethod with data set #1" assertions="5" time="0.022031"/>
-      <testcase name="testFetchRequestMethod with data set #2" assertions="5" time="0.021615"/>
-      <testcase name="testFetchRequestMethod with data set #3" assertions="5" time="0.021338"/>
-      <testcase name="testFetchRequestMethod with data set #4" assertions="5" time="0.021752"/>
-      <testcase name="testFetchRequestMethod with data set #5" assertions="5" time="0.022099"/>
-      <testcase name="testFetchRequestMethod with data set #6" assertions="5" time="0.021764"/>
-      <testcase name="testFetchRequestMethod with data set #7" assertions="5" time="0.021876"/>
-      <testcase name="testFetchRequestMethod with data set #8" assertions="5" time="0.022147"/>
-      <testcase name="testFetchRequestMethod with data set #9" assertions="5" time="0.022786"/>
-      <testcase name="testFetchRequestMethod with data set #10" assertions="5" time="0.021564"/>
-      <testcase name="testFetchRequestMethod with data set #11" assertions="5" time="0.021976"/>
-      <testcase name="testFetchRequestMethod with data set #12" assertions="5" time="0.021904"/>
-      <testcase name="testFetchRequestMethod with data set #13" assertions="5" time="0.022257"/>
-      <testcase name="testFetchRequestMethod with data set #14" assertions="5" time="0.021611"/>
+    <testsuite name="WebServiceControllerV1JsonBaseDeleteTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\json\base\deleteTest.php" fullPackage="WebService.Tests.Application" package="WebService.Tests" subpackage="Application" tests="22" assertions="118" failures="0" errors="0" time="0.510559">
+      <testcase name="test__construct" class="WebServiceControllerV1JsonBaseDeleteTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\json\base\deleteTest.php" line="38" assertions="10" time="0.038301"/>
+      <testsuite name="WebServiceControllerV1JsonBaseDeleteTest::testGetContentId" tests="7" assertions="35" failures="0" errors="0" time="0.147071">
+        <testcase name="testGetContentId with data set #0" assertions="5" time="0.020862"/>
+        <testcase name="testGetContentId with data set #1" assertions="5" time="0.020863"/>
+        <testcase name="testGetContentId with data set #2" assertions="5" time="0.020688"/>
+        <testcase name="testGetContentId with data set #3" assertions="5" time="0.021486"/>
+        <testcase name="testGetContentId with data set #4" assertions="5" time="0.021019"/>
+        <testcase name="testGetContentId with data set #5" assertions="5" time="0.020998"/>
+        <testcase name="testGetContentId with data set #6" assertions="5" time="0.021155"/>
+      </testsuite>
+      <testsuite name="WebServiceControllerV1JsonBaseDeleteTest::testGetSince" tests="7" assertions="36" failures="0" errors="0" time="0.161363">
+        <testcase name="testGetSince with data set #0" assertions="5" time="0.021054"/>
+        <testcase name="testGetSince with data set #1" assertions="5" time="0.023388"/>
+        <testcase name="testGetSince with data set #2" assertions="5" time="0.022462"/>
+        <testcase name="testGetSince with data set #3" assertions="5" time="0.022307"/>
+        <testcase name="testGetSince with data set #4" assertions="5" time="0.020868"/>
+        <testcase name="testGetSince with data set #5" assertions="5" time="0.021920"/>
+        <testcase name="testGetSince with data set #6" assertions="6" time="0.029364"/>
+      </testsuite>
+      <testsuite name="WebServiceControllerV1JsonBaseDeleteTest::testGetBefore" tests="7" assertions="37" failures="0" errors="0" time="0.163824">
+        <testcase name="testGetBefore with data set #0" assertions="5" time="0.021270"/>
+        <testcase name="testGetBefore with data set #1" assertions="5" time="0.023392"/>
+        <testcase name="testGetBefore with data set #2" assertions="5" time="0.021981"/>
+        <testcase name="testGetBefore with data set #3" assertions="5" time="0.022080"/>
+        <testcase name="testGetBefore with data set #4" assertions="6" time="0.026516"/>
+        <testcase name="testGetBefore with data set #5" assertions="5" time="0.021351"/>
+        <testcase name="testGetBefore with data set #6" assertions="6" time="0.027234"/>
+      </testsuite>
     </testsuite>
-    <testsuite name="WebServiceApplicationWebRouterTest::testRewriteRoute" tests="6" assertions="30" failures="0" errors="0" time="0.130991">
-      <testcase name="testRewriteRoute with data set #0" assertions="5" time="0.020544"/>
-      <testcase name="testRewriteRoute with data set #1" assertions="5" time="0.021653"/>
-      <testcase name="testRewriteRoute with data set #2" assertions="5" time="0.020077"/>
-      <testcase name="testRewriteRoute with data set #3" assertions="5" time="0.021981"/>
-      <testcase name="testRewriteRoute with data set #4" assertions="5" time="0.023823"/>
-      <testcase name="testRewriteRoute with data set #5" assertions="5" time="0.022913"/>
+    <testsuite name="WebServiceControllerV1JsonBaseGetTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\json\base\getTest.php" fullPackage="WebService.Tests.Application" package="WebService.Tests" subpackage="Application" tests="46" assertions="238" failures="0" errors="0" time="1.028509">
+      <testcase name="test__construct" class="WebServiceControllerV1JsonBaseGetTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\json\base\getTest.php" line="39" assertions="10" time="0.038399"/>
+      <testsuite name="WebServiceControllerV1JsonBaseGetTest::testGetOrder" tests="6" assertions="30" failures="0" errors="0" time="0.130814">
+        <testcase name="testGetOrder with data set #0" assertions="5" time="0.021230"/>
+        <testcase name="testGetOrder with data set #1" assertions="5" time="0.022025"/>
+        <testcase name="testGetOrder with data set #2" assertions="5" time="0.023135"/>
+        <testcase name="testGetOrder with data set #3" assertions="5" time="0.020752"/>
+        <testcase name="testGetOrder with data set #4" assertions="5" time="0.022283"/>
+        <testcase name="testGetOrder with data set #5" assertions="5" time="0.021389"/>
+      </testsuite>
+      <testsuite name="WebServiceControllerV1JsonBaseGetTest::testGetLimit" tests="8" assertions="40" failures="0" errors="0" time="0.167840">
+        <testcase name="testGetLimit with data set #0" assertions="5" time="0.021036"/>
+        <testcase name="testGetLimit with data set #1" assertions="5" time="0.021191"/>
+        <testcase name="testGetLimit with data set #2" assertions="5" time="0.021457"/>
+        <testcase name="testGetLimit with data set #3" assertions="5" time="0.020823"/>
+        <testcase name="testGetLimit with data set #4" assertions="5" time="0.020790"/>
+        <testcase name="testGetLimit with data set #5" assertions="5" time="0.020602"/>
+        <testcase name="testGetLimit with data set #6" assertions="5" time="0.021030"/>
+        <testcase name="testGetLimit with data set #7" assertions="5" time="0.020911"/>
+      </testsuite>
+      <testsuite name="WebServiceControllerV1JsonBaseGetTest::testGetOffset" tests="6" assertions="30" failures="0" errors="0" time="0.126314">
+        <testcase name="testGetOffset with data set #0" assertions="5" time="0.021514"/>
+        <testcase name="testGetOffset with data set #1" assertions="5" time="0.020810"/>
+        <testcase name="testGetOffset with data set #2" assertions="5" time="0.020564"/>
+        <testcase name="testGetOffset with data set #3" assertions="5" time="0.020421"/>
+        <testcase name="testGetOffset with data set #4" assertions="5" time="0.021759"/>
+        <testcase name="testGetOffset with data set #5" assertions="5" time="0.021246"/>
+      </testsuite>
+      <testsuite name="WebServiceControllerV1JsonBaseGetTest::testGetContentId" tests="7" assertions="35" failures="0" errors="0" time="0.149322">
+        <testcase name="testGetContentId with data set #0" assertions="5" time="0.020861"/>
+        <testcase name="testGetContentId with data set #1" assertions="5" time="0.020931"/>
+        <testcase name="testGetContentId with data set #2" assertions="5" time="0.021630"/>
+        <testcase name="testGetContentId with data set #3" assertions="5" time="0.021466"/>
+        <testcase name="testGetContentId with data set #4" assertions="5" time="0.021304"/>
+        <testcase name="testGetContentId with data set #5" assertions="5" time="0.022143"/>
+        <testcase name="testGetContentId with data set #6" assertions="5" time="0.020987"/>
+      </testsuite>
+      <testsuite name="WebServiceControllerV1JsonBaseGetTest::testGetSince" tests="7" assertions="36" failures="0" errors="0" time="0.156021">
+        <testcase name="testGetSince with data set #0" assertions="5" time="0.021657"/>
+        <testcase name="testGetSince with data set #1" assertions="5" time="0.021684"/>
+        <testcase name="testGetSince with data set #2" assertions="5" time="0.021418"/>
+        <testcase name="testGetSince with data set #3" assertions="5" time="0.021805"/>
+        <testcase name="testGetSince with data set #4" assertions="5" time="0.020702"/>
+        <testcase name="testGetSince with data set #5" assertions="5" time="0.021474"/>
+        <testcase name="testGetSince with data set #6" assertions="6" time="0.027281"/>
+      </testsuite>
+      <testsuite name="WebServiceControllerV1JsonBaseGetTest::testGetBefore" tests="7" assertions="37" failures="0" errors="0" time="0.165455">
+        <testcase name="testGetBefore with data set #0" assertions="5" time="0.022115"/>
+        <testcase name="testGetBefore with data set #1" assertions="5" time="0.022353"/>
+        <testcase name="testGetBefore with data set #2" assertions="5" time="0.022806"/>
+        <testcase name="testGetBefore with data set #3" assertions="5" time="0.022352"/>
+        <testcase name="testGetBefore with data set #4" assertions="6" time="0.026242"/>
+        <testcase name="testGetBefore with data set #5" assertions="5" time="0.023052"/>
+        <testcase name="testGetBefore with data set #6" assertions="6" time="0.026535"/>
+      </testsuite>
+      <testsuite name="WebServiceControllerV1JsonBaseGetTest::testGetFields" tests="4" assertions="20" failures="0" errors="0" time="0.094344">
+        <testcase name="testGetFields with data set #0" assertions="5" time="0.022224"/>
+        <testcase name="testGetFields with data set #1" assertions="5" time="0.022411"/>
+        <testcase name="testGetFields with data set #2" assertions="5" time="0.024134"/>
+        <testcase name="testGetFields with data set #3" assertions="5" time="0.025575"/>
+      </testsuite>
+    </testsuite>
+    <testsuite name="WebServiceControllerV1JsonBaseUpdateTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\json\base\updateTest.php" fullPackage="WebService.Tests.Application" package="WebService.Tests" subpackage="Application" tests="12" assertions="65" failures="0" errors="0" time="0.298272">
+      <testcase name="test__construct" class="WebServiceControllerV1JsonBaseUpdateTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\json\base\updateTest.php" line="38" assertions="10" time="0.042169"/>
+      <testsuite name="WebServiceControllerV1JsonBaseUpdateTest::testGetContentId" tests="7" assertions="35" failures="0" errors="0" time="0.154579">
+        <testcase name="testGetContentId with data set #0" assertions="5" time="0.022388"/>
+        <testcase name="testGetContentId with data set #1" assertions="5" time="0.021922"/>
+        <testcase name="testGetContentId with data set #2" assertions="5" time="0.022153"/>
+        <testcase name="testGetContentId with data set #3" assertions="5" time="0.022361"/>
+        <testcase name="testGetContentId with data set #4" assertions="5" time="0.021977"/>
+        <testcase name="testGetContentId with data set #5" assertions="5" time="0.021859"/>
+        <testcase name="testGetContentId with data set #6" assertions="5" time="0.021919"/>
+      </testsuite>
+      <testsuite name="WebServiceControllerV1JsonBaseUpdateTest::testGetDataFields" tests="4" assertions="20" failures="0" errors="0" time="0.101524">
+        <testcase name="testGetDataFields with data set #0" assertions="5" time="0.024736"/>
+        <testcase name="testGetDataFields with data set #1" assertions="5" time="0.024991"/>
+        <testcase name="testGetDataFields with data set #2" assertions="5" time="0.026484"/>
+        <testcase name="testGetDataFields with data set #3" assertions="5" time="0.025313"/>
+      </testsuite>
     </testsuite>
   </testsuite>
 </testsuites>
