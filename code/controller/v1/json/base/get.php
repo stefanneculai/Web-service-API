@@ -167,11 +167,6 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		{
 			$fields = preg_split('#[\s,]+#', $fields, null, PREG_SPLIT_NO_EMPTY);
 
-			if ($fields === false)
-			{
-				return null;
-			}
-
 			return $fields;
 		}
 		else

@@ -52,6 +52,97 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 		$this->assertEquals('ok', TestReflection::getValue($controller, 'input')->test());
 	}
 
+	/** Test init
+	 *
+	 * @return void
+	 *
+	 * @covers        WebServiceControllerV1JsonBaseCreate::init
+	 * @since
+	 */
+	public function testInit()
+	{
+		// Set mandatory fields
+		$mandatory = array('f1' => '', 'f2' => '', 'f3' => '');
+		TestReflection::setValue($this->_instance, 'mandatoryFields', $mandatory);
+		foreach (array('f1' => 'test', 'f2' => 'test', 'f3' => 'test') as $key => $value)
+		{
+			$_GET[$key] = $value;
+		}
+
+		// Set optional fields
+		$optional = array('f4' => '', 'f5' => '');
+		TestReflection::setValue($this->_instance, 'optionalFields', $optional);
+		foreach (array('f4' => 'test', 'f5' => 'test') as $key => $value)
+		{
+			$_GET[$key] = $value;
+		}
+
+		TestReflection::invoke($this->_instance, 'init');
+
+		$am = TestReflection::getValue($this->_instance, 'mandatoryFields');
+		$ao = TestReflection::getValue($this->_instance, 'optionalFields');
+
+		// Clear
+		TestReflection::setValue($this->_instance, 'mandatoryFields', array());
+		TestReflection::setValue($this->_instance, 'optionalFields', array());
+
+		foreach (array('f1' => 'test', 'f2' => 'test', 'f3' => 'test') as $key => $value)
+		{
+			$_GET[$key] = null;
+		}
+
+		foreach (array('f4' => 'test', 'f5' => 'test') as $key => $value)
+		{
+			$_GET[$key] = null;
+		}
+
+		// Result assert
+		$this->assertEquals(
+					array('f1' => 'test', 'f2' => 'test', 'f3' => 'test'),
+					$am
+				);
+
+		$this->assertEquals(
+					array('f4' => 'test', 'f5' => 'test'),
+					$ao
+				);
+	}
+
+	/** Test execute with errors
+	 *
+	 * @return void
+	 *
+	 * @covers        WebServiceControllerV1JsonBaseCreate::execute
+	 * @since
+	 */
+	public function testExecute()
+	{
+		foreach (array('f1' => 'test', 'f2' => 'test', 'f3' => 'test') as $key => $value)
+		{
+			$_GET[$key] = $value;
+		}
+
+		// Get app
+		$app = TestReflection::getValue($this->_instance, 'app');
+
+		// Set errors
+		TestReflection::setValue($app->errors, 'errors', true);
+		$errors = TestReflection::setValue($app->errors, 'errorsArray', array('foo'));
+
+		TestReflection::invoke($this->_instance, 'execute');
+
+		$actual = TestReflection::invoke($app, 'getBody');
+		$expected = json_encode(array('foo'));
+
+		foreach (array('f1' => 'test', 'f2' => 'test', 'f3' => 'test') as $key => $value)
+		{
+			$_GET[$key] = null;
+		}
+
+		$this->assertEquals($expected, $actual);
+
+	}
+
 	/**
 	 * Provides test data for request format detection.
 	 *
@@ -61,15 +152,15 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 	 */
 	public function seedGetMandatoryFieldsData()
 	{
-		$mandatory = array('field1' => '', 'field2' => '', 'field3' => '');
+		$mandatory = array('f1' => '', 'f2' => '', 'f3' => '');
 
 		// Input, Expected, Exception
 		return array(
 				array($mandatory, array(), null, true, 3),
-				array($mandatory, array('field1' => 'test'), null, true, 2),
-				array($mandatory, array('field1' => 'test', 'field2' => 'test', 'field3' => null), null, true, 1),
-				array($mandatory, array('field1' => 'test', 'field2' => 'test', 'field3' => 'test'),
-						array('field1' => 'test', 'field2' => 'test', 'field3' => 'test'), false),
+				array($mandatory, array('f1' => 'test'), null, true, 2),
+				array($mandatory, array('f1' => 'test', 'f2' => 'test', 'f3' => null), null, true, 1),
+				array($mandatory, array('f1' => 'test', 'f2' => 'test', 'f3' => 'test'),
+						array('f1' => 'test', 'f2' => 'test', 'f3' => 'test'), false),
 		);
 	}
 
@@ -91,6 +182,7 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 	public function testGetMandatoryFields($mandatory, $input,  $expected, $exception, $en=0)
 	{
 		TestReflection::setValue($this->_instance, 'mandatoryFields', $mandatory);
+		TestReflection::setValue($this->_instance, 'fieldsMap', array());
 
 		foreach ($input as $key => $value)
 		{
@@ -128,16 +220,16 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 	 */
 	public function seedGetOptionalFieldsData()
 	{
-		$optional = array('field4' => '', 'field5' => '');
+		$optional = array('f4' => '', 'f5' => '');
 
 		// Input, Expected, Exception
 		return array(
-				array($optional, array(), array('field4' => '', 'field5' => ''), false),
-				array($optional, array('field4' => 'test'), array('field4' => 'test', 'field5' => ''), false),
-				array($optional, array('field4' => 'test', 'field5' => 'test'),
-						array('field4' => 'test', 'field5' => 'test'), false),
-				array($optional, array('field4' => 'test', 'field5' => 'test'),
-						array('field4' => 'test', 'field5' => 'test'), false)
+				array($optional, array(), array('f4' => '', 'f5' => ''), false),
+				array($optional, array('f4' => 'test'), array('f4' => 'test', 'f5' => ''), false),
+				array($optional, array('f4' => 'test', 'f5' => 'test'),
+						array('f4' => 'test', 'f5' => 'test'), false),
+				array($optional, array('f4' => 'test', 'f5' => 'test'),
+						array('f4' => 'test', 'f5' => 'test'), false)
 		);
 	}
 
@@ -158,6 +250,7 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 	public function testGetOptionalFields($optional, $input,  $expected, $exception)
 	{
 		TestReflection::setValue($this->_instance, 'optionalFields', $optional);
+		TestReflection::setValue($this->_instance, 'fieldsMap', array());
 
 		foreach ($input as $key => $value)
 		{
