@@ -269,6 +269,61 @@ class WebServiceControllerV1JsonBaseDeleteTest extends TestCase
 		}
 	}
 
+	/** Test execute with errors
+	 *
+	 * @return void
+	 *
+	 * @covers        WebServiceControllerV1JsonBaseDelete::execute
+	 * @since
+	 */
+	public function testExecute()
+	{
+		// Get app
+		$app = TestReflection::getValue($this->_instance, 'app');
+
+		// Set errors
+		TestReflection::setValue($app->errors, 'errors', true);
+		$errors = TestReflection::setValue($app->errors, 'errorsArray', array('foo'));
+
+		TestReflection::invoke($this->_instance, 'execute');
+
+		$actual = TestReflection::invoke($app, 'getBody');
+		$expected = json_encode(array('foo'));
+
+		$this->assertEquals($expected, $actual);
+
+	}
+
+	/** Test init
+	 *
+	 * @return void
+	 *
+	 * @covers        WebServiceControllerV1JsonBaseDelete::init
+	 * @since
+	 */
+	public function testInit()
+	{
+		$_GET['@route'] = '22';
+		$_GET['before'] = '1970-01-01';
+		$_GET['since'] = '1970-01-01';
+
+		TestReflection::invoke($this->_instance, 'init');
+
+		// Test expected id
+		$ai = TestReflection::getValue($this->_instance, 'id');
+		$this->assertEquals('22', $ai);
+
+		// Test expected before
+		$ab = TestReflection::getValue($this->_instance, 'before');
+		$d = new JDate('1970-01-01');
+		$this->assertEquals($d->toSql(), $ab);
+
+		// Test expected since
+		$as = TestReflection::getValue($this->_instance, 'since');
+		$d = new JDate('1970-01-01');
+		$this->assertEquals($d->toSql(), $as);
+	}
+
 	/**
 	 * Prepares the environment before running a test.
 	 *
