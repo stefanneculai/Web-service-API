@@ -134,6 +134,11 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 
 		$fieldList = array();
 
+		if (count($fieldsArray) == 1 && strlen(trim($fieldsArray[0])) == 0)
+		{
+			return $fieldList;
+		}
+
 		foreach ($fieldsArray as $key => $field)
 		{
 			$fieldList[trim($field)] = '';
@@ -160,7 +165,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 		$this->type = $type;
 	}
 
-/**
+	/**
 	 * Prunes fields in an array of JContent objects to a set list.
 	 *
 	 * @param   mixed  $list    An array of Jcontent or a Jcontent object

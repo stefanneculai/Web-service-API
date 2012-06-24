@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="WebServiceControllerV1JsonBaseCreateTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\json\base\createTest.php" fullPackage="WebService.Tests.Application" package="WebService.Tests" subpackage="Application" tests="11" assertions="61" failures="0" errors="0" time="0.440405">
-    <testcase name="test__construct" class="WebServiceControllerV1JsonBaseCreateTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\json\base\createTest.php" line="38" assertions="10" time="0.188363"/>
-    <testcase name="testInit" class="WebServiceControllerV1JsonBaseCreateTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\json\base\createTest.php" line="62" assertions="6" time="0.031039"/>
-    <testcase name="testExecute" class="WebServiceControllerV1JsonBaseCreateTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\json\base\createTest.php" line="118" assertions="5" time="0.042305"/>
-    <testsuite name="WebServiceControllerV1JsonBaseCreateTest::testGetMandatoryFields" tests="4" assertions="20" failures="0" errors="0" time="0.087340">
-      <testcase name="testGetMandatoryFields with data set #0" assertions="5" time="0.021205"/>
-      <testcase name="testGetMandatoryFields with data set #1" assertions="5" time="0.021237"/>
-      <testcase name="testGetMandatoryFields with data set #2" assertions="5" time="0.020974"/>
-      <testcase name="testGetMandatoryFields with data set #3" assertions="5" time="0.023924"/>
+  <testsuite name="WebServiceControllerV1BaseTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\baseTest.php" fullPackage="WebService.Tests.Application" package="WebService.Tests" subpackage="Application" tests="8" assertions="45" failures="0" errors="0" time="0.335907">
+    <testcase name="test__construct" class="WebServiceControllerV1BaseTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\baseTest.php" line="38" assertions="10" time="0.189502"/>
+    <testsuite name="WebServiceControllerV1BaseTest::testGetContentId" tests="3" assertions="15" failures="0" errors="0" time="0.063770">
+      <testcase name="testGetContentId with data set #0" assertions="5" time="0.020178"/>
+      <testcase name="testGetContentId with data set #1" assertions="5" time="0.022114"/>
+      <testcase name="testGetContentId with data set #2" assertions="5" time="0.021478"/>
     </testsuite>
-    <testsuite name="WebServiceControllerV1JsonBaseCreateTest::testGetOptionalFields" tests="4" assertions="20" failures="0" errors="0" time="0.091358">
-      <testcase name="testGetOptionalFields with data set #0" assertions="5" time="0.021951"/>
-      <testcase name="testGetOptionalFields with data set #1" assertions="5" time="0.022679"/>
-      <testcase name="testGetOptionalFields with data set #2" assertions="5" time="0.023530"/>
-      <testcase name="testGetOptionalFields with data set #3" assertions="5" time="0.023198"/>
+    <testsuite name="WebServiceControllerV1BaseTest::testMapIn" tests="2" assertions="10" failures="0" errors="0" time="0.041499">
+      <testcase name="testMapIn with data set #0" assertions="5" time="0.020686"/>
+      <testcase name="testMapIn with data set #1" assertions="5" time="0.020813"/>
+    </testsuite>
+    <testsuite name="WebServiceControllerV1BaseTest::testMapOut" tests="2" assertions="10" failures="0" errors="0" time="0.041136">
+      <testcase name="testMapOut with data set #0" assertions="5" time="0.020404"/>
+      <testcase name="testMapOut with data set #1" assertions="5" time="0.020732"/>
     </testsuite>
   </testsuite>
 </testsuites>
