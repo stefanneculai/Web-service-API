@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="WebServiceControllerV1BaseTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\baseTest.php" fullPackage="WebService.Tests.Application" package="WebService.Tests" subpackage="Application" tests="8" assertions="45" failures="0" errors="0" time="0.335907">
-    <testcase name="test__construct" class="WebServiceControllerV1BaseTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\controller\v1\baseTest.php" line="38" assertions="10" time="0.189502"/>
-    <testsuite name="WebServiceControllerV1BaseTest::testGetContentId" tests="3" assertions="15" failures="0" errors="0" time="0.063770">
-      <testcase name="testGetContentId with data set #0" assertions="5" time="0.020178"/>
-      <testcase name="testGetContentId with data set #1" assertions="5" time="0.022114"/>
-      <testcase name="testGetContentId with data set #2" assertions="5" time="0.021478"/>
-    </testsuite>
-    <testsuite name="WebServiceControllerV1BaseTest::testMapIn" tests="2" assertions="10" failures="0" errors="0" time="0.041499">
-      <testcase name="testMapIn with data set #0" assertions="5" time="0.020686"/>
-      <testcase name="testMapIn with data set #1" assertions="5" time="0.020813"/>
-    </testsuite>
-    <testsuite name="WebServiceControllerV1BaseTest::testMapOut" tests="2" assertions="10" failures="0" errors="0" time="0.041136">
-      <testcase name="testMapOut with data set #0" assertions="5" time="0.020404"/>
-      <testcase name="testMapOut with data set #1" assertions="5" time="0.020732"/>
-    </testsuite>
+  <testsuite name="WebServiceModelBaseTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\model\baseTest.php" fullPackage="WebService.Tests.Application" package="WebService.Tests" subpackage="Application" tests="1" assertions="14" failures="0" errors="0" time="0.245358">
+    <testcase name="test__construct" class="WebServiceModelBaseTest" file="C:\wamp\www\eclipse_www\ws\tests\unit\model\baseTest.php" line="63" assertions="14" time="0.245358"/>
   </testsuite>
 </testsuites>
