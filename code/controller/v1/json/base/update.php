@@ -87,7 +87,7 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 	}
 
 	/**
-	 * Get mandatory fields from input
+	 * Get fields from input
 	 *
 	 * @return  void
 	 *

@@ -223,6 +223,90 @@ class WebServiceControllerV1JsonBaseUpdateTest extends TestCase
 		$this->assertEquals($data, $actual);
 	}
 
+	/** Test execute with errors
+	 *
+	 * @return void
+	 *
+	 * @covers        WebServiceControllerV1JsonBaseUpdate::execute
+	 * @since
+	 */
+	public function testExecuteWithErrors()
+	{
+		$_GET['@route'] = '22';
+
+		// Get app
+		$app = TestReflection::getValue($this->_instance, 'app');
+
+		// Set errors
+		TestReflection::setValue($app->errors, 'errors', true);
+		$errors = TestReflection::setValue($app->errors, 'errorsArray', array('foo'));
+
+		TestReflection::invoke($this->_instance, 'execute');
+
+		$actual = TestReflection::invoke($app, 'getBody');
+		$expected = json_encode(array('foo'));
+
+		$this->assertEquals($expected, $actual);
+
+	}
+
+	/** Test init
+	 *
+	 * @return void
+	 *
+	 * @covers        WebServiceControllerV1JsonBaseUpdate::init
+	 * @since
+	 */
+	public function testInit()
+	{
+		$_GET['@route'] = '22';
+		TestReflection::setValue($this->_instance, 'fieldsMap', array());
+
+		$mf = array('f1' => null, 'f2' => null, 'f3' => null);
+		$of = array('f4' => null, 'f5' => null);
+		TestReflection::setValue($this->_instance, 'mandatoryFields', $mf);
+		TestReflection::setValue($this->_instance, 'optionalFields', $of);
+
+		foreach (array('f1' => 'test', 'f2' => 'test2') as $key => $value)
+		{
+			$_GET[$key] = $value;
+		}
+
+		TestReflection::invoke($this->_instance, 'init');
+
+		foreach (array('f1' => 'test', 'f2' => 'test2') as $key => $value)
+		{
+			$_GET[$key] = null;
+		}
+
+		// Test expected id
+		$ai = TestReflection::getValue($this->_instance, 'id');
+		$this->assertEquals('22', $ai);
+
+		$ad = TestReflection::getValue($this->_instance, 'dataFields');
+		$this->assertEquals(array('f1' => 'test', 'f2' => 'test2', 'f3' => null, 'f4' => null, 'f5' => null), $ad);
+	}
+
+	/** Test buildFields
+	 *
+	 * @return void
+	 *
+	 * @covers        WebServiceControllerV1JsonBaseUpdate::buildFields
+	 * @since
+	 */
+	public function testBuildFields()
+	{
+		$mf = array('f1' => null, 'f2' => null, 'f3' => null);
+		$of = array('f4' => null, 'f5' => null);
+		TestReflection::setValue($this->_instance, 'mandatoryFields', $mf);
+		TestReflection::setValue($this->_instance, 'optionalFields', $of);
+
+		TestReflection::invoke($this->_instance, 'buildFields');
+
+		$expected = TestReflection::getValue($this->_instance, 'dataFields');
+
+		$this->assertEquals(array('f1' => null, 'f2' => null, 'f3' => null, 'f4' => null, 'f5' => null), $expected);
+	}
 	/**
 	 * Prepares the environment before running a test.
 	 *
