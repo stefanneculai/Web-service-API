@@ -37,6 +37,12 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	);
 
 	/**
+	 * @var    array  The possible actions
+	 * @since  1.0
+	 */
+	protected $actions = array('like', 'count', 'hit');
+
+	/**
 	 * Find and execute the appropriate controller based on a given route.
 	 *
 	 * @param   string  $route  The route string for which to find and execute a controller.
@@ -55,6 +61,9 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 
 		// Make route to match our API structure
 		$route = $this->reorderRoute($route);
+
+		// Move actions from route to input
+		$route = $this->actionRoute($route);
 
 		// Parse route to get only the main
 		$route = $this->rewriteRoute($route);
@@ -109,10 +118,43 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 			{
 				$this->input->get->set($matches[1], $matches[2]);
 			}
-
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Move actions from route to input and change route
+	 *
+	 * @param   string  $input  Route string to review
+	 *
+	 * @return  string
+	 *
+	 * @since   1.0
+	 */
+	protected function actionRoute($input)
+	{
+		$parts = explode('/', trim($input, ' /'));
+
+		foreach ($this->actions as $key => $action)
+		{
+			if(strcmp($parts[count($parts)-1], $action) === 0)
+			{
+				// Set action in input
+				$this->input->get->set('action', $action);
+
+				// Remove action from route
+				unset($parts[count($parts)-1]);
+
+				// Rebuild route
+				$route = implode('/', $parts);
+
+				// Return new route
+				return $route;
+			}
+		}
+
+		return $input;
 	}
 
 	/**

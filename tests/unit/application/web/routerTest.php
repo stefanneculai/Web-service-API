@@ -164,6 +164,54 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	}
 
 	/**
+	 * Provides test data for reordering route
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	public function seedActionRouteData()
+	{
+		// Input, Expected
+		return array(
+			array('content', 'content'),
+			array('content/1', 'content/1'),
+			array('content/1/like', 'content/1', array('action' => 'like'))
+		);
+	}
+
+	/**
+	 * Tests actionRoute()
+	 *
+	 * @param   string  $input           Input string to test.
+	 * @param   string  $expected        Expected fetched string.
+	 * @param   string  $expected_input  The data expected to find in registry
+	 *
+	 * @return  void
+	 *
+	 * @covers        WebServiceApplicationWebRouter::actionRoute
+	 * @dataProvider  seedActionRouteData
+	 * @since         1.0
+	 */
+	public function testActionRoute($input,  $expected, $expected_input=null)
+	{
+		// Execute the code to test.
+		$actual = TestReflection::invoke($this->_instance, 'actionRoute', $input);
+
+		// Verify the value.
+		$this->assertEquals($expected, $actual);
+
+		if ($expected_input != null)
+		{
+			$actual_input = TestReflection::getValue($this->_instance, 'input');
+			foreach ($expected_input as $key => $value)
+			{
+				$this->assertEquals($value, $actual_input->get->getString($key));
+			}
+		}
+	}
+
+	/**
 	 * Prepares the environment before running a test.
 	 *
 	 * @return  void

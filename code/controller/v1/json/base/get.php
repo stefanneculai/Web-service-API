@@ -65,6 +65,12 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	protected $before = 'now';
 
 	/**
+	 * @var    string  Action
+	 * @since  1.0
+	 */
+	protected $action = null;
+
+	/**
 	 * Get the content ID from the input. It may also return '*' refeering all the content
 	 *
 	 * @return  string
@@ -270,6 +276,24 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			$date = new JDate($this->before);
 			return $date->toSql();
 		}
+	}
+
+	/**
+	 * Get the before date limitation from input or the default one
+	 *
+	 * @return  string
+	 *
+	 * @since   1.0
+	 */
+	protected function getAction()
+	{
+		$action = $this->input->get->getString('action');
+		if (isset($action))
+		{
+			return $action;
+		}
+
+		return $this->action;
 	}
 
 	/**
