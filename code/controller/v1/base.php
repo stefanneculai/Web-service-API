@@ -43,6 +43,12 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	protected $optionalFields;
 
 	/**
+	 * @var    array  The order of the output
+	 * @since  1.0
+	 */
+	protected $order;
+
+	/**
 	 * Abstract function to init parameters
 	 *
 	 * @return  void
