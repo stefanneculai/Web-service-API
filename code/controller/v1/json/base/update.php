@@ -29,6 +29,30 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 	protected $dataFields = array();
 
 	/**
+	 * @var    string  The action to be done
+	 * @since  1.0
+	 */
+	protected $action = null;
+
+	/**
+	 * Get the before date limitation from input or the default one
+	 *
+	 * @return  string
+	 *
+	 * @since   1.0
+	 */
+	protected function getAction()
+	{
+		$action = $this->input->get->getString('action');
+		if (isset($action))
+		{
+			return $action;
+		}
+
+		return $this->action;
+	}
+
+	/**
 	 * Get route parts from the input or the default one
 	 *
 	 * @return  string

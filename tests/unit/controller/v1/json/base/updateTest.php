@@ -181,6 +181,48 @@ class WebServiceControllerV1JsonBaseUpdateTest extends TestCase
 		$this->assertEquals($expected, TestReflection::getValue($this->_instance, 'dataFields'));
 	}
 
+/**
+	 * Provides test data for getAction
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	public function seedGetAction()
+	{
+		// Input, Expected, Exception
+		return array(
+				array(null),
+				array('like')
+		);
+	}
+
+	/**
+	 * Tests getAction()
+	 *
+	 * @param   string   $data  Input to test
+	 *
+	 * @return  void
+	 *
+	 * @covers        WebServiceControllerV1JsonBaseUpdate::getAction
+	 * @dataProvider  seedGetAction
+	 * @since         1.0
+	 */
+	public function testGetAction($data)
+	{
+		// Set the input values.
+		$_GET['action'] = $data;
+
+		// Execute the code to test.
+		$actual = TestReflection::invoke($this->_instance, 'getAction');
+
+		// Clean up after ourselves.
+		$_GET['action'] = null;
+
+		// Verify the value.
+		$this->assertEquals($data, $actual);
+	}
+
 	/**
 	 * Prepares the environment before running a test.
 	 *
