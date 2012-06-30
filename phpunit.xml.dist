@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phpunit bootstrap="tests/bootstrap.php" colors="false"
-	stopOnFailure="false" testdox="true" verbose="true"
+	stopOnFailure="true" testdox="true" verbose="true"
 	backupStaticAttributes="false" backupGlobals="false">
 	
 	<testsuite name="AllTests">

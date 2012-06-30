@@ -13,6 +13,7 @@
  * @package     WebService.Tests
  * @subpackage  Application
  * @since       1.0
+ *
  */
 
 class WebServiceModelBaseTest extends TestCase
@@ -27,6 +28,7 @@ class WebServiceModelBaseTest extends TestCase
 	 * @return  void
 	 *
 	 * @since   1.0
+	 *
 	 */
 	protected function setUp()
 	{
@@ -49,6 +51,7 @@ class WebServiceModelBaseTest extends TestCase
 		$pdo->exec(file_get_contents(__DIR__ . '/stubs/ws.sql')) or die(print_r($pdo->errorInfo()));
 
 		TestReflection::setValue($driver, 'connection', $pdo);
+		JFactory::$database = $driver;
 
 		$this->_instance = new WebServiceModelBase(null, $driver);
 		$this->_state = TestReflection::invoke($this->_instance, 'getState');
@@ -67,26 +70,6 @@ class WebServiceModelBaseTest extends TestCase
 		$this->restoreFactoryState();
 
 		parent::tearDown();
-	}
-
-	/**
-	 * Tests __construct()
-	 *
-	 * @return  void
-	 *
-	 * @covers  WebServiceModelBase::__construct
-	 * @since   1.0
-	 */
-	public function test__construct()
-	{
-		JFactory::$database = 'factory db';
-		JFactory::$application = $this->getMockWeb();
-
-		// Construct the object.
-		$model = new WebServiceModelBase;
-
-		// Verify that the values injected into the constructor are present.
-		$this->assertEquals('factory db', TestReflection::getValue($model, 'db'));
 	}
 
 	/**
@@ -150,6 +133,26 @@ class WebServiceModelBaseTest extends TestCase
 		TestReflection::invoke($this->_state, 'set', 'content.type', 'general');
 		$actual = TestReflection::invoke($this->_instance, 'getItem');
 
-		// $this->assertEquals(1, $actual->id);
+		$this->assertEquals(1, $actual->id);
+	}
+
+	/**
+	 * Tests __construct()
+	 *
+	 * @return  void
+	 *
+	 * @covers  WebServiceModelBase::__construct
+	 * @since   1.0
+	 */
+	public function test__construct()
+	{
+		JFactory::$database = 'factory db';
+		JFactory::$application = $this->getMockWeb();
+
+		// Construct the object.
+		$model = new WebServiceModelBase;
+
+		// Verify that the values injected into the constructor are present.
+		$this->assertEquals('factory db', TestReflection::getValue($model, 'db'));
 	}
 }
