@@ -234,7 +234,7 @@ class WebServiceModelBase extends JModelBase
 		// Assert that the content id is set.
 		if (empty($contentId))
 		{
-			throw new InvalidArgumentException('%s->deleteItem() called without a content id set in state.', get_class($this));
+			throw new InvalidArgumentException(sprintf('%s->deleteItem() called without a content id set in state.', get_class($this)));
 		}
 
 		// Check if the content type is set.
@@ -246,7 +246,7 @@ class WebServiceModelBase extends JModelBase
 			// Assert that the content type was found.
 			if (empty($results[$contentId]))
 			{
-				throw new UnexpectedValueException('%s->deleteItem() could not find the content type for item %s.', get_class($this), $contentId);
+				throw new UnexpectedValueException(sprintf('%s->deleteItem() could not find the content type for item %s.', get_class($this), $contentId));
 			}
 
 			// Set the content type alias.
@@ -373,7 +373,7 @@ class WebServiceModelBase extends JModelBase
 		// Assert that the content id is set.
 		if (empty($contentId))
 		{
-			throw new InvalidArgumentException('%s-updateItem() called without a content id set in state.', get_class($this));
+			throw new InvalidArgumentException(sprintf('%s-updateItem() called without a content id set in state.', get_class($this)));
 		}
 
 		// Check if the content type is set.
@@ -385,7 +385,7 @@ class WebServiceModelBase extends JModelBase
 			// Assert that the content type was found.
 			if (empty($results[$contentId]))
 			{
-				throw new UnexpectedValueException('%s->deleteItem() could not find the content type for item %s.', get_class($this), $contentId);
+				throw new UnexpectedValueException(sprintf('%s->deleteItem() could not find the content type for item %s.', get_class($this), $contentId));
 			}
 
 			// Set the content type alias.
@@ -409,7 +409,7 @@ class WebServiceModelBase extends JModelBase
 			{
 				$field = $this->state->get('fields.' . $fieldName);
 
-				if (empty($field) && $field != '')
+				if (empty($field) || $field == '')
 				{
 					throw new UnexpectedValueException('Missing field ' . $fieldName);
 				}
@@ -443,17 +443,7 @@ class WebServiceModelBase extends JModelBase
 		// Check if the content type is set.
 		if (empty($contentType))
 		{
-			// Get the content type for the id.
-			$results = $this->getTypes($contentId);
-
-			// Assert that the content type was found.
-			if (empty($results[$contentId]))
-			{
-				throw new UnexpectedValueException('%s->createItem() could not find the content type for item %s.', get_class($this), $contentId);
-			}
-
-			// Set the content type alias.
-			$contentType = $results[$contentId]->type;
+			throw new UnexpectedValueException(sprintf('%s->createItem() could not find the content type.', get_class($this)));
 		}
 
 		// Get new content
@@ -468,11 +458,12 @@ class WebServiceModelBase extends JModelBase
 
 		// Get each field for the new content
 		$fieldsArray = preg_split('#[\s,]+#', $fields, null, PREG_SPLIT_NO_EMPTY);
+
 		foreach ($fieldsArray as $key => $fieldName)
 		{
 			$field = $this->state->get('fields.' . $fieldName);
 
-			if (empty($field) && $field != '')
+			if (empty($field))
 			{
 				throw new UnexpectedValueException('Missing field ' . $fieldName);
 			}
