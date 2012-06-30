@@ -17,6 +17,10 @@
 
 class WebServiceModelBaseTest extends TestCase
 {
+	private $_instance;
+
+	private $_state;
+
 	/**
 	 * Prepares the environment before running a test.
 	 *
@@ -31,10 +35,23 @@ class WebServiceModelBaseTest extends TestCase
 		$this->saveFactoryState();
 
 		JFactory::$session = $this->getMockSession();
+		JFactory::$application = $this->getMockWeb();
 
-		$factory = new JContentFactory('TPrefix', $this->getMockDatabase(), $this->getMockWeb(), new JUser);
+		$options = array(
+			'driver' => 'sqlite',
+			'database' => ':memory:',
+			'prefix' => 'ws_'
+		);
 
-		$this->_instance = new WebServiceModelBase($factory, $this->getMockDatabase());
+		$driver = JDatabaseDriver::getInstance($options);
+
+		$pdo = new PDO('sqlite::memory:');
+		$pdo->exec(file_get_contents(__DIR__ . '/stubs/ws.sql')) or die(print_r($pdo->errorInfo()));
+
+		TestReflection::setValue($driver, 'connection', $pdo);
+
+		$this->_instance = new WebServiceModelBase(null, $driver);
+		$this->_state = TestReflection::invoke($this->_instance, 'getState');
 	}
 
 	/**
@@ -82,7 +99,8 @@ class WebServiceModelBaseTest extends TestCase
 	 */
 	public function testItemExists()
 	{
-		$this->markTestIncomplete('This test has not been implemented yet.');
+		$actual = TestReflection::invoke($this->_instance, 'existsItem', 1);
+		$this->assertEquals(true, $actual);
 	}
 
 	/**
@@ -95,7 +113,8 @@ class WebServiceModelBaseTest extends TestCase
 	 */
 	public function testItemDoesNotExists()
 	{
-		$this->markTestIncomplete('This test has not been implemented yet.');
+		$actual = TestReflection::invoke($this->_instance, 'existsItem', 2);
+		$this->assertEquals(false, $actual);
 	}
 
 	/**
@@ -108,7 +127,13 @@ class WebServiceModelBaseTest extends TestCase
 	 */
 	public function testGetTypes()
 	{
-		$this->markTestIncomplete('This test has not been implemented yet.');
+		$types = TestReflection::invoke($this->_instance, 'getTypes', 1);
+
+		$expectedObj = new stdClass;
+		$expectedObj->content_id = 1;
+		$expectedObj->type = 'general';
+
+		$this->assertEquals(array(1 => $expectedObj), $types);
 	}
 
 	/**
@@ -121,6 +146,10 @@ class WebServiceModelBaseTest extends TestCase
 	 */
 	public function testGetItem()
 	{
-		$this->markTestIncomplete('This test has not been implemented yet.');
+		TestReflection::invoke($this->_state, 'set', 'content.id', '1');
+		TestReflection::invoke($this->_state, 'set', 'content.type', 'general');
+		$actual = TestReflection::invoke($this->_instance, 'getItem');
+
+		// $this->assertEquals(1, $actual->id);
 	}
 }
