@@ -82,6 +82,7 @@ class WebServiceModelBaseTest extends TestCase
 	 */
 	public function testItemExists()
 	{
+		TestReflection::invoke($this->_state, 'set', 'content.type', 'general');
 		$actual = TestReflection::invoke($this->_instance, 'existsItem', 1);
 		$this->assertEquals(true, $actual);
 	}
@@ -96,6 +97,7 @@ class WebServiceModelBaseTest extends TestCase
 	 */
 	public function testItemDoesNotExists()
 	{
+		TestReflection::invoke($this->_state, 'set', 'content.type', '2');
 		$actual = TestReflection::invoke($this->_instance, 'existsItem', 2);
 		$this->assertEquals(false, $actual);
 	}
@@ -120,20 +122,51 @@ class WebServiceModelBaseTest extends TestCase
 	}
 
 	/**
+	 * Provides test data for getItem()
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	public function seedGetItem()
+	{
+		// Input, Expected, Exception
+		return array(
+				array('1', 'general', '1', null),
+				array(null, 'general', null, 'InvalidArgumentException'),
+				array('1', null, '1', null),
+				array('2', null, null, 'UnexpectedValueException'),
+				array('2', 'general', false, null)
+		);
+	}
+
+	/**
 	 * Test getItem()
+	 *
+	 * @param   string  $id         The id to get
+	 * @param   string  $type       The type of the content
+	 * @param   string  $expected   The expected results
+	 * @param   string  $exception  The expected exception
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceModelBase::getItem
-	 * @since   1.0
+	 * @covers        WebServiceModelBase::getItem
+	 * @dataProvider  seedGetItem
+	 * @since         1.0
 	 */
-	public function testGetItem()
+	public function testGetItem($id, $type, $expected, $exception)
 	{
-		TestReflection::invoke($this->_state, 'set', 'content.id', '1');
-		TestReflection::invoke($this->_state, 'set', 'content.type', 'general');
+		TestReflection::invoke($this->_state, 'set', 'content.id', $id);
+		TestReflection::invoke($this->_state, 'set', 'content.type', $type);
+
+		if ($exception != null)
+		{
+			$this->setExpectedException($exception);
+		}
+
 		$actual = TestReflection::invoke($this->_instance, 'getItem');
 
-		$this->assertEquals(1, $actual->id);
+		$this->assertEquals($expected, isset($actual->id) ? $actual->id : false);
 	}
 
 	/**
@@ -151,6 +184,28 @@ class WebServiceModelBaseTest extends TestCase
 
 		// Construct the object.
 		$model = new WebServiceModelBase;
+
+		// Verify that the values injected into the constructor are present.
+		$this->assertEquals('factory db', TestReflection::getValue($model, 'db'));
+	}
+
+	/**
+	 * Tests __construct()
+	 *
+	 * @return  void
+	 *
+	 * @covers  WebServiceModelBase::__construct
+	 * @since   1.0
+	 */
+	public function test__construct2()
+	{
+		JFactory::$database = 'factory db';
+		JFactory::$application = $this->getMockWeb();
+
+		$factory = new JContentFactory('TCPrefix', null, null, new JUser);
+
+		// Construct the object.
+		$model = new WebServiceModelBase($factory, null, null);
 
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('factory db', TestReflection::getValue($model, 'db'));

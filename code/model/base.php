@@ -186,7 +186,7 @@ class WebServiceModelBase extends JModelBase
 		// Assert that the content id is set.
 		if (empty($contentId))
 		{
-			throw new InvalidArgumentException('%s->getItem() called without a content id set in state.', get_class($this));
+			throw new InvalidArgumentException(get_class($this) . '->getItem() called without a content id set in state.');
 		}
 
 		// Check if the content type is set.
@@ -198,7 +198,7 @@ class WebServiceModelBase extends JModelBase
 			// Assert that the content type was found.
 			if (empty($results[$contentId]))
 			{
-				throw new UnexpectedValueException('%s->getItem() could not find the content type for item %s.', get_class($this), $contentId);
+				throw new UnexpectedValueException(sprintf('%s->getItem() could not find the content type for item %s.', get_class($this), $contentId));
 			}
 
 			// Set the content type alias.
