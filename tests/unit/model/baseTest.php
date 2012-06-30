@@ -63,15 +63,13 @@ class WebServiceModelBaseTest extends TestCase
 	public function test__construct()
 	{
 		JFactory::$database = 'factory db';
-
-		$factory = new JContentFactory('TPrefix', $this->getMockDatabase(), $this->getMockWeb());
+		JFactory::$application = $this->getMockWeb();
 
 		// Construct the object.
-		$model = new WebServiceModelBase($factory);
+		$model = new WebServiceModelBase;
 
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('factory db', TestReflection::getValue($model, 'db'));
-		$this->assertEquals('TPrefix', TestReflection::getValue(TestReflection::getValue($model, 'factory'), 'prefix'));
 	}
 
 	/**
