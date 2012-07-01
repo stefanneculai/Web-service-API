@@ -293,6 +293,54 @@ class WebServiceModelBaseTest extends TestCase
 		$this->assertEquals($expected, $actual);
 	}
 
+/**
+	 * Provides test data for hitItem()
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	public function seedHitItem()
+	{
+		// Id, Type, Expected, Exception
+		return array(
+				array(null, 'general', null, 'InvalidArgumentException'),
+				array('-1', null, null, 'UnexpectedValueException'),
+				array('-1', 'general', false, null),
+				array('1', 'general', true, null),
+				array('1', null, true, null)
+		);
+	}
+
+	/**
+	 * Test deleteItem()
+	 *
+	 * @param   string  $id         The id to get
+	 * @param   string  $type       The type of the content
+	 * @param   string  $expected   The expected results
+	 * @param   string  $exception  The expected exception
+	 *
+	 * @return  void
+	 *
+	 * @covers        WebServiceModelBase::hitItem
+	 * @dataProvider  seedHitItem
+	 * @since         1.0
+	 */
+	public function testHitItem($id, $type, $expected, $exception)
+	{
+		TestReflection::invoke($this->_state, 'set', 'content.id', $id);
+		TestReflection::invoke($this->_state, 'set', 'content.type', $type);
+
+		if ($exception != null)
+		{
+			$this->setExpectedException($exception);
+		}
+
+		$actual = TestReflection::invoke($this->_instance, 'hitItem');
+
+		$this->assertEquals($expected, $actual);
+	}
+
 	/**
 	 * Provides test data for deleteList()
 	 *

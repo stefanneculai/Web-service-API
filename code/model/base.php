@@ -499,7 +499,7 @@ class WebServiceModelBase extends JModelBase
 		// Assert that the content id is set.
 		if (empty($contentId))
 		{
-			throw new InvalidArgumentException(sprintf('%s-updateItem() called without a content id set in state.', get_class($this)));
+			throw new InvalidArgumentException(sprintf('%s-hitItem() called without a content id set in state.', get_class($this)));
 		}
 
 		// Check if the content type is set.
@@ -511,7 +511,7 @@ class WebServiceModelBase extends JModelBase
 			// Assert that the content type was found.
 			if (empty($results[$contentId]))
 			{
-				throw new UnexpectedValueException(sprintf('%s->deleteItem() could not find the content type for item %s.', get_class($this), $contentId));
+				throw new UnexpectedValueException(sprintf('%s->hitItem() could not find the content type for item %s.', get_class($this), $contentId));
 			}
 
 			// Set the content type alias.
