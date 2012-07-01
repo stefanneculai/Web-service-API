@@ -290,16 +290,9 @@ class WebServiceModelBase extends JModelBase
 
 		$objects = $this->getList();
 
-		try
+		foreach ($objects as $key => $object)
 		{
-			foreach ($objects as $key => $object)
-			{
-				$object->delete();
-			}
-		}
-		catch (Exception $e)
-		{
-			throw $e;
+			$object->delete();
 		}
 
 		return true;

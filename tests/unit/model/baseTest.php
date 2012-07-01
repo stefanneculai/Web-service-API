@@ -294,6 +294,49 @@ class WebServiceModelBaseTest extends TestCase
 	}
 
 	/**
+	 * Provides test data for deleteList()
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	public function seedDeleteList()
+	{
+		// Type, Expected, Exception
+		return array(
+				array('general', 0, null),
+				array(null, null, 'UnexpectedValueException'),
+		);
+	}
+
+	/**
+	 * Test deleteItem()
+	 *
+	 * @param   string  $type       The type of the content
+	 * @param   string  $expected   The expected results
+	 * @param   string  $exception  The expected exception
+	 *
+	 * @return  void
+	 *
+	 * @covers        WebServiceModelBase::deleteList
+	 * @dataProvider  seedDeleteList
+	 * @since         1.0
+	 */
+	public function testDeleteList($type, $expected, $exception)
+	{
+		TestReflection::invoke($this->_state, 'set', 'content.type', $type);
+
+		if ($exception != null)
+		{
+			$this->setExpectedException($exception);
+		}
+
+		$actual = TestReflection::invoke($this->_instance, 'deleteList');
+
+		$this->assertEquals($expected, count(TestReflection::invoke($this->_instance, 'getList')));
+	}
+
+	/**
 	 * Provides test data for updateItem()
 	 *
 	 * @return  array
