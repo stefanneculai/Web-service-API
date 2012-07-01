@@ -35,6 +35,12 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 	protected $action = null;
 
 	/**
+	 * @var    string  The user that liked or unliked
+	 * @since  1.0
+	 */
+	protected $user = null;
+
+	/**
 	 * Get the before date limitation from input or the default one
 	 *
 	 * @return  string
@@ -50,6 +56,29 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 		}
 
 		return $this->action;
+	}
+
+	/**
+	 * Get the before date limitation from input or the default one
+	 *
+	 * @return  string
+	 *
+	 * @since   1.0
+	 */
+	protected function getUser()
+	{
+		$user = $this->input->get->getString('user');
+		if (isset($user))
+		{
+			return $user;
+		}
+		else
+		{
+			$this->app->errors->addError("310");
+			return;
+		}
+
+		return $this->user;
 	}
 
 	/**
@@ -145,6 +174,15 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 
 		// Init data fields
 		$this->getDataFields();
+
+		// Get action
+		$this->action = $this->getAction();
+
+		// User
+		if ($this->action != null && (strcmp($this->action, 'like') == 0 || strcmp($this->action, 'unlike') == 0))
+		{
+			$this->user = $this->getUser();
+		}
 	}
 
 	/**
@@ -193,7 +231,7 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 			}
 		}
 
-		if (count($this->dataFields) == 0)
+		if (count($this->dataFields) == 0 && $this->action == null)
 		{
 			$this->app->errors->addError("101");
 			$this->app->setBody(json_encode($this->app->errors->getErrors()));
@@ -204,7 +242,7 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 		$fields = implode(',', $this->mapFieldsIn(array_keys($this->dataFields)));
 
 		// New content model
-		$model = new WebServiceModelBase;
+		$model = new WebServiceModelBase(new JContentFactory('WebService'));
 
 		// Get content state
 		$modelState = $model->getState();
@@ -226,14 +264,30 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 
 		try
 		{
-			$item = $model->updateItem();
+			if (strcmp($this->action, 'hit') == 0)
+			{
+				$item = $model->hitItem();
+			}
+			elseif (strcmp($this->action, 'like') == 0)
+			{
+				$modelState->set('content.user_id', $this->user);
+				$item = $model->likeItem();
+			}
+			elseif (strcmp($this->action, 'unlike') == 0)
+			{
+				$modelState->set('content.user_id', $this->user);
+				$item = $model->unlikeItem();
+			}
+			else
+			{
+				$item = $model->updateItem();
+			}
+			return $item;
 		}
 		catch (Exception $e)
 		{
 			throw $e;
 		}
-
-		return $item;
 	}
 
 	/**

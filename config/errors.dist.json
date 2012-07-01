@@ -71,6 +71,15 @@
 		"response_code": "400"
 	},
 	
+	
+	"310": 
+	{
+		"code": "JWS010",
+		"message": "User id that liked the content missing.",
+		"more_info": "",
+		"response_code": "400"
+	},
+	
 	"100": 
 	{
 		"code": "JWS400",

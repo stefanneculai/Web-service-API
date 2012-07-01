@@ -481,6 +481,178 @@ class WebServiceModelBase extends JModelBase
 	}
 
 	/**
+	 * Method to hit a content item.
+	 *
+	 * @return  JContent  A content object.
+	 *
+	 * @since   1.0
+	 * @throws  InvalidArgumentException
+	 * @throws  RuntimeException
+	 * @throws  UnexpectedValueException
+	 */
+	public function hitItem()
+	{
+		// Get the content id and type.
+		$contentId = $this->state->get('content.id');
+		$contentType = $this->state->get('content.type');
+
+		// Assert that the content id is set.
+		if (empty($contentId))
+		{
+			throw new InvalidArgumentException(sprintf('%s-updateItem() called without a content id set in state.', get_class($this)));
+		}
+
+		// Check if the content type is set.
+		if (empty($contentType))
+		{
+			// Get the content type for the id.
+			$results = $this->getTypes($contentId);
+
+			// Assert that the content type was found.
+			if (empty($results[$contentId]))
+			{
+				throw new UnexpectedValueException(sprintf('%s->deleteItem() could not find the content type for item %s.', get_class($this), $contentId));
+			}
+
+			// Set the content type alias.
+			$contentType = $results[$contentId]->type;
+		}
+
+		if ($this->existsItem($contentId))
+		{
+			$item = $this->factory->getContent($contentType)->load($contentId);
+
+			$item->hit();
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Method to like a content item.
+	 * TODO: check if user exists before like
+	 *
+	 * @return  JContent  A content object.
+	 *
+	 * @since   1.0
+	 * @throws  InvalidArgumentException
+	 * @throws  RuntimeException
+	 * @throws  UnexpectedValueException
+	 */
+	public function likeItem()
+	{
+		// Get the content id and type.
+		$contentId = $this->state->get('content.id');
+		$contentType = $this->state->get('content.type');
+		$userId = $this->state->get('content.user_id');
+
+		// Assert that the content id is set.
+		if (empty($contentId))
+		{
+			throw new InvalidArgumentException(sprintf('%s-likeItem() called without a content id set in state.', get_class($this)));
+		}
+
+		// Assert that the content id is set.
+		if (empty($userId))
+		{
+			throw new InvalidArgumentException(sprintf('%s-likeItem() called without a user identifier set in state.', get_class($this)));
+		}
+
+		// Check if the content type is set.
+		if (empty($contentType))
+		{
+			// Get the content type for the id.
+			$results = $this->getTypes($contentId);
+
+			// Assert that the content type was found.
+			if (empty($results[$contentId]))
+			{
+				throw new UnexpectedValueException(sprintf('%s->likeItem() could not find the content type for item %s.', get_class($this), $contentId));
+			}
+
+			// Set the content type alias.
+			$contentType = $results[$contentId]->type;
+		}
+
+		if ($this->existsItem($contentId))
+		{
+			$item = $this->factory->getContent($contentType)->load($contentId);
+
+			$item->like($userId);
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+/**
+	 * Method to unlike a content item.
+	 * TODO: check if user exists before unlike
+	 *
+	 * @return  JContent  A content object.
+	 *
+	 * @since   1.0
+	 * @throws  InvalidArgumentException
+	 * @throws  RuntimeException
+	 * @throws  UnexpectedValueException
+	 */
+	public function unlikeItem()
+	{
+		// Get the content id and type.
+		$contentId = $this->state->get('content.id');
+		$contentType = $this->state->get('content.type');
+		$userId = $this->state->get('content.user_id');
+
+		// Assert that the content id is set.
+		if (empty($contentId))
+		{
+			throw new InvalidArgumentException(sprintf('%s-unlikeItem() called without a content id set in state.', get_class($this)));
+		}
+
+		// Assert that the content id is set.
+		if (empty($userId))
+		{
+			throw new InvalidArgumentException(sprintf('%s-unlikeItem() called without a user identifier set in state.', get_class($this)));
+		}
+
+		// Check if the content type is set.
+		if (empty($contentType))
+		{
+			// Get the content type for the id.
+			$results = $this->getTypes($contentId);
+
+			// Assert that the content type was found.
+			if (empty($results[$contentId]))
+			{
+				throw new UnexpectedValueException(sprintf('%s->unlikeItem() could not find the content type for item %s.', get_class($this), $contentId));
+			}
+
+			// Set the content type alias.
+			$contentType = $results[$contentId]->type;
+		}
+
+		if ($this->existsItem($contentId))
+		{
+			$item = $this->factory->getContent($contentType)->load($contentId);
+
+			$item->unlike($userId);
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
 	 * Method to update one item
 	 *
 	 * @return  JContent  A JContent object

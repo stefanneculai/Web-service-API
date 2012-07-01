@@ -40,7 +40,17 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	 * @var    array  The possible actions
 	 * @since  1.0
 	 */
-	protected $actions = array('like', 'count', 'hit');
+	protected $actionsMap = array(
+		'#([\w\/]*)/(\d+)/(like)#i' => '$1/$2',
+		'#([\w\/]*)/(\d+)/(unlike)#i' => '$1/$2',
+		'#([\w\/]*)/(\d+)/(hit)#i' => '$1/$2',
+		'#([\w\/]*)/(count)#i' => '$1'
+	);
+
+	/**
+	 * @var    array  The possible actions
+	 */
+	protected $actions = array('like', 'unlike', 'count', 'hit');
 
 	/**
 	 * Find and execute the appropriate controller based on a given route.
@@ -59,11 +69,11 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		// Allow poor clients to make advanced requests
 		$this->setMethodInPostRequest(true);
 
-		// Make route to match our API structure
-		$route = $this->reorderRoute($route);
-
 		// Move actions from route to input
 		$route = $this->actionRoute($route);
+
+		// Make route to match our API structure
+		$route = $this->reorderRoute($route);
 
 		// Parse route to get only the main
 		$route = $this->rewriteRoute($route);
@@ -134,27 +144,28 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	 */
 	protected function actionRoute($input)
 	{
-		$parts = explode('/', trim($input, ' /'));
+		$pattern = array_keys($this->actionsMap);
+		$replace = array_values($this->actionsMap);
 
-		foreach ($this->actions as $key => $action)
+		$output = preg_replace($pattern, $replace, $input);
+
+		foreach ($this->actionsMap as $pattern => $replace)
 		{
-			if(strcmp($parts[count($parts)-1], $action) === 0)
+			// /collection1/id/collection2 becames /collection2?collection1=id
+			if (preg_match($pattern, $input, $matches))
 			{
-				// Set action in input
-				$this->input->get->set('action', $action);
-
-				// Remove action from route
-				unset($parts[count($parts)-1]);
-
-				// Rebuild route
-				$route = implode('/', $parts);
-
-				// Return new route
-				return $route;
+				if (in_array($matches[2], $this->actions))
+				{
+					$this->input->get->set('action', $matches[2]);
+				}
+				elseif (in_array($matches[3], $this->actions))
+				{
+					$this->input->get->set('action', $matches[3]);
+				}
 			}
 		}
 
-		return $input;
+		return $output;
 	}
 
 	/**
