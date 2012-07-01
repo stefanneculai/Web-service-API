@@ -393,6 +393,57 @@ class WebServiceModelBaseTest extends TestCase
 	}
 
 	/**
+	 * Provides test data for unlikeItem()
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	public function seedUnlikeItem()
+	{
+		// Id, Type, User_id, Expected, Exception
+		return array(
+				array(null, 'general', '2000', null, 'InvalidArgumentException'),
+				array('-1', null, '2000' , null, 'UnexpectedValueException'),
+				array('-1', 'general', '2000' , false, null),
+				array('1', 'general', '2000', true, null),
+				array('1', null, '2000', true, null),
+				array('1', null, null, true, 'InvalidArgumentException')
+		);
+	}
+
+	/**
+	 * Test unlikeItem()
+	 *
+	 * @param   string  $id         The id to get
+	 * @param   string  $type       The type of the content
+	 * @param   string  $user_id    The user id
+	 * @param   string  $expected   The expected results
+	 * @param   string  $exception  The expected exception
+	 *
+	 * @return  void
+	 *
+	 * @covers        WebServiceModelBase::unlikeItem
+	 * @dataProvider  seedUnlikeItem
+	 * @since         1.0
+	 */
+	public function testUnlikeItem($id, $type, $user_id, $expected, $exception)
+	{
+		TestReflection::invoke($this->_state, 'set', 'content.id', $id);
+		TestReflection::invoke($this->_state, 'set', 'content.type', $type);
+		TestReflection::invoke($this->_state, 'set', 'content.user_id', $user_id);
+
+		if ($exception != null)
+		{
+			$this->setExpectedException($exception);
+		}
+
+		$actual = TestReflection::invoke($this->_instance, 'unlikeItem');
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
 	 * Provides test data for deleteList()
 	 *
 	 * @return  array
