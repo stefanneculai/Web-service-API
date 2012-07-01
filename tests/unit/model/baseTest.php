@@ -53,7 +53,7 @@ class WebServiceModelBaseTest extends TestCase
 		TestReflection::setValue($driver, 'connection', $pdo);
 		JFactory::$database = $driver;
 
-		$this->_instance = new WebServiceModelBase(null, $driver);
+		$this->_instance = new WebServiceModelBase(new JContentFactory('WebService'), $driver);
 		$this->_state = TestReflection::invoke($this->_instance, 'getState');
 	}
 
@@ -293,7 +293,7 @@ class WebServiceModelBaseTest extends TestCase
 		$this->assertEquals($expected, $actual);
 	}
 
-/**
+	/**
 	 * Provides test data for hitItem()
 	 *
 	 * @return  array
@@ -313,7 +313,7 @@ class WebServiceModelBaseTest extends TestCase
 	}
 
 	/**
-	 * Test deleteItem()
+	 * Test hitItem()
 	 *
 	 * @param   string  $id         The id to get
 	 * @param   string  $type       The type of the content
@@ -337,6 +337,57 @@ class WebServiceModelBaseTest extends TestCase
 		}
 
 		$actual = TestReflection::invoke($this->_instance, 'hitItem');
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * Provides test data for likeItem()
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	public function seedLikeItem()
+	{
+		// Id, Type, User_id, Expected, Exception
+		return array(
+				array(null, 'general', '2000', null, 'InvalidArgumentException'),
+				array('-1', null, '2000' , null, 'UnexpectedValueException'),
+				array('-1', 'general', '2000' , false, null),
+				array('1', 'general', '2000', true, null),
+				array('1', null, '2000', true, null),
+				array('1', null, null, true, 'InvalidArgumentException')
+		);
+	}
+
+	/**
+	 * Test likeItem()
+	 *
+	 * @param   string  $id         The id to get
+	 * @param   string  $type       The type of the content
+	 * @param   string  $user_id    The user id
+	 * @param   string  $expected   The expected results
+	 * @param   string  $exception  The expected exception
+	 *
+	 * @return  void
+	 *
+	 * @covers        WebServiceModelBase::likeItem
+	 * @dataProvider  seedLikeItem
+	 * @since         1.0
+	 */
+	public function testLikeItem($id, $type, $user_id, $expected, $exception)
+	{
+		TestReflection::invoke($this->_state, 'set', 'content.id', $id);
+		TestReflection::invoke($this->_state, 'set', 'content.type', $type);
+		TestReflection::invoke($this->_state, 'set', 'content.user_id', $user_id);
+
+		if ($exception != null)
+		{
+			$this->setExpectedException($exception);
+		}
+
+		$actual = TestReflection::invoke($this->_instance, 'likeItem');
 
 		$this->assertEquals($expected, $actual);
 	}

@@ -36,15 +36,15 @@ class WebServiceContent extends JContent
 		// Build the query to create the like record.
 		$query = $this->db->getQuery(true);
 		$query->insert($this->db->qn('#__content_likes'));
-		$query->set('content_id = ' . (int) $this->content_id);
+		$query->columns(array('content_id', 'user_id'));
 
 		if ($user_id == null)
 		{
-			$query->set('user_id = ' . (int) $this->user->get('id'));
+			$query->values((int) $this->content_id . ',' . (int) $this->user->get('id'));
 		}
 		else
 		{
-			$query->set('user_id = ' . (int) $user_id);
+			$query->values((int) $this->content_id . ',' . (int) $user_id);
 		}
 
 		// Create the like record.
