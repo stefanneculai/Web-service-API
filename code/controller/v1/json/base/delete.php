@@ -196,13 +196,27 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 		if (strcmp($this->id, '*') !== 0)
 		{
 			// Get the result
-			$result = $model->deleteItem();
+			try
+			{
+				$result = $model->deleteItem();
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
 
 			return $result;
 		}
 		else
 		{
-			$result = $model->deleteList();
+			try
+			{
+				$result = $model->deleteList();
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
 
 			return $result;
 		}

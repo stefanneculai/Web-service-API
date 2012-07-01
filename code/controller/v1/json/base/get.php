@@ -386,6 +386,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	 * @return  mixed
 	 *
 	 * @since   1.0
+	 * @throws  Exception
 	 */
 	protected function getContent()
 	{
@@ -407,7 +408,14 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		if (strcmp($this->id, '*') !== 0)
 		{
 			// Get the requested data
-			$item = $model->getItem();
+			try
+			{
+				$item = $model->getItem();
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
 
 			// No item found
 			if ($item == false)
@@ -425,7 +433,14 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			$modelState->set('list.limit', $this->limit);
 
 			// Get content from Database
-			$items = $model->getList();
+			try
+			{
+				$items = $model->getList();
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
 
 			// No items found
 			if ($items == false)

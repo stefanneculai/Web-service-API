@@ -174,12 +174,13 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 		$this->parseData($data);
 	}
 
-/**
-	 * Create content
+	/**
+	 * Update content
 	 *
 	 * @return  mixed
 	 *
 	 * @since   1.0
+	 * @throws  Exception
 	 */
 	protected function updateContent()
 	{
@@ -223,7 +224,14 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 			$modelState->set('fields.' . $this->mapIn($fieldName), $fieldContent);
 		}
 
-		$item = $model->updateItem();
+		try
+		{
+			$item = $model->updateItem();
+		}
+		catch (Exception $e)
+		{
+			throw $e;
+		}
 
 		return $item;
 	}
