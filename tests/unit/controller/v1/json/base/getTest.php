@@ -469,18 +469,27 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	 */
 	public function seedGetFieldsData()
 	{
+		$map = array(
+				'name' => 'name',
+				'surname' => 'surname',
+				'content' => 'content',
+				'created_at' => 'created_at',
+				'user_id' => 'user_id'
+				);
+
 		// Input, Expected, Exception
 		return array(
-				array(null, null, false),
-				array('', array(), false),
-				array('name, surname', array('name','surname'), false),
-				array('content, created_at, user_id', array('content','created_at', 'user_id'), false),
+				array($map, null, array_keys($map), false),
+				array($map, '', array_keys($map), false),
+				array($map, 'name, surname', array('name','surname'), false),
+				array($map, 'content, created_at, user_id', array('content','created_at', 'user_id'), false),
 		);
 	}
 
 	/**
 	 * Tests getFields()
 	 *
+	 * @param   array    $map        An associative array with the map for the fields
 	 * @param   string   $input      Input string to test.
 	 * @param   string   $expected   Expected fetched string.
 	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
@@ -491,8 +500,10 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	 * @dataProvider  seedGetFieldsData
 	 * @since         1.0
 	 */
-	public function testGetFields($input,  $expected, $exception)
+	public function testGetFields($map, $input, $expected, $exception)
 	{
+		TestReflection::setValue($this->_instance, 'fieldsMap', $map);
+
 		// Set the input values.
 		$_GET['fields'] = $input;
 
@@ -510,7 +521,6 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 			$this->assertEquals(1, count($errors));
 			return;
 		}
-
 		// Verify the value.
 		$this->assertEquals($expected, $actual);
 	}
@@ -524,6 +534,15 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	 */
 	public function testInit()
 	{
+		$map = array(
+				'created_at' => 'created_at',
+				'user_id' => 'user_id',
+				'f1' => 'field1',
+				'f2' => 'field2'
+				);
+
+		TestReflection::setValue($this->_instance, 'fieldsMap', $map);
+
 		$_GET['@route'] = '22';
 		$_GET['fields'] = 'content, created_at, user_id';
 		$_GET['before'] = '1970-01-01';
@@ -541,12 +560,13 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 		// Test expected fields
 		$af = TestReflection::getValue($this->_instance, 'fields');
 		$this->assertEquals(
-				array(
-					TestReflection::invoke($this->_instance, 'mapIn', 'content'),
-					TestReflection::invoke($this->_instance, 'mapIn', 'created_at'),
-					TestReflection::invoke($this->_instance, 'mapIn', 'user_id'),
-				),
-				$af
+				array_values(
+						array(
+							TestReflection::invoke($this->_instance, 'mapIn', 'created_at'),
+							TestReflection::invoke($this->_instance, 'mapIn', 'user_id'),
+						)
+					),
+				array_values($af)
 				);
 
 		// Test expected before
@@ -616,7 +636,7 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	/**
 	 * Tests getAction()
 	 *
-	 * @param   string   $data  Input to test
+	 * @param   string  $data  Input to test
 	 *
 	 * @return  void
 	 *

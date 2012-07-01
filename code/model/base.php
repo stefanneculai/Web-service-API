@@ -447,9 +447,14 @@ class WebServiceModelBase extends JModelBase
 			$fieldsArray = preg_split('#[\s,]+#', $fields, null, PREG_SPLIT_NO_EMPTY);
 			foreach ($fieldsArray as $key => $fieldName)
 			{
-				$field = $this->state->get('fields.' . $fieldName);
 
-				if (empty($field) || $field == '')
+				$field = null;
+				if ($this->state->exists('fields.' . $fieldName))
+				{
+					$field = $this->state->get('fields.' . $fieldName);
+				}
+
+				if ($field == null)
 				{
 					throw new UnexpectedValueException('Missing field ' . $fieldName);
 				}
@@ -501,9 +506,13 @@ class WebServiceModelBase extends JModelBase
 
 		foreach ($fieldsArray as $key => $fieldName)
 		{
-			$field = $this->state->get('fields.' . $fieldName);
+			$field = null;
+			if ($this->state->exists('fields.' . $fieldName))
+			{
+				$field = $this->state->get('fields.' . $fieldName);
+			}
 
-			if (empty($field) && strcmp($field, '') != 0)
+			if ($field == null)
 			{
 				throw new UnexpectedValueException('Missing field ' . $fieldName);
 			}
