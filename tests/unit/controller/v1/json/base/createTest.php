@@ -224,12 +224,10 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 
 		// Input, Expected, Exception
 		return array(
-				array($optional, array(), array('f4' => '', 'f5' => ''), false),
-				array($optional, array('f4' => 'test'), array('f4' => 'test', 'f5' => ''), false),
+				array($optional, array(), array(), false),
+				array($optional, array('f4' => 'test'), array('f4' => 'test'), false),
 				array($optional, array('f4' => 'test', 'f5' => 'test'),
 						array('f4' => 'test', 'f5' => 'test'), false),
-				array($optional, array('f4' => 'test', 'f5' => 'test'),
-						array('f4' => 'test', 'f5' => 'test'), false)
 		);
 	}
 

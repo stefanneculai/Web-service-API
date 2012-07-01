@@ -78,7 +78,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 			}
 			else
 			{
-				$this->optionalFields[$key] = '';
+				unset($this->optionalFields[$key]);
 			}
 		}
 	}
