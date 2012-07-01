@@ -266,6 +266,46 @@ class WebServiceModelBase extends JModelBase
 	}
 
 	/**
+	 * Method to delete a content item.
+	 *
+	 * @return  JContent  A content object.
+	 *
+	 * @since   1.0
+	 * @throws  InvalidArgumentException
+	 * @throws  RuntimeException
+	 * @throws  UnexpectedValueException
+	 */
+	public function deleteList()
+	{
+		$contentType = $this->state->get('content.type');
+
+		// Check if the content type is set.
+		if (empty($contentType))
+		{
+				throw new UnexpectedValueException(sprintf('%s->deleteItem() could not find the content type.', get_class($this)));
+		}
+
+		$this->state->set('list.offset', null);
+		$this->state->set('list.limit', null);
+
+		$objects = $this->getList();
+
+		try
+		{
+			foreach ($objects as $key => $object)
+			{
+				$object->delete();
+			}
+		}
+		catch (Exception $e)
+		{
+			throw $e;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Method to check existance of an item by ID
 	 *
 	 * @param   int  $contentId  The id of the content to test if exists
@@ -463,7 +503,7 @@ class WebServiceModelBase extends JModelBase
 		{
 			$field = $this->state->get('fields.' . $fieldName);
 
-			if (empty($field))
+			if (empty($field) && strcmp($field, '') != 0)
 			{
 				throw new UnexpectedValueException('Missing field ' . $fieldName);
 			}

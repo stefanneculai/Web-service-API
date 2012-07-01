@@ -173,11 +173,24 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		{
 			$fields = preg_split('#[\s,]+#', $fields, null, PREG_SPLIT_NO_EMPTY);
 
-			return $fields;
+			foreach ($fields as $key => $field)
+			{
+				if (!array_key_exists($field, $this->fieldsMap))
+				{
+					unset($fields[$key]);
+				}
+			}
+
+			if (count($fields) > 0)
+			{
+				return $fields;
+			}
+
+			return array_keys($this->fieldsMap);
 		}
 		else
 		{
-			return null;
+			return array_keys($this->fieldsMap);
 		}
 	}
 
@@ -396,8 +409,6 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			// Get the requested data
 			$item = $model->getItem();
 
-			print_r($item->dump());
-
 			// No item found
 			if ($item == false)
 			{
@@ -440,14 +451,16 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		// There is no content for the request
 		if ($data == false)
 		{
-			$data = new stdClass;
+			$data = null;
 		}
 
+		// Sort data
 		if (count($this->order) > 0)
 		{
 			usort($data, array($this, "orderData"));
 		}
 
+		// Get only requested fields
 		$data = $this->pruneFields($data, $this->fields);
 
 		// Output the results

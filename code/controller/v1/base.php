@@ -183,6 +183,11 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	 */
 	protected function pruneFields($list, $fields)
 	{
+		if ($list == null)
+		{
+			return new stdClass;
+		}
+
 		if ($fields)
 		{
 			// Flip the fields so we can find the intersection by the array keys.

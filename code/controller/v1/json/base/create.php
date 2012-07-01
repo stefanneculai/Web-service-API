@@ -76,6 +76,10 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 			{
 				$this->optionalFields[$key] = $field;
 			}
+			else
+			{
+				$this->optionalFields[$key] = '';
+			}
 		}
 	}
 
@@ -140,8 +144,15 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 			$modelState->set('fields.' . $this->mapIn($fieldName), $fieldContent);
 		}
 
-		// Create item
-		$item = $model->createItem();
+		try
+		{
+			// Create item
+			$item = $model->createItem();
+		}
+		catch (Exception $e)
+		{
+			throw $e;
+		}
 
 		return $item;
 	}
