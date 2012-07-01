@@ -118,6 +118,21 @@ class WebServiceModelBase extends JModelBase
 	}
 
 	/**
+	 * Count items
+	 *
+	 * @return  integer  The number of rows that match the sql
+	 *
+	 * @since   1.0
+	 * @throws  RuntimeException
+	 * @throws  UnexpectedValueException
+	 */
+	public function countItems()
+	{
+		$itemsArray = $this->getList();
+		return count($itemsArray);
+	}
+
+	/**
 	 * Method to get a database query object to load a list of items.
 	 *
 	 * @return  object  A JDatabaseQuery object.

@@ -352,6 +352,9 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 
 		// Before
 		$this->before = $this->getBefore();
+
+		// Action
+		$this->action = $this->getAction();
 	}
 
 	/**
@@ -403,6 +406,11 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		// Set date limitations
 		$modelState->set('filter.since', $this->since);
 		$modelState->set('filter.before', $this->before);
+
+		if (strcmp($this->action, 'count') === 0)
+		{
+			return $model->countItems();
+		}
 
 		// A specific content is requested
 		if (strcmp($this->id, '*') !== 0)
@@ -463,20 +471,29 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	 */
 	protected function parseData($data)
 	{
-		// There is no content for the request
-		if ($data == false)
-		{
-			$data = null;
-		}
-
-		// Sort data
-		if (count($this->order) > 0)
-		{
-			usort($data, array($this, "orderData"));
-		}
-
 		// Get only requested fields
-		$data = $this->pruneFields($data, $this->fields);
+		if ( is_integer($data) == false )
+		{
+			// There is no content for the request
+			if ($data == false)
+			{
+				$data = null;
+			}
+
+			// Sort data
+			if (count($this->order) > 0)
+			{
+				usort($data, array($this, "orderData"));
+			}
+
+			$data = $this->pruneFields($data, $this->fields);
+		}
+		else
+		{
+			$newData = new stdClass;
+			$newData->count = $data;
+			$data = $newData;
+		}
 
 		// Output the results
 		$this->app->setBody(json_encode($data));

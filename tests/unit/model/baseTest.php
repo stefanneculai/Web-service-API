@@ -477,6 +477,24 @@ class WebServiceModelBaseTest extends TestCase
 	}
 
 	/**
+	 * Test countItems()
+	 *
+	 * @return  void
+	 *
+	 * @covers        WebServiceModelBase::countItems
+	 * @dataProvider  seedDeleteList
+	 * @since         1.0
+	 */
+	public function testCountItems()
+	{
+		TestReflection::invoke($this->_state, 'set', 'content.type', 'general');
+
+		$actual = TestReflection::invoke($this->_instance, 'countItems');
+
+		$this->assertEquals(2, $actual);
+	}
+
+	/**
 	 * Tests __construct()
 	 *
 	 * @return  void
