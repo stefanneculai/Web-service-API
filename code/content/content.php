@@ -78,7 +78,7 @@ class WebServiceContent extends JContent
 	 * @throws  LogicException
 	 * @throws  RuntimeException
 	 */
-	public function unlike($user_id)
+	public function unlike($user_id = null)
 	{
 		// Assert the object is loaded.
 		$this->assertIsLoaded();

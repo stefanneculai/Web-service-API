@@ -38,7 +38,7 @@ class WebServiceContentTest extends TestCaseDatabase
 	 */
 	protected function getDataSet()
 	{
-		return $this->createXMLDataSet(JPATH_PLATFORM . '/../tests/suite/joomla/content/stubs/content.xml');
+		return $this->createXMLDataSet(__DIR__ . '/stubs/content.xml');
 	}
 
 	/**
@@ -144,7 +144,7 @@ class WebServiceContentTest extends TestCaseDatabase
 		);
 
 		self::$driver->setQuery('SELECT * FROM #__content_likes WHERE content_id = 1 AND user_id = 1');
-		$r = self::$driver->loadResultArray();
+		$r = self::$driver->loadResult();
 
 		$this->assertThat(
 			count($r),
@@ -165,6 +165,132 @@ class WebServiceContentTest extends TestCaseDatabase
 			$original->likes,
 			$this->equalTo(1),
 			'Check the likes incremented in the original object.'
+		);
+	}
+
+	/**
+	 * Method to test that WebServiceContent::like() works as expected.
+	 *
+	 * @return  void
+	 *
+	 * @since   11.4
+	 */
+	public function testLikeWithParams()
+	{
+		$original = $this->getOriginal();
+
+		$this->assertThat(
+			$original->like('1'),
+			$this->identicalTo($original),
+			'Checks chaining.'
+		);
+
+		self::$driver->setQuery('SELECT * FROM #__content_likes WHERE content_id = 1 AND user_id = 1');
+		$r = self::$driver->loadResult();
+
+		$this->assertThat(
+			count($r),
+			$this->equalTo(1),
+			'Check the like was added to the content_likes table.'
+		);
+
+		self::$driver->setQuery('SELECT `likes` FROM #__content WHERE content_id = 1');
+		$r = self::$driver->loadResult();
+
+		$this->assertThat(
+			$r,
+			$this->equalTo(1),
+			'Check the likes incremented in the content table.'
+		);
+
+		$this->assertThat(
+			$original->likes,
+			$this->equalTo(1),
+			'Check the likes incremented in the original object.'
+		);
+	}
+
+	/**
+	 * Method to test that WebServiceContent::unlike() works as expected.
+	 *
+	 * @return  void
+	 *
+	 * @since   11.4
+	 */
+	public function testUnlike()
+	{
+		$original = $this->getOriginal(2, 2);
+
+		$this->assertThat(
+			$original->unlike(),
+			$this->identicalTo($original),
+			'Checks chaining.'
+		);
+
+		self::$driver->setQuery('SELECT * FROM #__content_likes WHERE content_id = 2 AND user_id = 2');
+		$r = self::$driver->loadResult();
+
+		$this->assertThat(
+			count($r),
+			$this->equalTo(0),
+			'Check the like was dropped from the content_likes table.'
+		);
+
+		self::$driver->setQuery('SELECT `likes` FROM #__content WHERE content_id = 2');
+		$r = self::$driver->loadResult();
+
+		$this->assertThat(
+			$r,
+			$this->equalTo(3),
+			'Check the likes decremented in the content table.'
+		);
+
+		$this->assertThat(
+			$original->likes,
+			$this->equalTo(3),
+			'Check the likes decremented in the original object.'
+		);
+	}
+
+	/**
+	 * Method to test that WebServiceContent::unlike() works as expected.
+	 *
+	 * @return  void
+	 *
+	 * @since   11.4
+	 */
+	public function testUnlikeWithParams()
+	{
+		$original = $this->getOriginal(2, 2);
+
+		$this->assertThat(
+			$original->unlike(2),
+			$this->identicalTo($original),
+			'Checks chaining.'
+		);
+
+		self::$driver->setQuery('SELECT * FROM #__content_likes WHERE content_id = 2 AND user_id = 2');
+		$r = self::$driver->loadResult();
+
+		$this->assertThat(
+			count($r),
+			$this->equalTo(0),
+			'Check the like was dropped from the content_likes table.'
+		);
+
+		self::$driver->setQuery('SELECT `likes` FROM #__content WHERE content_id = 2');
+		$r = self::$driver->loadResult();
+
+		$this->assertThat(
+			$r,
+			$this->equalTo(3),
+			'Check the likes decremented in the content table.'
+		);
+
+		$this->assertThat(
+			$original->likes,
+			$this->equalTo(3),
+			'Check the likes decremented in the original object.'
 		);
 	}
 }
