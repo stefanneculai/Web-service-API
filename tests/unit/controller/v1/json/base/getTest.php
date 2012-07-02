@@ -482,6 +482,7 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 				array($map, null, array_keys($map), false),
 				array($map, '', array_keys($map), false),
 				array($map, 'name, surname', array('name','surname'), false),
+				array($map, 'name, surname, foo', array('name','surname'), false),
 				array($map, 'content, created_at, user_id', array('content','created_at', 'user_id'), false),
 		);
 	}
@@ -599,7 +600,7 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	 * @covers        WebServiceControllerV1JsonBaseGet::execute
 	 * @since
 	 */
-	public function testExecute()
+	public function testExecuteWithErrors()
 	{
 		// Get app
 		$app = TestReflection::getValue($this->_instance, 'app');
@@ -614,7 +615,6 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 		$expected = json_encode(array('foo'));
 
 		$this->assertEquals($expected, $actual);
-
 	}
 
 	/**
@@ -670,8 +670,24 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	{
 		parent::setUp();
 
+		$options = array(
+			'driver' => 'sqlite',
+			'database' => ':memory:',
+			'prefix' => 'ws_'
+		);
+
+		$driver = JDatabaseDriver::getInstance($options);
+
+		$pdo = new PDO('sqlite::memory:');
+		$pdo->exec(file_get_contents(JPATH_TESTS . '/unit/model/stubs/ws.sql')) or die(print_r($pdo->errorInfo()));
+
+		TestReflection::setValue($driver, 'connection', $pdo);
+		JFactory::$database = $driver;
+		JFactory::$application = $this->getMockWeb();
+
 		$testInput = new JInput;
 		$testMock = WebServiceApplicationWebMock::create($this);
+
 		$this->_instance = new WebServiceControllerV1JsonBaseGet('general', $testInput, $testMock);
 	}
 

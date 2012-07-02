@@ -89,6 +89,9 @@ CREATE TABLE IF NOT EXISTS `ws_content_types` (
 INSERT INTO `ws_content_types` (`type_id`, `title`, `alias`, `table`, `rules`) VALUES
 (1, 'General', 'general', '#__general', '');
 
+INSERT INTO `ws_content_types` (`type_id`, `title`, `alias`, `table`, `rules`) VALUES
+(2, 'Application', 'application', '#__application', '');
+
 -- --------------------------------------------------------
 
 --
@@ -103,6 +106,22 @@ CREATE TABLE IF NOT EXISTS `ws_general` (
   `field3` varchar(100) NOT NULL,
   `field4` varchar(100) DEFAULT NULL,
   `field5` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_content_id` FOREIGN KEY (`content_id`)
+  REFERENCES `ws_content`(`content_id`)
+  ON DELETE CASCADE
+) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ws_application`
+--
+
+CREATE TABLE IF NOT EXISTS `ws_application` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content_id` int(11) NOT NULL,
+  `website` varchar(100) NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_content_id` FOREIGN KEY (`content_id`)
   REFERENCES `ws_content`(`content_id`)

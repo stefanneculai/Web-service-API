@@ -241,17 +241,14 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 
 		$fields = implode(',', $this->mapFieldsIn(array_keys($this->dataFields)));
 
-		// New content model
-		$model = new WebServiceModelBase(new JContentFactory('WebService'));
-
 		// Get content state
-		$modelState = $model->getState();
+		$modelState = $this->model->getState();
 
 		// Set content id
 		$modelState->set('content.id', $this->id);
 
 		// Set content type that we need
-		$modelState->set('content.type', 'general');
+		$modelState->set('content.type', $this->type);
 
 		// Set field list
 		$modelState->set('content.fields', $fields);
@@ -266,21 +263,21 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 		{
 			if (strcmp($this->action, 'hit') == 0)
 			{
-				$item = $model->hitItem();
+				$item = $this->model->hitItem();
 			}
 			elseif (strcmp($this->action, 'like') == 0)
 			{
 				$modelState->set('content.user_id', $this->user);
-				$item = $model->likeItem();
+				$item = $this->model->likeItem();
 			}
 			elseif (strcmp($this->action, 'unlike') == 0)
 			{
 				$modelState->set('content.user_id', $this->user);
-				$item = $model->unlikeItem();
+				$item = $this->model->unlikeItem();
 			}
 			else
 			{
-				$item = $model->updateItem();
+				$item = $this->model->updateItem();
 			}
 			return $item;
 		}

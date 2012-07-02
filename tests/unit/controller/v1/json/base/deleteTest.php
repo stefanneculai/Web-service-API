@@ -335,6 +335,21 @@ class WebServiceControllerV1JsonBaseDeleteTest extends TestCase
 	{
 		parent::setUp();
 
+		$options = array(
+			'driver' => 'sqlite',
+			'database' => ':memory:',
+			'prefix' => 'ws_'
+		);
+
+		$driver = JDatabaseDriver::getInstance($options);
+
+		$pdo = new PDO('sqlite::memory:');
+		$pdo->exec(file_get_contents(JPATH_TESTS . '/unit/model/stubs/ws.sql')) or die(print_r($pdo->errorInfo()));
+
+		TestReflection::setValue($driver, 'connection', $pdo);
+		JFactory::$database = $driver;
+		JFactory::$application = $this->getMockWeb();
+
 		$testInput = new JInput;
 		$testMock = WebServiceApplicationWebMock::create($this);
 		$this->_instance = new WebServiceControllerV1JsonBaseDelete('general', $testInput, $testMock);

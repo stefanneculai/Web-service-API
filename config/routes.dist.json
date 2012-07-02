@@ -7,5 +7,15 @@
 	{
 		"route" : "/general/:general_id",
 		"controller": "general"
+	},
+	
+	{
+		"route" : "/applications",
+		"controller": "applications"
+	},
+	
+	{
+		"route" : "/applications/:application_id",
+		"controller": "applications"
 	}
 ]

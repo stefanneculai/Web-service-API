@@ -288,6 +288,21 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 	{
 		parent::setUp();
 
+		$options = array(
+			'driver' => 'sqlite',
+			'database' => ':memory:',
+			'prefix' => 'ws_'
+		);
+
+		$driver = JDatabaseDriver::getInstance($options);
+
+		$pdo = new PDO('sqlite::memory:');
+		$pdo->exec(file_get_contents(JPATH_TESTS . '/unit/model/stubs/ws.sql')) or die(print_r($pdo->errorInfo()));
+
+		TestReflection::setValue($driver, 'connection', $pdo);
+		JFactory::$database = $driver;
+		JFactory::$application = $this->getMockWeb();
+
 		$type = 'general';
 		$testInput = new JInput;
 		$testMock = WebServiceApplicationWebMock::create($this);

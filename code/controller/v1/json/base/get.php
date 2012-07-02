@@ -393,11 +393,8 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	 */
 	protected function getContent()
 	{
-		// New content model
-		$model = new WebServiceModelBase;
-
 		// Get content state
-		$modelState = $model->getState();
+		$modelState = $this->model->getState();
 
 		// Set content type that we need
 		$modelState->set('content.type', $this->type);
@@ -409,7 +406,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 
 		if (strcmp($this->action, 'count') === 0)
 		{
-			return $model->countItems();
+			return $this->model->countItems();
 		}
 
 		// A specific content is requested
@@ -418,7 +415,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			// Get the requested data
 			try
 			{
-				$item = $model->getItem();
+				$item = $this->model->getItem();
 			}
 			catch (Exception $e)
 			{
@@ -443,7 +440,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			// Get content from Database
 			try
 			{
-				$items = $model->getList();
+				$items = $this->model->getList();
 			}
 			catch (Exception $e)
 			{

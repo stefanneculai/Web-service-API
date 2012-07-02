@@ -49,6 +49,12 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	protected $order;
 
 	/**
+	 * @var    object  The model associated with the controller
+	 * @since  1.0
+	 */
+	protected $model;
+
+	/**
 	 * Abstract function to init parameters
 	 *
 	 * @return  void
@@ -169,6 +175,8 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 		$this->input = isset($input) ? $input : $this->loadInput();
 
 		$this->type = $type;
+
+		$this->model = new WebServiceModelBase(new JContentFactory('WebService'));
 	}
 
 	/**

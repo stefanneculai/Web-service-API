@@ -14,5 +14,20 @@
 			"f4": "field4",
 			"f5": "field5"
 		}
+	},
+	
+	"application":
+	{
+		"mandatory": "title, description",
+		"optional": "website",
+		"map":
+		{
+			"id": "content_id",
+			"created_at": "created_date",
+			"user_id": "user_id",
+			"title": "title",
+			"website": "website",
+			"description": "body"
+		}
 	}
 }

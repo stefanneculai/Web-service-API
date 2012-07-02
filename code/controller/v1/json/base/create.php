@@ -120,11 +120,8 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 		$fields = implode(',', $this->mapFieldsIn(array_keys($this->mandatoryFields)));
 		$fields = $fields . ',' . implode(',', $this->mapFieldsIn(array_keys($this->optionalFields)));
 
-		// New content model
-		$model = new WebServiceModelBase;
-
 		// Get content state
-		$modelState = $model->getState();
+		$modelState = $this->model->getState();
 
 		// Set content type that we need
 		$modelState->set('content.type', $this->type);
@@ -147,7 +144,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 		try
 		{
 			// Create item
-			$item = $model->createItem();
+			$item = $this->model->createItem();
 		}
 		catch (Exception $e)
 		{

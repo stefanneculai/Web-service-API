@@ -180,14 +180,11 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 	 */
 	public function deleteContent()
 	{
-		// New content model
-		$model = new WebServiceModelBase;
-
 		// Get content state
-		$modelState = $model->getState();
+		$modelState = $this->model->getState();
 
 		// Set content type that we need
-		$modelState->set('content.type', 'general');
+		$modelState->set('content.type', $this->type);
 		$modelState->set('content.id', $this->id);
 
 		$modelState->set('filter.since', $this->since);
@@ -198,7 +195,7 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 			// Get the result
 			try
 			{
-				$result = $model->deleteItem();
+				$result = $this->model->deleteItem();
 			}
 			catch (Exception $e)
 			{
@@ -211,7 +208,7 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 		{
 			try
 			{
-				$result = $model->deleteList();
+				$result = $this->model->deleteList();
 			}
 			catch (Exception $e)
 			{
