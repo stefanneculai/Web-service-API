@@ -48,7 +48,9 @@ CREATE TABLE IF NOT EXISTS `ws_content_hits` (
   `hits` int(10) unsigned NOT NULL DEFAULT '0',
   `hit_modified_date` datetime DEFAULT NULL COMMENT 'The time that the content was last hit.',
   PRIMARY KEY (`content_id`),
-  KEY `idx_hits` (`hits`)
+  CONSTRAINT FOREIGN KEY (`content_id`)
+  REFERENCES `ws_content`(`content_id`)
+  ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -64,7 +66,10 @@ CREATE TABLE IF NOT EXISTS `ws_content_likes` (
   `like_state` tinyint(1) NOT NULL DEFAULT '1' COMMENT '+1 if the user likes the content, -1 if the user explicitly dislikes the content.',
   `like_modified_date` datetime DEFAULT NULL COMMENT 'The time that the like was updated',
   PRIMARY KEY (`content_id`,`user_id`),
-  KEY `member_id` (`user_id`)
+  KEY `member_id` (`user_id`),
+  CONSTRAINT FOREIGN KEY (`content_id`)
+  REFERENCES `ws_content`(`content_id`)
+  ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -100,17 +105,17 @@ INSERT INTO `ws_content_types` (`type_id`, `title`, `alias`, `table`, `rules`) V
 
 CREATE TABLE IF NOT EXISTS `ws_general` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content_id` int(11) NOT NULL,
+  `content_id` int(11) unsigned NOT NULL,
   `field1` varchar(100) NOT NULL,
   `field2` varchar(100) NOT NULL,
   `field3` varchar(100) NOT NULL,
   `field4` varchar(100) DEFAULT NULL,
   `field5` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_content_id` FOREIGN KEY (`content_id`)
+  CONSTRAINT FOREIGN KEY (`content_id`)
   REFERENCES `ws_content`(`content_id`)
   ON DELETE CASCADE
-) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -120,13 +125,13 @@ CREATE TABLE IF NOT EXISTS `ws_general` (
 
 CREATE TABLE IF NOT EXISTS `ws_application` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content_id` int(11) NOT NULL,
+  `content_id` int(11) unsigned NOT NULL,
   `website` varchar(100) NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_content_id` FOREIGN KEY (`content_id`)
+  CONSTRAINT FOREIGN KEY (`content_id`)
   REFERENCES `ws_content`(`content_id`)
   ON DELETE CASCADE
-) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

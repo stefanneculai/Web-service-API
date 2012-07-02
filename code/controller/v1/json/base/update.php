@@ -183,6 +183,72 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 		{
 			$this->user = $this->getUser();
 		}
+
+		// Get media and save it
+		if (isset($_FILES['media']))
+		{
+			$this->dataFields['media'] = $this->getMedia();
+		}
+	}
+
+	/**
+	 * Save media fields to the upload folder
+	 *
+	 * @return  string  A string with the names of the uploaded files
+	 *
+	 * @since   1.0
+	 */
+	protected function saveMedia()
+	{
+		$media = $_FILES['media'];
+
+		$files = array();
+
+		foreach ($media['name'] as $key => $value)
+		{
+			$ext = preg_replace('/^.*\.([^.]+)$/D', '$1', $value);
+			$newName = uniqid("", true) . '.' . $ext;
+
+			// If a file with the same name exists create a new name
+			while (file_exists(JPATH_BASE . "/../www/uploads/" . $newName))
+			{
+				$newName = uniqid("", true) . '.' . $ext;
+			}
+
+			array_push($files, UPLOADS . $newName);
+
+			move_uploaded_file(
+					$media['tmp_name'][$key],
+					JPATH_BASE . "/../www/uploads/" . $newName
+					);
+		}
+
+		return implode('|', $files);
+	}
+
+	/**
+	 * Get media fields from input
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	protected function getMedia()
+	{
+		if (isset($_FILES['media']))
+		{
+			try
+			{
+				return $this->saveMedia();
+			}
+			catch (Exception $e)
+			{
+				$this->app->errors->addError("301", $e->getMessage());
+				return;
+			}
+		}
+
+		return null;
 	}
 
 	/**

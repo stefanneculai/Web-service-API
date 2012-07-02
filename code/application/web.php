@@ -163,7 +163,6 @@ class WebServiceApplicationWeb extends JApplicationWeb
 			$this->addRoutes($this->routes);
 
 			// Get the controller instance based on the request.
-
 			$this->router->execute($this->get('uri.route'));
 		}
 		catch (Exception $e)

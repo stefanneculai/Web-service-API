@@ -19,7 +19,7 @@
 	"application":
 	{
 		"mandatory": "title, description",
-		"optional": "website",
+		"optional": "website, media",
 		"map":
 		{
 			"id": "content_id",
@@ -27,7 +27,8 @@
 			"user_id": "user_id",
 			"title": "title",
 			"website": "website",
-			"description": "body"
+			"description": "body",
+			"media": "media"
 		}
 	}
 }

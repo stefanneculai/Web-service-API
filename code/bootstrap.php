@@ -50,5 +50,7 @@ if (!class_exists('JLoader'))
 	exit('Joomla Platform not loaded.');
 }
 
+define('UPLOADS', 'http://ws.localhost/uploads/');
+
 // Setup the autoloader for the WebService application classes.
 JLoader::registerPrefix('WebService', __DIR__);

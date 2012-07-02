@@ -98,8 +98,16 @@
 	
 	"102": 
 	{
-		"code": "JWS401",
+		"code": "JWS402",
 		"message": "Nothing to delete.",
+		"more_info": "",
+		"response_code": "400"
+	},
+	
+	"103": 
+	{
+		"code": "JWS403",
+		"message": "Bad file to upload. Exception: $1",
 		"more_info": "",
 		"response_code": "400"
 	}
