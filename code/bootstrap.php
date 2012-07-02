@@ -38,7 +38,7 @@ if (!defined('JPATH_BASE'))
 	define('JPATH_BASE', realpath(__DIR__));
 }
 
-define('JPATH_SITE', JPATH_BASE . '/code');
+define('JPATH_SITE', realpath(__DIR__) . '/code');
 define('JPATH_CACHE', JPATH_SITE . '/cache');
 
 // Import the platform(s).

@@ -1,0 +1,17 @@
+{
+	"301": 
+	{
+		"code": "JWS001",
+		"message": "Message1",
+		"more_info": "",
+		"response_code": "400"
+	},
+	
+	"302": 
+	{
+		"code": "JWS002",
+		"message": "Message2",
+		"more_info": "",
+		"response_code": "400"
+	}
+}
