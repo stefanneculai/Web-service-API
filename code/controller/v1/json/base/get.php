@@ -166,7 +166,6 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	 */
 	protected function getFields()
 	{
-
 		$fields = $this->input->get->getString('fields');
 
 		if (isset($fields))

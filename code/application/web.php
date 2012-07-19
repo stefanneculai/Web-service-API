@@ -149,6 +149,8 @@ class WebServiceApplicationWeb extends JApplicationWeb
 		{
 			$this->dbo = JFactory::getDbo();
 			$this->session = JFactory::getSession();
+			$this->session->initialise($this->input);
+			$this->session->start();
 			JFactory::$application = $this;
 
 			// There is an error

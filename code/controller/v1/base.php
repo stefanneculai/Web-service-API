@@ -176,6 +176,10 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 
 		$this->type = $type;
 
+		// Init user load table
+		JUser::getTable('user', 'WebServiceTable');
+
+		// Init model
 		$this->model = new WebServiceModelBase(new JContentFactory('WebService'));
 	}
 

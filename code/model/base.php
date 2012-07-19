@@ -63,7 +63,6 @@ class WebServiceModelBase extends JModelBase
 		{
 			$this->db = $db;
 		}
-
 	}
 
 	/**

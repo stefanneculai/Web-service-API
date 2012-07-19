@@ -136,12 +136,13 @@ CREATE TABLE IF NOT EXISTS `ws_application` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ws_users`
+-- Table structure for table `ws_user`
 --
 
-CREATE TABLE IF NOT EXISTS `ws_users` (
+CREATE TABLE IF NOT EXISTS `ws_user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
+  `content_id` int(11) unsigned NOT NULL,
   `username` varchar(150) NOT NULL DEFAULT '',
   `email` varchar(100) NOT NULL DEFAULT '',
   `password` varchar(100) NOT NULL DEFAULT '',
@@ -152,17 +153,10 @@ CREATE TABLE IF NOT EXISTS `ws_users` (
   `lastvisitDate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `activation` varchar(100) NOT NULL DEFAULT '',
   `params` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `usertype` (`usertype`),
-  KEY `idx_name` (`name`),
-  KEY `idx_block` (`block`),
   KEY `username` (`username`),
-  KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `ws_users`
---
-
-INSERT INTO `ws_users` (`id`, `name`, `username`, `email`, `password`, `usertype`, `block`, `sendEmail`, `registerDate`, `lastvisitDate`, `activation`, `params`) VALUES
-(1, 'test', 'test', 'test@aaa.com', 'rarata', '', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '');
+  KEY `email` (`email`),
+  PRIMARY KEY (`id`),
+  CONSTRAINT FOREIGN KEY (`content_id`)
+  REFERENCES `ws_content`(`content_id`)
+  ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

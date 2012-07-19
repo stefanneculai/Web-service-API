@@ -17,5 +17,15 @@
 	{
 		"route" : "/applications/:application_id",
 		"controller": "applications"
+	},
+	
+	{
+		"route" : "/users",
+		"controller": "users"
+	},
+	
+	{
+		"route" : "/users/:user_id",
+		"controller": "users"
 	}
 ]

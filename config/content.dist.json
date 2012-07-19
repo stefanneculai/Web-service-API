@@ -7,7 +7,7 @@
 		{
 			"id": "content_id",
 			"created_at": "created_date",
-			"user_id": "user_id",
+			"user_id": "created_user_id",
 			"f1": "field1",
 			"f2": "field2",
 			"f3": "field3",
@@ -24,11 +24,31 @@
 		{
 			"id": "content_id",
 			"created_at": "created_date",
-			"user_id": "user_id",
+			"user_id": "created_user_id",
 			"title": "title",
 			"website": "website",
 			"description": "body",
 			"media": "media"
+		}
+	},
+	
+	"user":
+	{
+		"mandatory": "name, username, email, password",
+		"optional": "last_visit, usertype, send_email, activation",
+		"map":
+		{
+			"id": "content_id",
+			"created_at": "created_date",
+			"user_id": "created_user_id",
+			"name": "name",
+			"username": "username",
+			"email": "email",
+			"password": "password",
+			"last_visit": "lastvisitDate",
+			"user_type": "usertype",
+			"send_email": "send_email",
+			"activation": "activation"
 		}
 	}
 }
