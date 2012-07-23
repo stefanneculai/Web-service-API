@@ -22,6 +22,11 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 	protected $media = null;
 
 	/**
+	 * The user that creates the content
+	 */
+	protected $user = null;
+
+	/**
 	 * Init parameters
 	 *
 	 * @return  void
@@ -44,6 +49,8 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 		{
 			$this->optionalFields['media'] = $this->getMedia();
 		}
+
+		$this->loadUser();
 	}
 
 	/**
@@ -152,6 +159,48 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 		}
 
 		return null;
+	}
+
+	/** Get the user_id from input and check if it exists
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 */
+	protected function checkUserId()
+	{
+		$user_id = $this->input->get->getString('user_id');
+		if (isset($user_id))
+		{
+			$user = new JUser;
+			return $user->load($user_id);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Load user
+	 *
+	 * @return void
+	 *
+	 * @since 1.0
+	 */
+	protected function loadUser()
+	{
+		// Check if the passed user id is correct
+		if ($this->checkUserId() == true)
+		{
+			// Load user in session
+			$user_id = $this->input->get->getString('user_id');
+			$session = $this->app->getSession();
+			$session->set('user', new JUser($user_id));
+		}
+		else
+		{
+			// Bad user id
+			$this->app->errors->addError("201");
+		}
 	}
 
 	/**

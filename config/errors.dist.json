@@ -110,5 +110,13 @@
 		"message": "Bad file to upload. Exception: $1",
 		"more_info": "",
 		"response_code": "400"
+	},
+	
+	"201": 
+	{
+		"code": "JWS201",
+		"message": "The specified user doesn't exist in database.",
+		"more_info": "",
+		"response_code": "400"
 	}
 }

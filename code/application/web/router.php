@@ -220,7 +220,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 			// /collection1/id/collection2 becames /collection2?collection1=id
 			if (preg_match($pattern, $input, $matches))
 			{
-				$this->input->get->set($matches[1], $matches[2]);
+				$this->input->get->set($this->singularize($matches[1]) . '_id', $matches[2]);
 			}
 		}
 

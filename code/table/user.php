@@ -19,14 +19,6 @@ defined('JPATH_PLATFORM') or die;
 class WebServiceTableUser extends JTable
 {
 	/**
-	 * Associative array of group ids => group ids for the user
-	 *
-	 * @var    array
-	 * @since  11.1
-	 */
-	public $groups;
-
-	/**
 	 * Constructor
 	 *
 	 * @param   JDatabaseDriver  $db  Database driver object.
@@ -79,7 +71,7 @@ class WebServiceTableUser extends JTable
 		$query = $this->_db->getQuery(true);
 		$query->select('*');
 		$query->from($this->_db->quoteName('#__users'));
-		$query->where($this->_db->quoteName('id') . ' = ' . (int) $userId);
+		$query->where($this->_db->quoteName('content_id') . ' = ' . (int) $userId);
 		$this->_db->setQuery($query);
 		$data = (array) $this->_db->loadAssoc();
 

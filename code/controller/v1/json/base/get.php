@@ -47,6 +47,12 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	protected $id = '*';
 
 	/**
+	 * @var    string  The user id associated with the content
+	 * @since  1.0
+	 */
+	protected $user_id = null;
+
+	/**
 	 * @var    string  The order of the results
 	 * @since  1.0
 	 */
@@ -309,6 +315,24 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	}
 
 	/**
+	 * Get the user ID associated with the content
+	 *
+	 * @return  string
+	 *
+	 * @since   1.0
+	 */
+	protected function getUserId()
+	{
+		$user_id = $this->input->get->getString('user_id');
+		if (isset($user_id))
+		{
+			return $user_id;
+		}
+
+		return $this->user_id;
+	}
+
+	/**
 	 * Init parameters
 	 *
 	 * @return  void
@@ -354,6 +378,9 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 
 		// Action
 		$this->action = $this->getAction();
+
+		// The user id for the current content
+		$this->user_id = $this->getUserId();
 	}
 
 	/**
@@ -402,6 +429,11 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		// Set date limitations
 		$modelState->set('filter.since', $this->since);
 		$modelState->set('filter.before', $this->before);
+
+		if ($this->user_id != null)
+		{
+			$modelState->set('content.user_id', $this->user_id);
+		}
 
 		if (strcmp($this->action, 'count') === 0)
 		{

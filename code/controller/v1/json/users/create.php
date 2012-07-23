@@ -16,5 +16,4 @@
  */
 class WebServiceControllerV1JsonUsersCreate extends WebServiceControllerV1JsonBaseCreate
 {
-
 }

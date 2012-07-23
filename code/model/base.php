@@ -166,6 +166,14 @@ class WebServiceModelBase extends JModelBase
 			}
 		}
 
+		// Check if we should filter the list based on user_id
+		if (!is_null($this->state->get('content.user_id')))
+		{
+			// Get the requested user_id.
+			$user_id = $this->state->get('content.user_id');
+			$query->where($query->qn('a.created_user_id') . ' = ' . (int) $user_id);
+		}
+
 		// Check if we should filter the list based on since date
 		if (!is_null($this->state->get('filter.since')))
 		{
