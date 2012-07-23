@@ -230,18 +230,6 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 	 */
 	protected function parseData($data)
 	{
-		// Request was done successfully
-		if ($data == true)
-		{
-			$this->app->setBody(json_encode(new stdClass));
-		}
-		// Request was not successfully
-		else
-		{
-			$this->app->errors->addError("102");
-			$this->app->setBody(json_encode($this->app->errors->getErrors()));
-			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
-			return;
-		}
+		$this->app->setBody(json_encode($data));
 	}
 }

@@ -199,7 +199,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 		else
 		{
 			// Bad user id
-			$this->app->errors->addError("201");
+			$this->app->errors->addError("201", array($this->input->get->getString('user_id')));
 		}
 	}
 

@@ -32,6 +32,20 @@
 		}
 	},
 	
+	"tag":
+	{
+		"mandatory": "name",
+		"optional": "application_id",
+		"map":
+		{
+			"id": "content_id",
+			"created_at": "created_date",
+			"user_id": "created_user_id",
+			"name": "body",
+			"application_id": "application_id"
+		}
+	},
+	
 	"user":
 	{
 		"mandatory": "name, username, email, password",

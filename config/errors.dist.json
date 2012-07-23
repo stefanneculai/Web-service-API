@@ -115,7 +115,15 @@
 	"201": 
 	{
 		"code": "JWS201",
-		"message": "The specified user doesn't exist in database.",
+		"message": "The user with the id $1 doesn't exist in database.",
+		"more_info": "",
+		"response_code": "400"
+	},
+	
+	"202": 
+	{
+		"code": "JWS202",
+		"message": "The specified application doesn't exist in database.",
 		"more_info": "",
 		"response_code": "400"
 	}

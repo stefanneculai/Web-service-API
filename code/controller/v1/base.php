@@ -360,4 +360,26 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 
 		return $data;
 	}
+
+	/**
+	 * Set conditions
+	 *
+	 * @param   array  $conditions  An associative array with the conditions
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	protected function setWhere($conditions)
+	{
+		// Get content state
+		$modelState = $this->model->getState();
+
+		$modelState->set('where.fields', implode(',', array_keys($conditions)));
+
+		foreach ($conditions as $key => $value)
+		{
+			$modelState->set('where.' . $key, $value);
+		}
+	}
 }

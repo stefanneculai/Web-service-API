@@ -186,6 +186,22 @@ class WebServiceModelBase extends JModelBase
 			$query->where($query->qn('a.created_date') . ' < ' . '\'' . $this->state->get('filter.before') . '\'');
 		}
 
+		if (!is_null($this->state->get('where.fields')))
+		{
+			$where = explode(',', $this->state->get('where.fields'));
+
+			foreach ($where as $name => $value)
+			{
+				$query->where($query->qn('a.' . $value) . '=' . '\'' . $this->state->get('where.' . $value) . '\'');
+			}
+		}
+
+		if (!is_null($this->state->get('tags.content_id')))
+		{
+			$query->innerJoin($query->qn('#__content_tag_map', 'c') . ' ON ' . $query->qn('c.tag_id') . ' = ' . $query->qn('a.content_id'));
+			$query->where($query->qn('c.content_id') . '=' . $this->state->get('tags.content_id'));
+		}
+
 		return $query;
 	}
 
@@ -711,5 +727,119 @@ class WebServiceModelBase extends JModelBase
 		$content = $content->create();
 
 		return $content;
+	}
+
+	/**
+	 * Map two contnet
+	 *
+	 * @param   string  $content_id1  The id of content 1
+	 * @param   string  $content_id2  The id of content 2
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function map($content_id1, $content_id2)
+	{
+		$contentType = $this->state->get('content.type');
+
+		// Check if the content type is set.
+		if (empty($contentType))
+		{
+			// Get the content type for the id.
+			$results = $this->getTypes($content_id2);
+
+			// Assert that the content type was found.
+			if (empty($results[$content_id2]))
+			{
+				throw new UnexpectedValueException(sprintf('%s->getItem() could not find the content type for item %s.', get_class($this), $content_id2));
+			}
+
+			// Set the content type alias.
+			$contentType = $results[$content_id2]->type;
+		}
+
+		$query = $this->db->getQuery(true);
+		$query->clear();
+		$query->insert($this->db->quoteName('#__content_' . $contentType . '_map'));
+		$query->columns(array($this->db->quoteName('content_id'), $this->db->quoteName($contentType . '_id')));
+		$query->values($content_id1 . ', ' . $content_id2);
+
+		$this->db->setQuery($query);
+
+		try
+		{
+			$this->db->execute();
+		}
+		catch (Exception $er)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Unmap two contnet
+	 *
+	 * @param   string  $content_id1  The id of content 1
+	 * @param   string  $content_id2  The id of content 2
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function unmap($content_id1, $content_id2 = null)
+	{
+		$contentType = $this->state->get('content.type');
+
+		// Check if the content type is set.
+		if (empty($contentType))
+		{
+			// Get the content type for the id.
+			if (!is_null($content_id2))
+			{
+				$results = $this->getTypes($content_id2);
+
+				// Assert that the content type was found.
+				if (empty($results[$content_id2]))
+				{
+					throw new UnexpectedValueException(sprintf('%s->getItem() could not find the content type for item %s.', get_class($this), $content_id2));
+				}
+
+				// Set the content type alias.
+				$contentType = $results[$content_id2]->type;
+			}
+			else
+			{
+				throw new UnexpectedValueException(sprintf('%s->getItem() could not find the content type for item %s.', get_class($this), $content_id2));
+			}
+		}
+
+		$query = $this->db->getQuery(true);
+		$query->clear();
+		$query->delete();
+		$query->from($this->db->quoteName('#__content_' . $contentType . '_map'));
+		$query->where($this->db->quoteName('content_id') . '=' . $content_id1);
+		if (!is_null($content_id2))
+		{
+			$query->where($this->db->quoteName('tag_id') . '=' . $content_id2);
+		}
+
+		print_r($query->__toString());
+		die();
+
+		$this->db->setQuery($query);
+
+		try
+		{
+			$this->db->execute();
+		}
+		catch (Exception $er)
+		{
+			return false;
+		}
+
+		return true;
 	}
 }

@@ -53,6 +53,12 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	protected $user_id = null;
 
 	/**
+	 * @var    string  The user id associated with the content
+	 * @since  1.0
+	 */
+	protected $application_id = null;
+
+	/**
 	 * @var    string  The order of the results
 	 * @since  1.0
 	 */
@@ -384,6 +390,17 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	}
 
 	/**
+	 * Do the mapping with tags, comments and categories
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	protected function doMap()
+	{
+	}
+
+	/**
 	 * Controller logic
 	 *
 	 * @return  void
@@ -401,6 +418,8 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
 			return;
 		}
+
+		$this->doMap();
 
 		// Returned data
 		$data = $this->getContent();

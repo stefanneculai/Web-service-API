@@ -20,6 +20,16 @@
 	},
 	
 	{
+		"route" : "/tags",
+		"controller": "tags"
+	},
+	
+	{
+		"route" : "/tags/:tag_id",
+		"controller": "tags"
+	},
+	
+	{
 		"route" : "/users",
 		"controller": "users"
 	},
