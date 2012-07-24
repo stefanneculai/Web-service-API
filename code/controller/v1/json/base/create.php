@@ -65,14 +65,31 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 		// Search for mandatory fields in input query
 		foreach ($this->mandatoryFields as $key => $value )
 		{
+			// Check if mandatory field is set
 			$field = $this->input->get->getString($key);
 			if ( isset($field) )
 			{
 				$this->mandatoryFields[$key] = $field;
 			}
-			else
+
+			// Check if there is an alternative for the mandatory field
+			elseif ( !isset($this->alternativeFields[$key]) )
 			{
 				$this->app->errors->addError("308", array($key));
+			}
+
+			else
+			{
+				$field = $this->input->get->getString($this->alternativeFields[$key]);
+				if ( isset($field) )
+				{
+					unset($this->mandatoryFields[$key]);
+					$this->mandatoryFields[$this->alternativeFields[$key]] = $field;
+				}
+				else
+				{
+					$this->app->errors->addError("308", array($key));
+				}
 			}
 		}
 	}

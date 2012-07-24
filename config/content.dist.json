@@ -35,6 +35,10 @@
 	"tag":
 	{
 		"mandatory": "name",
+		"alternative": 
+		{
+			"name": "list"
+		},
 		"optional": "application_id",
 		"map":
 		{

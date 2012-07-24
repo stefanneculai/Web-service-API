@@ -732,40 +732,44 @@ class WebServiceModelBase extends JModelBase
 	/**
 	 * Map two contnet
 	 *
-	 * @param   string  $content_id1  The id of content 1
-	 * @param   string  $content_id2  The id of content 2
+	 * @param   string   $content_id1  The id of content 1
+	 * @param   array    $content_ids  An array of content ids to map
+	 * @param   boolean  $updateAll    Update all map fields or only one
 	 *
 	 * @return  void
 	 *
 	 * @since   1.0
 	 */
-	public function map($content_id1, $content_id2)
+	public function map($content_id1, $content_ids, $updateAll = false)
 	{
 		$contentType = $this->state->get('content.type');
 
 		// Check if the content type is set.
 		if (empty($contentType))
 		{
-			// Get the content type for the id.
-			$results = $this->getTypes($content_id2);
-
-			// Assert that the content type was found.
-			if (empty($results[$content_id2]))
-			{
-				throw new UnexpectedValueException(sprintf('%s->getItem() could not find the content type for item %s.', get_class($this), $content_id2));
-			}
-
-			// Set the content type alias.
-			$contentType = $results[$content_id2]->type;
+			throw new UnexpectedValueException(sprintf('%s->getItem() could not find the content type.', get_class($this)));
 		}
 
 		$query = $this->db->getQuery(true);
-		$query->clear();
+
+		// Delete existing mappings
+		if ($updateAll == true)
+		{
+			$query->delete();
+			$query->from($this->db->quoteName('#__content_' . $contentType . '_map'));
+			$query->where($this->db->quoteName('content_id') . ' = ' . (int) $content_id1);
+			$this->db->setQuery($query);
+			$this->db->execute();
+			$query->clear();
+		}
+
 		$query->insert($this->db->quoteName('#__content_' . $contentType . '_map'));
 		$query->columns(array($this->db->quoteName('content_id'), $this->db->quoteName($contentType . '_id')));
-		$query->values($content_id1 . ', ' . $content_id2);
-
-		$this->db->setQuery($query);
+		foreach ($content_ids as $key => $content_id)
+		{
+			$query->values($content_id1 . ', ' . $content_id);
+		}
+		$this->db->setQuery(str_replace('INSERT INTO', 'INSERT IGNORE INTO', $query));
 
 		try
 		{
