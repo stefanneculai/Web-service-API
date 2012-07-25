@@ -134,6 +134,8 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 	 */
 	protected function init()
 	{
+		$this->readFields();
+
 		// Content id
 		$this->id = $this->getContentId();
 

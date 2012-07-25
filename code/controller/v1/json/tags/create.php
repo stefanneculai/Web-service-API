@@ -41,6 +41,30 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 	}
 
 	/**
+	 * Get the list with tag IDs from input
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	protected function getIDsList()
+	{
+		if (isset($this->mandatoryFields['ids']))
+		{
+			$idsList = explode(',', $this->mandatoryFields['ids']);
+
+			foreach ($idsList as $key => $tag)
+			{
+				$idsList[$key] = trim($tag);
+			}
+
+			return $idsList;
+		}
+
+		return null;
+	}
+
+	/**
 	 * Get a list of tag IDs
 	 *
 	 * @return  array
@@ -51,6 +75,7 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 	{
 		// Get the list of tags from the input
 		$list = $this->getTagList();
+		$ids = $this->getIDsList();
 		$tagIDs = array();
 
 		if ($list != null)
@@ -72,10 +97,11 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 				// Create the tag if it does not exist
 				else
 				{
-					$this->optionalFields['name'] = $tag;
+					$this->mandatoryFields['name'] = $tag;
 					$data = $this->createContent();
 				}
 
+				// Get the tag id
 				$tag_id = $this->pruneFields($data, array('content_id'));
 
 				if (array_key_exists('id', $tag_id))
@@ -83,13 +109,35 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 					$tag_id = $tag_id['id'];
 				}
 
+				// Put the new tag in the array list
 				array_push($tagIDs, $tag_id);
+			}
+		}
+		elseif ($ids != null)
+		{
+			$modelState = $this->model->getState();
+			$modelState->set('content.type', $this->type);
+
+			foreach ($ids as $key => $id)
+			{
+				$tagIDs = array();
+
+				if ($this->model->existsItem($id))
+				{
+					array_push($tagIDs, $id);
+				}
+				else
+				{
+					$this->app->errors->addError('501', $id);
+				}
 			}
 		}
 		else
 		{
+			// Create content
 			$data = $this->createContent();
 
+			// Get tag id
 			$tag_id = $this->pruneFields($data, array('content_id'));
 
 			if (array_key_exists('id', $tag_id))
@@ -97,6 +145,7 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 				$tag_id = $tag_id['id'];
 			}
 
+			// Put the new tag in the array list
 			array_push($tagIDs, $tag_id);
 		}
 
@@ -128,6 +177,14 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 
 		// An array with tag ids
 		$tagIDs = $this->getTagIds();
+
+		// Check for errors
+		if ($this->app->errors->errorsExist() == true)
+		{
+			$this->app->setBody(json_encode($this->app->errors->getErrors()));
+			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
+			return;
+		}
 
 		// Check if there is an application id specified
 		if (array_key_exists('application_id', $this->optionalFields))

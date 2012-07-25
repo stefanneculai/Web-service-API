@@ -37,7 +37,19 @@
 		"mandatory": "name",
 		"alternative": 
 		{
-			"name": "list"
+			"0":
+			{
+				"key": "name",
+				"field": "list",
+				"condition": "application_id"
+			},
+			
+			"1":
+			{
+				"key": "name",
+				"field": "ids",
+				"condition": "application_id"
+			}
 		},
 		"optional": "application_id",
 		"map":

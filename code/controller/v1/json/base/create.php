@@ -73,23 +73,35 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 			}
 
 			// Check if there is an alternative for the mandatory field
-			elseif ( !isset($this->alternativeFields[$key]) )
-			{
-				$this->app->errors->addError("308", array($key));
-			}
-
 			else
 			{
-				$field = $this->input->get->getString($this->alternativeFields[$key]);
-				if ( isset($field) )
+				foreach ($this->alternativeFields as $index => $alternative)
 				{
-					unset($this->mandatoryFields[$key]);
-					$this->mandatoryFields[$this->alternativeFields[$key]] = $field;
+					// Compare the key of the alternative with the mandatory field
+					if (strcmp($alternative->key, $key) === 0)
+					{
+						// Check condition
+						$condition = $this->input->get->getString($alternative->condition);
+						if (isset($condition))
+						{
+							// Check if the alternative field is set
+							$field = $this->input->get->getString($alternative->field);
+							if (isset($field))
+							{
+								// Unset the old mandatory field
+								unset($this->mandatoryFields[$key]);
+
+								// Replace the old mandatory field with the new one
+								$this->mandatoryFields[$alternative->field] = $field;
+
+								// The order of the alternatives is important (first match is accepted)
+								return;
+							}
+						}
+					}
 				}
-				else
-				{
-					$this->app->errors->addError("308", array($key));
-				}
+
+				$this->app->errors->addError("308", array($key));
 			}
 		}
 	}

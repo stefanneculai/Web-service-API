@@ -126,5 +126,13 @@
 		"message": "The specified application doesn't exist in database.",
 		"more_info": "",
 		"response_code": "400"
+	},
+	
+	"501": 
+	{
+		"code": "JWS501",
+		"message": "The tag with the id $1 doesn't exist.",
+		"more_info": "",
+		"response_code": "400"
 	}
 }

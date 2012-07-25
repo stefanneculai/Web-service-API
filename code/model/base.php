@@ -830,9 +830,6 @@ class WebServiceModelBase extends JModelBase
 			$query->where($this->db->quoteName('tag_id') . '=' . $content_id2);
 		}
 
-		print_r($query->__toString());
-		die();
-
 		$this->db->setQuery($query);
 
 		try
