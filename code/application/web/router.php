@@ -41,8 +41,8 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	 * @since  1.0
 	 */
 	protected $actionsMap = array(
-		'#([\w\/]*)/(\d+)/(like)#i' => '$1/$2',
-		'#([\w\/]*)/(\d+)/(unlike)#i' => '$1/$2',
+		'#([\w\/]*)/(\d+)/(like)(\?\w+|\z)#i' => '$1/$2$4',
+		'#([\w\/]*)/(\d+)/(unlike)\?(\w+)#i' => '$1/$2',
 		'#([\w\/]*)/(\d+)/(hit)#i' => '$1/$2',
 		'#([\w\/]*)/(count)#i' => '$1'
 	);
@@ -245,7 +245,6 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 
 		foreach ($this->actionsMap as $pattern => $replace)
 		{
-			// /collection1/id/collection2 becames /collection2?collection1=id
 			if (preg_match($pattern, $input, $matches))
 			{
 				if (in_array($matches[2], $this->actions))

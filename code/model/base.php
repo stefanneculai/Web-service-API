@@ -254,6 +254,24 @@ class WebServiceModelBase extends JModelBase
 	}
 
 	/**
+	 * Method to get likes
+	 *
+	 * @return  mixed
+	 *
+	 * @since   1.0
+	 */
+	public function getLikes()
+	{
+		$item = $this->getItem();
+		if ($item != false)
+		{
+			return $item->getContentLikes();
+		}
+
+		return false;
+	}
+
+	/**
 	 * Method to delete a content item.
 	 *
 	 * @return  JContent  A content object.

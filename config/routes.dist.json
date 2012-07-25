@@ -37,5 +37,10 @@
 	{
 		"route" : "/users/:user_id",
 		"controller": "users"
+	},
+	
+	{
+		"route" : "/likes",
+		"controller": "likes"
 	}
 ]

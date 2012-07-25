@@ -128,6 +128,14 @@
 		"response_code": "400"
 	},
 	
+	"203": 
+	{
+		"code": "JWS203",
+		"message": "Missing content id.",
+		"more_info": "",
+		"response_code": "400"
+	},
+	
 	"501": 
 	{
 		"code": "JWS501",
