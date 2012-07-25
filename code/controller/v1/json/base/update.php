@@ -58,27 +58,46 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 		return $this->action;
 	}
 
-	/**
-	 * Get the before date limitation from input or the default one
+	/** Get the user_id from input and check if it exists
 	 *
-	 * @return  string
+	 * @return  boolean
 	 *
 	 * @since   1.0
 	 */
-	protected function getUser()
+	protected function checkUserId()
 	{
-		$user = $this->input->get->getString('user');
-		if (isset($user))
+		$user_id = $this->input->get->getString('user_id');
+		if (isset($user_id))
 		{
-			return $user;
+			$user = new JUser;
+			return $user->load($user_id);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Load user
+	 *
+	 * @return void
+	 *
+	 * @since 1.0
+	 */
+	protected function loadUser()
+	{
+		// Check if the passed user id is correct
+		if ($this->checkUserId() == true)
+		{
+			// Load user in session
+			$user_id = $this->input->get->getString('user_id');
+			$session = $this->app->getSession();
+			$session->set('user', new JUser($user_id));
 		}
 		else
 		{
-			$this->app->errors->addError("310");
-			return;
+			// Bad user id
+			$this->app->errors->addError("201", array($this->input->get->getString('user_id')));
 		}
-
-		return $this->user;
 	}
 
 	/**
@@ -181,7 +200,7 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 		// User
 		if ($this->action != null && (strcmp($this->action, 'like') == 0 || strcmp($this->action, 'unlike') == 0))
 		{
-			$this->user = $this->getUser();
+			$this->loadUser();
 		}
 
 		// Get media and save it
@@ -333,13 +352,11 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 			}
 			elseif (strcmp($this->action, 'like') == 0)
 			{
-				$modelState->set('content.user_id', $this->user);
 				$item = $this->model->likeItem();
 			}
 			elseif (strcmp($this->action, 'unlike') == 0)
 			{
-				$modelState->set('content.user_id', $this->user);
-				$item = $this->model->unlikeItem();
+				$item = $this->model->likeItem(true);
 			}
 			else
 			{

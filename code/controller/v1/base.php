@@ -140,6 +140,10 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 		{
 			$this->alternativeFields = get_object_vars($fields['alternative']);
 		}
+		else
+		{
+			$this->alternativeFields = array();
+		}
 	}
 
 	/**

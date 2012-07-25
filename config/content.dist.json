@@ -12,7 +12,9 @@
 			"f2": "field2",
 			"f3": "field3",
 			"f4": "field4",
-			"f5": "field5"
+			"f5": "field5",
+			"likes": "likes",
+			"hits": "hits"
 		}
 	},
 	
@@ -28,7 +30,9 @@
 			"title": "title",
 			"website": "website",
 			"description": "body",
-			"media": "media"
+			"media": "media",
+			"likes": "likes",
+			"hits": "hits"
 		}
 	},
 	
@@ -78,7 +82,9 @@
 			"last_visit": "lastvisitDate",
 			"user_type": "usertype",
 			"send_email": "send_email",
-			"activation": "activation"
+			"activation": "activation",
+			"likes": "likes",
+			"hits": "hits"
 		}
 	}
 }
