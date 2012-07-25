@@ -161,8 +161,7 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 	 */
 	public function execute()
 	{
-		//TODO set a root user
-		$this->app->input->get->set('user_id', '32');
+		$this->app->input->get->set('user_id', '1');
 
 		// Init
 		$this->init();
