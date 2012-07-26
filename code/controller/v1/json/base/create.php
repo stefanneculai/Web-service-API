@@ -162,7 +162,15 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 					);
 		}
 
-		return implode('|', $files);
+		$mediaMap = array();
+
+		foreach ($files as $key => $value)
+		{
+			$key++;
+			$mediaMap["{$key}"] = $value;
+		}
+
+		return $mediaMap;
 	}
 
 	/**

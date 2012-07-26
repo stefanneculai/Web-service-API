@@ -102,6 +102,9 @@ INSERT INTO `ws_content_types` (`type_id`, `title`, `alias`, `table`, `rules`) V
 INSERT INTO `ws_content_types` (`type_id`, `title`, `alias`, `table`, `rules`) VALUES
 (4, 'Tag', 'tag', '', '');
 
+INSERT INTO `ws_content_types` (`type_id`, `title`, `alias`, `table`, `rules`) VALUES
+(5, 'Comment', 'comment', '', '');
+
 -- --------------------------------------------------------
 
 --
@@ -177,6 +180,18 @@ CREATE TABLE IF NOT EXISTS `ws_content_tag_map` (
   CONSTRAINT FOREIGN KEY (`content_id`) REFERENCES `ws_content`(`content_id`) ON DELETE CASCADE,
   CONSTRAINT FOREIGN KEY (`tag_id`) REFERENCES `ws_content`(`content_id`) ON DELETE CASCADE,  
   PRIMARY KEY (`content_id`,`tag_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `ws_content_comment_map`
+--
+
+CREATE TABLE IF NOT EXISTS `ws_content_comment_map` (
+  `content_id` int(10) unsigned NOT NULL,
+  `comment_id` int(10) unsigned NOT NULL,
+  CONSTRAINT FOREIGN KEY (`content_id`) REFERENCES `ws_content`(`content_id`) ON DELETE CASCADE,
+  CONSTRAINT FOREIGN KEY (`comment_id`) REFERENCES `ws_content`(`content_id`) ON DELETE CASCADE,  
+  PRIMARY KEY (`content_id`,`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

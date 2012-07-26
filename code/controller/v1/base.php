@@ -253,14 +253,12 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 				{
 					// Suck out only the fields we want from the object dump.
 					$list[$key] = (array) $object->dump();
-
 					$list[$key] = $this->mapFieldsOut($list[$key]);
 				}
 			}
 			else
 			{
 				$list = (array) $list->dump();
-
 				$list = $this->mapFieldsOut($list);
 			}
 		}

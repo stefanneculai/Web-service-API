@@ -542,7 +542,11 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			$data = $newData;
 		}
 
-		// Output the results
+		if (isset($data['media']))
+		{
+			$data['media'] = json_decode($data['media']);
+		}
+
 		$this->app->setBody(json_encode($data));
 	}
 }

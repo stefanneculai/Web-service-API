@@ -86,5 +86,20 @@
 			"likes": "likes",
 			"hits": "hits"
 		}
+	},
+	
+	"comment":
+	{
+		"mandatory": "body, application_id",
+		"optional": "",
+		"map":
+		{
+			"id": "content_id",
+			"created_at": "created_date",
+			"user_id": "created_user_id",
+			"likes": "likes",
+			"hits": "hits",
+			"body": "body"
+		}
 	}
 }

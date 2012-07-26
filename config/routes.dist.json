@@ -40,6 +40,16 @@
 	},
 	
 	{
+		"route" : "/comments",
+		"controller": "comments"
+	},
+	
+	{
+		"route" : "/comments/:comment_id",
+		"controller": "comments"
+	},
+	
+	{
 		"route" : "/likes",
 		"controller": "likes"
 	}
