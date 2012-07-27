@@ -534,17 +534,21 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			}
 
 			$data = $this->pruneFields($data, $this->fields);
+
+			if (is_array($data) && isset($data['screenshots']))
+			{
+				$data['screenshots'] = json_decode($data['screenshots']);
+			}
+			elseif ($data instanceof stdClass)
+			{
+				$data->screenshots = json_decode($data->screenshots);
+			}
 		}
 		else
 		{
 			$newData = new stdClass;
 			$newData->count = $data;
 			$data = $newData;
-		}
-
-		if (isset($data['media']))
-		{
-			$data['media'] = json_decode($data['media']);
 		}
 
 		$this->app->setBody(json_encode($data));

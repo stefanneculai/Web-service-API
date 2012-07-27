@@ -52,5 +52,15 @@
 	{
 		"route" : "/likes",
 		"controller": "likes"
+	},
+	
+	{
+		"route" : "/screenshots",
+		"controller": "screenshots"
+	},
+	
+	{
+		"route" : "/screenshots/:screenshot_id",
+		"controller": "screenshots"
 	}
 ]

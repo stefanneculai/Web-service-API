@@ -8,7 +8,7 @@
  */
 
 /**
- * WebService GET content class
+ * WebService GET media class
  *
  * @package     WebService.Application
  * @subpackage  Controller
@@ -16,5 +16,4 @@
  */
 class WebServiceControllerV1JsonCommentsGet extends WebServiceControllerV1JsonBaseGet
 {
-
 }

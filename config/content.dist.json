@@ -21,7 +21,7 @@
 	"application":
 	{
 		"mandatory": "title, description",
-		"optional": "website, media",
+		"optional": "website, screenshots",
 		"map":
 		{
 			"id": "content_id",
@@ -30,10 +30,20 @@
 			"title": "title",
 			"website": "website",
 			"description": "body",
-			"media": "media",
+			"screenshots": "media",
 			"likes": "likes",
 			"hits": "hits"
 		}
+	},
+	
+	"screenshot":
+	{
+		"mandatory": "application_id",
+		"optional": "",
+		"map":
+		{
+			"screenshots": "media"
+		} 
 	},
 	
 	"tag":
