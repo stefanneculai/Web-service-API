@@ -726,10 +726,12 @@ class WebServiceModelBase extends JModelBase
 
 		$query->insert($this->db->quoteName('#__content_' . $contentType . '_map'));
 		$query->columns(array($this->db->quoteName('content_id'), $this->db->quoteName($contentType . '_id')));
+
 		foreach ($content_ids as $key => $content_id)
 		{
 			$query->values($content_id1 . ', ' . $content_id);
 		}
+
 		$this->db->setQuery(str_replace('INSERT INTO', 'INSERT IGNORE INTO', $query));
 
 		try

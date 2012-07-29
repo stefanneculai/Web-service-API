@@ -36,9 +36,45 @@ class WebServiceControllerV1JsonCommentsCreate extends WebServiceControllerV1Jso
 			return;
 		}
 
-		if ( isset($this->mandatoryFields['application_id']) )
+		if ( $this->applicationExists($this->mandatoryFields['application_id']) )
 		{
+			// Create content
+			$data = $this->createContent();
 
+			// Get tag id
+			$comment_id = $this->pruneFields($data, array('content_id'));
+
+			if (array_key_exists('id', $comment_id))
+			{
+				$comment_id = $comment_id['id'];
+			}
+
+			// Get content state
+			$modelState = $this->model->getState();
+
+			// Set content type that we need
+			$modelState->set('content.type', $this->type);
+
+			$result = $this->model->map($this->mandatoryFields['application_id'], array($comment_id));
+
+			if ($result == true)
+			{
+				$returnedContent = new stdClass;
+				$returnedContent->id = $comment_id;
+				$this->app->setBody(json_encode($returnedContent));
+			}
+			else
+			{
+				$this->parseData(false);
+			}
+			return;
+		}
+		else
+		{
+			$this->app->errors->addError('202');
+			$this->app->setBody(json_encode($this->app->errors->getErrors()));
+			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
+			return;
 		}
 	}
 

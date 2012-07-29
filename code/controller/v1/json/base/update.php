@@ -318,10 +318,7 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 
 		if (count($this->dataFields) == 0 && $this->action == null)
 		{
-			$this->app->errors->addError("101");
-			$this->app->setBody(json_encode($this->app->errors->getErrors()));
-			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
-			return;
+			return true;
 		}
 
 		$fields = implode(',', $this->mapFieldsIn(array_keys($this->dataFields)));
@@ -362,11 +359,12 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 			{
 				$item = $this->model->updateItem();
 			}
-			return $item;
+
+			return true;
 		}
 		catch (Exception $e)
 		{
-			throw $e;
+			return false;
 		}
 	}
 

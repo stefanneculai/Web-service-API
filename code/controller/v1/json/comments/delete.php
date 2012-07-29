@@ -16,5 +16,4 @@
  */
 class WebServiceControllerV1JsonCommentsDelete extends WebServiceControllerV1JsonBaseDelete
 {
-
 }

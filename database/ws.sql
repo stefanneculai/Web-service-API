@@ -195,6 +195,25 @@ CREATE TABLE IF NOT EXISTS `ws_content_comment_map` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Table structure for table `ws_session`
+--
+
+CREATE TABLE IF NOT EXISTS `ws_session` (
+  `session_id` varchar(200) NOT NULL DEFAULT '',
+  `client_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `guest` tinyint(4) unsigned DEFAULT '1',
+  `time` varchar(14) DEFAULT '',
+  `data` mediumtext,
+  `userid` int(11) DEFAULT '0',
+  `username` varchar(150) DEFAULT '',
+  `usertype` varchar(50) DEFAULT '',
+  PRIMARY KEY (`session_id`),
+  KEY `whosonline` (`guest`,`usertype`),
+  KEY `userid` (`userid`),
+  KEY `time` (`time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
 -- Create root user
 --
 INSERT INTO `ws_content` 

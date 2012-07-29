@@ -322,7 +322,9 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 	 */
 	protected function parseData($data)
 	{
-		$this->app->setBody(json_encode($this->pruneFields($data, array('content_id'))));
+		$returnedContent = new stdClass;
+		$returnedContent->id = $this->pruneFields($data, array('content_id'));
+		$this->app->setBody(json_encode($returnedContent));
 	}
 
 }

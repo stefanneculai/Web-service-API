@@ -110,16 +110,16 @@
 	
 	"comment":
 	{
-		"mandatory": "body, application_id",
+		"mandatory": "message, application_id, user_id",
 		"optional": "",
 		"map":
 		{
 			"id": "content_id",
 			"created_at": "created_date",
 			"user_id": "created_user_id",
-			"likes": "likes",
+			"likes": "likesArray",
 			"hits": "hits",
-			"body": "body"
+			"message": "body"
 		}
 	}
 }
