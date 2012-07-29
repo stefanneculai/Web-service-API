@@ -30,8 +30,8 @@
 			"title": "title",
 			"website": "website",
 			"description": "body",
-			"screenshots": "media",
-			"likes": "likes",
+			"screenshots": "mediaArray",
+			"likes": "likesArray",
 			"hits": "hits"
 		}
 	},
@@ -42,7 +42,17 @@
 		"optional": "",
 		"map":
 		{
-			"screenshots": "media"
+			"screenshots": "mediaArray"
+		} 
+	},
+	
+	"like":
+	{
+		"mandatory": "application_id",
+		"optional": "",
+		"map":
+		{
+			"likes": "likesArray"
 		} 
 	},
 	

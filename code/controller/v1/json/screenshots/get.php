@@ -162,7 +162,7 @@ class WebServiceControllerV1JsonScreenshotsGet extends WebServiceControllerV1Jso
 		// Check if screenshots are set
 		if (is_array($data) && isset($data['screenshots']))
 		{
-			$data = json_decode($data['screenshots']);
+			$data = $data['screenshots'];
 
 			if ($data == null)
 			{
@@ -175,9 +175,13 @@ class WebServiceControllerV1JsonScreenshotsGet extends WebServiceControllerV1Jso
 		{
 			$newData = new stdClass;
 
-			if (isset($data->{$this->id}))
+			foreach ($data->data as $key => $screenshot)
 			{
-				$newData->screenshot = $data->{$this->id};
+				if ($screenshot->id == $this->id)
+				{
+					$newData = $screenshot;
+					break;
+				}
 			}
 
 			$data = $newData;

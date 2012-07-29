@@ -137,6 +137,51 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	}
 
 	/**
+	 * Decode media after content load
+	 *
+	 * @param   JContnet  $content  The content object
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public static function contentAfterLoad($content)
+	{
+		// Parse media
+		$media = json_decode($content->media);
+		$mediaArray = array();
+		foreach ($media as $key => $value)
+		{
+			$md = new stdClass;
+			$md->id = $key;
+			$md->image = $value;
+
+			array_push($mediaArray, $md);
+		}
+
+		$content->mediaArray = new stdClass;
+		$content->mediaArray->data = $mediaArray;
+		$content->mediaArray->count = count($mediaArray);
+
+		// Get likes
+		$db = JFactory::$database;
+		$query = $db->getQuery(true);
+		$query->select($query->qn('user_id'));
+		$query->select($query->qn('like_state'));
+		$query->from('#__content_likes');
+
+		$query->where('content_id = ' . (int) $content->content_id);
+
+		$db->setQuery($query);
+
+		$likes = $db->loadObjectList();
+
+		$content->likesArray = new stdClass;
+		$content->likesArray->data = $likes;
+		$content->likesArray->count = count($likes);
+	}
+
+	/**
 	 * Execute the application.
 	 *
 	 * @return  void
@@ -152,6 +197,9 @@ class WebServiceApplicationWeb extends JApplicationWeb
 			$this->session->initialise($this->input);
 			$this->session->start();
 			JFactory::$application = $this;
+
+			$this->loadDispatcher();
+			$this->registerEvent('onContentAfterLoad', 'WebServiceApplicationWeb::contentAfterLoad');
 
 			// There is an error
 			if ($this->errors->errorsExist())

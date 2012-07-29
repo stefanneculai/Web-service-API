@@ -14,7 +14,7 @@
  * @subpackage  Controller
  * @since       1.0
  */
-class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1Base
+class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseGet
 {
 
 	/**
@@ -51,7 +51,20 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1Base
 	 */
 	protected function init()
 	{
+		// Read fields
+		$this->readFields();
+
+		// The content_id
 		$this->content_id = $this->getContentId();
+
+		// Returned fields
+		$this->fields = $this->getFields();
+
+		// Map fields according to the application database
+		if ($this->fields != null)
+		{
+			$this->fields = $this->mapFieldsIn($this->fields);
+		}
 	}
 
 	/**
@@ -63,7 +76,6 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1Base
 	 */
 	public function execute()
 	{
-
 		$this->init();
 
 		if (is_null($this->content_id))
@@ -80,7 +92,8 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1Base
 		// Set content that we need
 		$modelState->set('content.id', $this->content_id);
 
-		$data = $this->model->getLikes();
+		// Get data
+		$data = $this->model->getItem();
 
 		// Format the results properly
 		$this->parseData($data);
@@ -89,7 +102,7 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1Base
 	/**
 	 * Parse the returned data from database
 	 *
-	 * @param   array  $data  The array with results
+	 * @param   mixed  $data  A JContent object, an array of JContent or a boolean.
 	 *
 	 * @return  void
 	 *
@@ -97,6 +110,15 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1Base
 	 */
 	protected function parseData($data)
 	{
+		// There is no content for the request
+		if ($data == false)
+		{
+			$data = null;
+		}
+
+		$data = $this->pruneFields($data, $this->fields);
+		$data = $data['likes'];
+
 		$this->app->setBody(json_encode($data));
 	}
 }
