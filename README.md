@@ -18,11 +18,17 @@ Every object in the API has a unique ID and it is considered beeing content. You
 
 An application has the following `fields`.
 <table>
-	<thead style="text-weight: bold">
+	<thead style="text-weight: bold; background: #F3F3F3">
 		<tr>
 			<th>Name</th>
 			<th>Description</th>
 			<th>Returns</th>
+		</tr>
+		
+		<tr>
+			<td>`id`</td>
+			<td>The application ID</td>
+			<td>`integer`</td>
 		</tr>
 	</thead>
 </table>
