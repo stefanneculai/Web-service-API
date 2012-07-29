@@ -26,9 +26,11 @@ An application has the following `fields`.
 		</tr>
 	</thead>
 		
-	<tr>
-		<td>`id`</td>
-		<td>The application ID</td>
-		<td>`integer`</td>
-	</tr>
+	<tbody>
+		<tr>
+			<td>`id`</td>
+			<td>The application ID</td>
+			<td>`integer`</td>
+		</tr>
+	</tbody>
 </table>
