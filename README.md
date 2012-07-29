@@ -24,11 +24,11 @@ An application has the following `fields`.
 			<th>Description</th>
 			<th>Returns</th>
 		</tr>
-		
-		<tr>
-			<td>`id`</td>
-			<td>The application ID</td>
-			<td>`integer`</td>
-		</tr>
 	</thead>
+		
+	<tr>
+		<td>`id`</td>
+		<td>The application ID</td>
+		<td>`integer`</td>
+	</tr>
 </table>
