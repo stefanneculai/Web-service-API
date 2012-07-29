@@ -39,7 +39,7 @@
 	"screenshot":
 	{
 		"mandatory": "application_id",
-		"optional": "",
+		"optional": "screenshot",
 		"map":
 		{
 			"screenshots": "mediaArray"

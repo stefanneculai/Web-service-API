@@ -200,7 +200,7 @@ CREATE TABLE IF NOT EXISTS `ws_content_comment_map` (
 INSERT INTO `ws_content` 
 (`content_id`, `type_id`, `title`, `alias`, `body`, `access`, `state`, `temporary`, `featured`, `created_date`, `created_user_id`, `modified_date`, `modified_user_id`, `checked_out_session`, `checked_out_user_id`, `publish_start_date`, `publish_end_date`, `likes`, `revision`, `config`, `media`, `rules`) 
 VALUES
-(1, 3, 'Root', 'root', 'root', NULL, 0, 1, 0, '2012-07-25 00:00:00', NULL, '0000-00-00 00:00:00', NULL, '', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, '', '', '');
+(1, 3, 'Root', 'root', 'root', NULL, 0, 0, 0, '2012-07-25 00:00:00', NULL, '0000-00-00 00:00:00', NULL, '', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, '', '', '');
 
 INSERT INTO `ws_content_hits` 
 (`content_id`, `hits`, `hit_modified_date`) 

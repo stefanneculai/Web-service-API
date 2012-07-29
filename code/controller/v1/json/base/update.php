@@ -382,19 +382,6 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 	protected function parseData($data)
 	{
 		// Check if the update was successful
-		if ($data == false)
-		{
-			$this->app->errors->addError("100");
-			$this->app->setBody(json_encode($this->app->errors->getErrors()));
-			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
-			return;
-		}
-		else
-		{
-			$data = new stdClass;
-			$data->id = $this->id;
-		}
-
 		$this->app->setBody(json_encode($data));
 	}
 

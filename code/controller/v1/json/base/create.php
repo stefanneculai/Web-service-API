@@ -45,9 +45,9 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 		$this->getOptionalFields();
 
 		// Get media and save it
-		if (isset($_FILES[$this->mapOut('media')]))
+		if (isset($_FILES['screenshots']))
 		{
-			$this->optionalFields[$this->mapOut('media')] = $this->getMedia();
+			$this->optionalFields['media'] = $this->getMedia();
 		}
 
 		$this->loadUser();
@@ -139,7 +139,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 	 */
 	protected function saveMedia()
 	{
-		$media = $_FILES[$this->mapOut('media')];
+		$media = $_FILES['screenshots'];
 
 		$files = array();
 
@@ -182,7 +182,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 	 */
 	protected function getMedia()
 	{
-		if (isset($_FILES[$this->mapOut('media')]))
+		if (isset($_FILES['screenshots']))
 		{
 			try
 			{

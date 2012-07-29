@@ -59,9 +59,6 @@ class WebServiceControllerV1JsonScreenshotsGet extends WebServiceControllerV1Jso
 		// Returned fields
 		$this->fields = $this->getFields();
 
-		// Action
-		$this->action = $this->getAction();
-
 		// Get the mandatory fields
 		$this->getMandatoryFields();
 
