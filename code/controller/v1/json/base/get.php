@@ -542,6 +542,8 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			$data = $newData;
 		}
 
+		$data = array_values($data);
+
 		$this->app->setBody(json_encode($data));
 	}
 }

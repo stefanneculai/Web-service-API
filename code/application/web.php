@@ -150,13 +150,16 @@ class WebServiceApplicationWeb extends JApplicationWeb
 		// Parse media
 		$media = json_decode($content->media);
 		$mediaArray = array();
-		foreach ($media as $key => $value)
+		if (is_array($media))
 		{
-			$md = new stdClass;
-			$md->id = $key;
-			$md->image = $value;
+			foreach ($media as $key => $value)
+			{
+				$md = new stdClass;
+				$md->id = $key;
+				$md->image = $value;
 
-			array_push($mediaArray, $md);
+				array_push($mediaArray, $md);
+			}
 		}
 
 		$content->mediaArray = new stdClass;
