@@ -534,6 +534,13 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			}
 
 			$data = $this->pruneFields($data, $this->fields);
+
+			$dataValues = array_values($data);
+
+			if (is_array($data) && is_array($dataValues[0]))
+			{
+				$data = array_values($data);
+			}
 		}
 		else
 		{
@@ -541,8 +548,6 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			$newData->count = $data;
 			$data = $newData;
 		}
-
-		$data = array_values($data);
 
 		$this->app->setBody(json_encode($data));
 	}

@@ -150,7 +150,8 @@ class WebServiceApplicationWeb extends JApplicationWeb
 		// Parse media
 		$media = json_decode($content->media);
 		$mediaArray = array();
-		if (is_array($media))
+
+		if ($media instanceOf stdClass)
 		{
 			foreach ($media as $key => $value)
 			{
