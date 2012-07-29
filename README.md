@@ -27,10 +27,16 @@ An application has the following `fields`.
 	</thead>
 		
 	<tbody>
-		<tr>
+		<tr style="background: #FFF;">
 			<td>`id`</td>
 			<td>The application ID</td>
 			<td>`integer`</td>
+		</tr>
+		
+		<tr style="background: #FFF;">
+			<td>`title`</td>
+			<td>The title of the application</td>
+			<td>`string`</td>
 		</tr>
 	</tbody>
 </table>
