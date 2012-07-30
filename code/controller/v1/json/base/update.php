@@ -50,9 +50,17 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 	protected function getAction()
 	{
 		$action = $this->input->get->getString('action');
+
 		if (isset($action))
 		{
-			return $action;
+			if (in_array($action, $this->availableActions) && strcmp($action, 'count') != 0)
+			{
+				return $action;
+			}
+			else
+			{
+				$this->app->errors->addError("502", array($action));
+			}
 		}
 
 		return $this->action;

@@ -144,6 +144,15 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 		{
 			$this->alternativeFields = array();
 		}
+
+		if (isset($fields['actions']))
+		{
+			$this->availableActions = explode(',', $fields['actions']);
+		}
+		else
+		{
+			$this->availableActions = array();
+		}
 	}
 
 	/**

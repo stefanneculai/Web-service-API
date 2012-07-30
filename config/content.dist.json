@@ -3,6 +3,7 @@
 	{
 		"mandatory": "f1, f2, f3",
 		"optional": "f4, f5",
+		"actions": "like, unlike, hit, count",
 		"map":
 		{
 			"id": "content_id",
@@ -22,6 +23,7 @@
 	{
 		"mandatory": "title, description",
 		"optional": "website, screenshots",
+		"actions": "like, unlike, hit, count",
 		"map":
 		{
 			"id": "content_id",
@@ -40,6 +42,7 @@
 	{
 		"mandatory": "application_id",
 		"optional": "screenshot, list",
+		"actions": "count",
 		"map":
 		{
 			"screenshots": "mediaArray"
@@ -76,6 +79,7 @@
 			}
 		},
 		"optional": "application_id",
+		"actions": "count",
 		"map":
 		{
 			"id": "content_id",
@@ -90,6 +94,7 @@
 	{
 		"mandatory": "name, username, email, password",
 		"optional": "last_visit, usertype, send_email, activation",
+		"actions": "hit,count",
 		"map":
 		{
 			"id": "content_id",
@@ -111,6 +116,7 @@
 	{
 		"mandatory": "message, application_id, user_id",
 		"optional": "",
+		"actions": "like, unlike, count",
 		"map":
 		{
 			"id": "content_id",

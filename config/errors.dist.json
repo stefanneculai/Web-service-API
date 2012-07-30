@@ -142,5 +142,13 @@
 		"message": "The tag with the id $1 doesn't exist.",
 		"more_info": "",
 		"response_code": "400"
+	},
+	
+	"502":
+	{
+		"code": "JWS502",
+		"message": "Invalid action \"$1\".",
+		"more_info": "",
+		"response_code": "400"
 	}
 }

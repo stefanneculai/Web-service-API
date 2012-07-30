@@ -270,7 +270,14 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		$action = $this->input->get->getString('action');
 		if (isset($action))
 		{
-			return $action;
+			if (strcmp($action, 'count') == 0)
+			{
+				return $action;
+			}
+			else
+			{
+				$this->app->errors->addError("502", array($action));
+			}
 		}
 
 		return $this->action;
