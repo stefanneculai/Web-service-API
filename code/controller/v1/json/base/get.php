@@ -473,15 +473,18 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	 */
 	protected function parseData($data)
 	{
+		// There is no content for the request
+		if ($data == false)
+		{
+			$this->app->errors->addError("204");
+			$this->app->setBody(json_encode($this->app->errors->getErrors()));
+			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
+			return;
+		}
+
 		// Get only requested fields
 		if ( is_integer($data) == false )
 		{
-			// There is no content for the request
-			if ($data == false)
-			{
-				$data = null;
-			}
-
 			$data = $this->pruneFields($data, $this->fields);
 
 			$dataValues = array_values($data);
