@@ -280,13 +280,18 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	{
 		foreach ($this->order as $key => $field)
 		{
-			if ($obj1->{$field} > $obj2->{$field})
+			if ($obj1->{$field} instanceof JDate)
 			{
-				return 1;
+				return (int) ($obj1->{$field}->toUnix()) > (int) ($obj2->{$field}->toUnix()) ? 1 : -1;
 			}
-			elseif ($obj1->{$field} < $obj2->{$field})
+			if (is_int((int) $obj1->{$field}))
 			{
-				return -1;
+				return (int) $obj1->{$field} > (int) $obj2->{$field} ? 1 : -1;
+			}
+
+			if (is_string($obj1->{$field}))
+			{
+				return -strcmp($obj1->{$field}, $obj2->{$field});
 			}
 		}
 
