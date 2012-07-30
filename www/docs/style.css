@@ -78,6 +78,12 @@ div.clear{
 	min-height: 500px;
 }
 
+.wrapper #floatMenu{
+	position: absolute;
+	left: 10px;
+	top: 0px;
+}
+
 .wrapper .left ul {
 	list-style-type: none;
 	margin-left: 10px;

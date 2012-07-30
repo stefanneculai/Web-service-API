@@ -2,35 +2,55 @@
 <head>
 	<title>Joomla Web Service API for Directory-like Applications</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
+    
+    <script language="javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>  
+	<script language="javascript" type="text/javascript">
+		<!--//
+		$(function(){
+			function moveFloatMenu() {
+				var menuOffset = menuYloc.top + $(this).scrollTop() + "px";
+				$('#floatMenu').animate({top:menuOffset},{duration:300,queue:false});
+			}
+		 
+			menuYloc = $('#floatMenu').offset();
+		 
+			$(window).scroll(moveFloatMenu);
+		 
+			moveFloatMenu();
+		});
+		//-->
+	</script>
 </head>
 
 <body>
 	<div class="wrapper">
     	<div class="left">
-	        <h1>Useful</h1>
-            <ul>
-            	<li><a href="index.html">Concepts</a></li>
-                <li><a href="resources.html">Resources</a></li>
-            </ul>
-        	<h1>Objects</h1>
-            <ul>
-            	<li class="active">
-                	<a href="users.html">Users</a>
-                    <ul>
-                    	<li><a href="#fields">&raquo; Fields</a></li>
-                        <li><a href="#connections">&raquo; Connections</a></li>
-                        <li><a href="#get">&raquo; GET method</a></li>
-                        <li><a href="#post">&raquo; POST method</a></li>
-                        <li><a href="#put">&raquo; PUT method</a></li>
-                        <li><a href="#delete">&raquo; DELETE method</a></li>
-                        <li><a href="#connections">&raquo; Actions</a></li>
-                    </ul>
-                </li>
-                <li><a href="applications.html">Applications</a></li>
-                <li><a href="screenshots.html">Screnshots</a></li>
-                <li><a href="comments.html">Comments</a></li>
-                <li><a href="tags.html">Tags</a></li>
-            </ul>
+        	<div id="floatMenu">
+                <h1>Useful</h1>
+                <ul>
+                    <li><a href="index.html">Concepts</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                </ul>
+                <h1>Objects</h1>
+                <ul>
+                    <li class="active">
+                        <a href="users.html">Users</a>
+                        <ul>
+                            <li><a href="#fields">&raquo; Fields</a></li>
+                            <li><a href="#connections">&raquo; Connections</a></li>
+                            <li><a href="#get">&raquo; GET method</a></li>
+                            <li><a href="#post">&raquo; POST method</a></li>
+                            <li><a href="#put">&raquo; PUT method</a></li>
+                            <li><a href="#delete">&raquo; DELETE method</a></li>
+                            <li><a href="#actions">&raquo; Actions</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="applications.html">Applications</a></li>
+                    <li><a href="screenshots.html">Screnshots</a></li>
+                    <li><a href="comments.html">Comments</a></li>
+                    <li><a href="tags.html">Tags</a></li>
+                </ul>
+            </div>
         </div>
         <div class="right">
         	<h2>User</h2>

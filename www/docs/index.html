@@ -2,6 +2,24 @@
 <head>
 	<title>Joomla Web Service API for Directory-like Applications</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
+    
+    <script language="javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>  
+	<script language="javascript" type="text/javascript">
+		<!--//
+		$(function(){
+			function moveFloatMenu() {
+				var menuOffset = menuYloc.top + $(this).scrollTop() + "px";
+				$('#floatMenu').animate({top:menuOffset},{duration:0,queue:false});
+			}
+		 
+			menuYloc = $('#floatMenu').offset();
+		 
+			$(window).scroll(moveFloatMenu);
+		 
+			moveFloatMenu();
+		});
+		//-->
+	</script>
 </head>
 
 <body>
