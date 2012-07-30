@@ -23,6 +23,7 @@
                         <li><a href="#post">&raquo; POST method</a></li>
                         <li><a href="#put">&raquo; PUT method</a></li>
                         <li><a href="#delete">&raquo; DELETE method</a></li>
+                        <li><a href="#connections">&raquo; Actions</a></li>
                     </ul>
                 </li>
                 <li><a href="applications.html">Applications</a></li>
@@ -161,6 +162,29 @@
                 </tbody>
             </table>
             
+            <p>If the request is successful, you get the following return.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Description</th>
+                        <th>Type</th>
+                        <th>Response Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td>If request is successful to <span>/users</span></td>
+                        <td>Array of <span>json</span></td> 
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                    	<td>If request is successful to <span>/users/:user_id</span></td>
+                        <td>A <span>json</span> structure</td> 
+                        <td>200</td>
+                    </tr>
+                </tbody>
+            </table>
+            
             <h3><a name="post"></a>POST</h3>
             <p>POST requests can be made to <span>/users</span> in order to create a new user or to <span>/users/:user_id</span> to simulate <span><a href="#put">PUT</a></span> or <span><a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
              <table cellpadding="0" cellspacing="0">
@@ -175,21 +199,21 @@
                 </thead>
                 <tbody>
                 	<tr>
-                    	<td>name</td>
+                    	<td><span>name</span></td>
                         <td>The user's fullname</td>
                         <td><span>string</span></td>
                         <td>-</td>
                         <td><span>yes</span></td>
                     </tr>
                     <tr>
-                    	<td>username</td>
+                    	<td><span>username</span></td>
                         <td>The user's JWS username</td>
                         <td><span>string</span></td>
                         <td>-</td>
                         <td><span>yes</span></td>
                     </tr>
                     <tr>
-                    	<td>password</td>
+                    	<td><span>password</span></td>
                         <td>The user's password<br/>
                             <strong>Note:</strong> Since we don't make any encoding to the user password we do strongly recommend to use a safe encoding method such as <span>SHA1</span> before saving the user's password</td>
                         <td><span>string</span></td>
@@ -197,35 +221,35 @@
                         <td><span>yes</span></td>
                     </tr>
                     <tr>
-                    	<td>email</td>
+                    	<td><span>email</span></td>
                         <td>The user's email</td>
                         <td><span>string</span></td>
                         <td>-</td>
                         <td><span>yes</span></td>
                     </tr>
                     <tr>
-                    	<td>last_visit</td>
+                    	<td><span>last_visit</span></td>
                         <td>The last visit date</td>
                         <td><span>date</span></td>
                         <td><span>created_date</span></td>
                         <td><span>no</span></td>
                     </tr>
                     <tr>
-                    	<td>usertype</td>
+                    	<td><span>usertype</span></td>
                         <td>The user's type</td>
                         <td><span>string</span></td>
                         <td><span>null</span></td>
                         <td><span>no</span></td>
                     </tr>
                     <tr>
-                    	<td>send_meail</td>
+                    	<td><span>send_mail</span></td>
                         <td>Send email state</td>
                         <td><span>tinyint</span></td>
                         <td><span>0</span></td>
                         <td><span>no</span></td>
                     </tr>
                     <tr>
-                    	<td>activation</td>
+                    	<td><span>activation</span></td>
                         <td>An activation string</td>
                         <td><span>string</span></td>
                         <td><span>""</span></td>
@@ -233,6 +257,159 @@
                     </tr>
             	</tbody>
 			</table>
+            
+            <p>If the create is successful, you get the following return.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Description</th>
+                        <th>Type</th>
+                        <th>Response Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    	<td>If the create is successful</td>
+                        <td><span>json</span> object with the <span>id</span> field</td> 
+                        <td>200</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3><a name="put"></a>PUT</h3>
+            <p>PUT requests can be made to <span>/users/:user_id</span> to update user's data. If your client does not support the <span>PUT</span> method you can use <span><a href="#">POST</a></span> requests with the parameter <span>_method=PUT</span>.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Parameter</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td><span>name</span></td>
+                        <td>The user's fullname</td>
+                        <td><span>string</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>username</span></td>
+                        <td>The user's JWS username</td>
+                        <td><span>string</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>password</span></td>
+                        <td>The user's password<br/>
+                            <strong>Note:</strong> Since we don't make any encoding to the user password we do strongly recommend to use a safe encoding method such as <span>SHA1</span> before saving the user's password</td>
+                        <td><span>string</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>email</span></td>
+                        <td>The user's email</td>
+                        <td><span>string</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>last_visit</span></td>
+                        <td>The last visit date</td>
+                        <td><span>date</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>usertype</span></td>
+                        <td>The user's type</td>
+                        <td><span>string</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>send_mail</span></td>
+                        <td>Send email state</td>
+                        <td><span>tinyint</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>activation</span></td>
+                        <td>An activation string</td>
+                        <td><span>string</span></td>
+                    </tr>
+            	</tbody>
+			</table>
+            
+            <p>If the update is successful, you get the following return.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Description</th>
+                        <th>Type</th>
+                        <th>Response Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    	<td>If update succeded</td>
+                        <td>boolean</td> 
+                        <td>200</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3><a name="delete"></a>DELETE</h3>
+            <p>DELETE requests can be made to <span>/users/:user_id</span> to delete a user or to <span>/users</span> to delete all users. If your client does not support the <span>DELETE</span> method you can use <span><a href="#">POST</a></span> requests with the parameter <span>_method=DELETE</span>.</p>
+            <table cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td><span>before</span></td>
+                        <td>The maximum created date of the user to delete</td>
+                        <td><span>date</span> (YYYY-MM-dd)</td> 
+                    </tr>
+                    <tr>
+                    	<td><span>since</span></td>
+                        <td>The maximum created date of the user to delete</td>
+                        <td><span>date</span> (YYYY-MM-dd)</td> 
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>If the delete is successful, you get the following return.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Description</th>
+                        <th>Type</th>
+                        <th>Response Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    	<td>If delete succeded</td>
+                        <td>boolean</td> 
+                        <td>200</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3><a name="actions"></a>Actions</h3>
+            <p>Below are the available actions for <span>User</span> object</p>
+             <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>HTTP_METHOD</th>
+                        <th>Action</th>
+                        <th>Description</th>
+                        <th>Return</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td>GET</td>
+                        <td><span>count</span></td>
+                        <td>The number of results</td>
+                        <td><span>json</span> object with the <span>count</span> field</td>
+                </tbody>
+            </table>
         </div>
         
         <div class="clear"></div>

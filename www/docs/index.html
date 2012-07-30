@@ -41,6 +41,9 @@
             <p>
             	The version of the API should be specified at the highest level scope (<span>http://ws-api.cloudaccess.net/ws/www/v#</span>) in the URL having a prefix <span>v</span> and an integer representing the version. For the moment, the only available and default version is <span>v1</span>.
             </p>
+            
+            <p> 
+            	By default the response code is 200 for successful result and 400 for failure. Passing the parameter <span>suppress_response_codes=true</span> all responses will have the successful code 200. By default, failure returns a <span>json structure</span> with information about the error occured.
         </div>
         
         <div class="clear"></div>
