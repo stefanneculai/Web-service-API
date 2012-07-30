@@ -101,7 +101,7 @@
 			"password": "password",
 			"last_visit": "lastvisitDate",
 			"user_type": "usertype",
-			"send_email": "send_email",
+			"send_email": "sendEmail",
 			"activation": "activation",
 			"hits": "hits"
 		}
