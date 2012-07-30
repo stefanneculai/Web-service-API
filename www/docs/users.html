@@ -121,6 +121,35 @@
                 </tbody>
             </table>
             
+            <h3><a name="connections"></a>Connections</h3>
+            <p>A <span>User</span> object has the following connections.</p>
+            <table>
+            	<thead>
+                	<tr>
+                    	<th>Name</th>
+                        <th>Description</th>
+                        <th>Returns</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td>comments</td>
+                        <td>All comments of this user</td>
+                        <td><span>array</span> of <span>comment</span> objects</td>
+                    </tr>
+                    <tr>
+                    	<td>applications</td>
+                        <td>All applications of this user</td>
+                        <td><span>array</span> of <span>application</span> objects</td>
+                    </tr>
+                    <tr>
+                    	<td>likes</td>
+                        <td>All likes of this user</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            
             <h3><a name="get"></a>GET</h3>
             <p>GET requests can be made to <span>/users</span> in order to get all users or to <span>/users/:user_id</span> in order to get information about a specific user.</p>
             <table cellpadding="0" cellspacing="0">
@@ -363,12 +392,12 @@
                 	<tr>
                     	<td><span>before</span></td>
                         <td>The maximum created date of the user to delete</td>
-                        <td><span>date</span> (YYYY-MM-dd)</td> 
+                        <td><span>date</span> (yyyy-MM-dd)</td> 
                     </tr>
                     <tr>
                     	<td><span>since</span></td>
                         <td>The maximum created date of the user to delete</td>
-                        <td><span>date</span> (YYYY-MM-dd)</td> 
+                        <td><span>date</span> (yyyy-MM-dd)</td> 
                     </tr>
                 </tbody>
             </table>

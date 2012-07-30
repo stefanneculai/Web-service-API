@@ -34,6 +34,7 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseG
 		$application_id = $route = $this->input->get->getString('application_id');
 		if (isset($application_id))
 		{
+			$this->type = "application";
 			return $application_id;
 		}
 
@@ -60,6 +61,15 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseG
 		// Returned fields
 		$this->fields = $this->getFields();
 
+		// Get limit
+		$this->limit = $this->getLimit();
+
+		// Get offset
+		$this->offset = $this->getOffset();
+
+		// Get user id
+		$this->user_id = $this->getUserId();
+
 		// Map fields according to the application database
 		if ($this->fields != null)
 		{
@@ -78,7 +88,7 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseG
 	{
 		$this->init();
 
-		if (is_null($this->content_id))
+		if (is_null($this->content_id) && is_null($this->user_id))
 		{
 			$this->app->errors->addError("203");
 			$this->app->setBody(json_encode($this->app->errors->getErrors()));
@@ -86,17 +96,52 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseG
 			return;
 		}
 
-		// Get content state
-		$modelState = $this->model->getState();
+		if (!is_null($this->user_id))
+		{
+			$modelState = $this->model->getState();
 
-		// Set content that we need
-		$modelState->set('content.id', $this->content_id);
+			$session = $this->app->getSession();
+			$session->set('user_likes', $this->user_id);
 
-		// Get data
-		$data = $this->model->getItem();
+			$modelState->set('list.offset', $this->offset);
+			$modelState->set('list.limit', $this->limit);
 
-		// Format the results properly
-		$this->parseData($data);
+			$data = $this->model->getList();
+
+			$likes = array();
+
+			foreach ($data as $key => $content)
+			{
+				foreach ($content->likesArray->data as $lkey => $like)
+				{
+					$like->object = ucfirst($content->typeAlias);
+					$like->object_id = $content->id;
+					unset($like->user_id);
+					array_push($likes, $like);
+				}
+			}
+
+			$output = new stdClass;
+			$output->data = $likes;
+			$output->count = count($likes);
+
+			$this->app->setBody(json_encode($output));
+		}
+		else
+		{
+			// Get content state
+			$modelState = $this->model->getState();
+
+			// Set content that we need
+			$modelState->set('content.type', $this->type);
+			$modelState->set('content.id', $this->content_id);
+
+			// Get data
+			$data = $this->model->getItem();
+
+			// Format the results properly
+			$this->parseData($data);
+		}
 	}
 
 	/**
@@ -113,11 +158,16 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseG
 		// There is no content for the request
 		if ($data == false)
 		{
-			$data = null;
+			$this->app->errors->addError("204");
+			$this->app->setBody(json_encode($this->app->errors->getErrors()));
+			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
+			return;
 		}
-
-		$data = $this->pruneFields($data, $this->fields);
-		$data = $data['likes'];
+		else
+		{
+			$data = $this->pruneFields($data, $this->fields);
+			$data = $data['likes'];
+		}
 
 		$this->app->setBody(json_encode($data));
 	}

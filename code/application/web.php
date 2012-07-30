@@ -176,6 +176,13 @@ class WebServiceApplicationWeb extends JApplicationWeb
 
 		$query->where('content_id = ' . (int) $content->content_id);
 
+		$session = JFactory::getSession();
+		$userLikes = $session->get('user_likes');
+		if (isset($userLikes))
+		{
+			$query->where('user_id = ' . (int) $session->get('user_likes'));
+		}
+
 		$db->setQuery($query);
 
 		$likes = $db->loadObjectList();
@@ -183,6 +190,24 @@ class WebServiceApplicationWeb extends JApplicationWeb
 		$content->likesArray = new stdClass;
 		$content->likesArray->data = $likes;
 		$content->likesArray->count = count($likes);
+
+		// Get content type
+		if (isset($userLikes))
+		{
+			$db = JFactory::$database;
+			$query = $db->getQuery(true);
+
+			$query->select($query->qn('alias'));
+			$query->from('#__content_types');
+
+			$query->where('type_id = ' . (int) $content->type_id);
+
+			$db->setQuery($query);
+
+			$type = $db->loadResult();
+
+			$content->typeAlias = $type;
+		}
 	}
 
 	/**

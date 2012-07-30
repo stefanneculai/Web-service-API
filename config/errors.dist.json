@@ -136,6 +136,14 @@
 		"response_code": "400"
 	},
 	
+	"204": 
+	{
+		"code": "JWS204",
+		"message": "The specified content id doesn't exist in database.",
+		"more_info": "",
+		"response_code": "400"
+	},
+	
 	"501": 
 	{
 		"code": "JWS501",
