@@ -145,7 +145,7 @@
                     <tr>
                     	<td>likes</td>
                         <td>All likes of this user</td>
-                        <td></td>
+                        <td>Structure containing a <span>data</span> object and the <span>count</span> of total likes, with <span>data</span> containing an <span>array</span> of objects, each with the <span>state<span>, <span>object_id</span> and <span>object</span> name.</td>
                     </tr>
                 </tbody>
             </table>
@@ -203,12 +203,12 @@
                 <tbody>
                 	<tr>
                     	<td>If request is successful to <span>/users</span></td>
-                        <td>Array of <span>json</span></td> 
+                        <td><span>array</span> of objects containing the requested <span>fields</span></td> 
                         <td>200</td>
                     </tr>
                     <tr>
                     	<td>If request is successful to <span>/users/:user_id</span></td>
-                        <td>A <span>json</span> structure</td> 
+                        <td>Structure containing the requested <span>fields</span></td> 
                         <td>200</td>
                     </tr>
                 </tbody>
@@ -299,7 +299,7 @@
                 <tbody>
                     <tr>
                     	<td>If the create is successful</td>
-                        <td><span>json</span> object with the <span>id</span> field</td> 
+                        <td>Structure containing the <span>id</span> of the created user</td> 
                         <td>200</td>
                     </tr>
                 </tbody>
@@ -436,7 +436,7 @@
                     	<td>GET</td>
                         <td><span>count</span></td>
                         <td>The number of results</td>
-                        <td><span>json</span> object with the <span>count</span> field</td>
+                        <td>Structure containing the <span>count</span> of results</td>
                 </tbody>
             </table>
         </div>
