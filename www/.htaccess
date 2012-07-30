@@ -29,6 +29,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !^/uploads
 RewriteCond %{REQUEST_URI} !^/index.php
+RewriteCond %{REQUEST_URI} !^/docs
 RewriteRule (.*) index.php
 
 ###########################################

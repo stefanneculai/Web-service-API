@@ -212,7 +212,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	{
 		if ($list == null)
 		{
-			return new stdClass;
+			return array();
 		}
 
 		if ($fields)

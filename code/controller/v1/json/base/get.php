@@ -528,7 +528,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			}
 
 			// Sort data
-			if (count($this->order) > 0)
+			if (count($this->order) > 0 && is_array($data) && count($data) > 1)
 			{
 				usort($data, array($this, "orderData"));
 			}
@@ -537,7 +537,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 
 			$dataValues = array_values($data);
 
-			if (is_array($data) && is_array($dataValues[0]))
+			if (is_array($data) && count($dataValues) > 0 && is_array($dataValues[0]))
 			{
 				$data = array_values($data);
 			}
