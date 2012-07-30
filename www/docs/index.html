@@ -1,0 +1,49 @@
+<html>
+<head>
+	<title>Joomla Web Service API for Directory-like Applications</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+	<div class="wrapper">
+    	<div class="left">
+	        <h1>Useful</h1>
+            <ul>
+            	<li class="active"><a href="index.html">Concepts</a></li>
+                <li><a href="resources.html">Resources</a></li>
+            </ul>
+        	<h1>Objects</h1>
+            <ul>
+            	<li><a href="users.html">Users</a></li>
+                <li><a href="applications.html">Applications</a></li>
+                <li><a href="screenshots.html">Screnshots</a></li>
+                <li><a href="comments.html">Comments</a></li>
+                <li><a href="tags.html">Tags</a></li>
+            </ul>
+        </div>
+        <div class="right">
+        	<h2>Concepts</h2>
+            <p>
+            	JWS API (Joomla Web Service API) presents a simple way of creating a RESTful API using the Joomla! Framework and the new <a href="https://github.com/stefanneculai/joomla-platform/tree/content">Unified Content Model</a>. The current version of the API is 1.0 and developers can create directory-like applications with it.
+			</p>
+            <p>
+				Every object in the API has a unique ID and it is considered beeing content. The properties of an object can be accessed making a request at <span>http://ws-api.cloudaccess.net/ws/www/RESOURCE/ID</span>.
+            </p>
+            
+            <p>
+            	The default output format is JSON and for the moment is the only supported format, but in the future XML will also be available. The output format can be chosen by adding <span>.json</span> or <span>.xml</span> at the end of the resource path.
+            </p>
+            
+            <p>
+            	The HTTP methods supported are: <span>GET</span>, <span>POST</span>, <span>PUT</span>, <span>DELETE</span>. If your client doesn't support advanced methods such as <span>PUT</span> or <span>DELETE</span> you can make <span>PUT</span> or <span>DELETE</span> requests by making a <span>POST</span> request and adding <span>_method=HTTP_METHOD</span> in the query.
+            </p>
+            
+            <p>
+            	The version of the API should be specified at the highest level scope (<span>http://ws-api.cloudaccess.net/ws/www/v#</span>) in the URL having a prefix <span>v</span> and an integer representing the version. For the moment, the only available and default version is <span>v1</span>.
+            </p>
+        </div>
+        
+        <div class="clear"></div>
+    </div>
+</body>
+</html> 

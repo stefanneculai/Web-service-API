@@ -1,0 +1,158 @@
+<html>
+<head>
+	<title>Joomla Web Service API for Directory-like Applications</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+	<div class="wrapper">
+    	<div class="left">
+	        <h1>Useful</h1>
+            <ul>
+            	<li><a href="index.html">Concepts</a></li>
+                <li><a href="resources.html">Resources</a></li>
+            </ul>
+        	<h1>Objects</h1>
+            <ul>
+            	<li class="active"><a href="users.html">Users</a></li>
+                <li><a href="applications.html">Applications</a></li>
+                <li><a href="screenshots.html">Screnshots</a></li>
+                <li><a href="comments.html">Comments</a></li>
+                <li><a href="tags.html">Tags</a></li>
+            </ul>
+        </div>
+        <div class="right">
+        	<h2>User</h2>
+            <p>A user profile in the application.<br/>The default user for the application is <span>root</span> and it has the <span>user_id=1</span>.</p>
+            <h3>Example</h3>
+            <p><a href="http://ws-api.cloudaccess.net/ws/www/users/1">http://ws-api.cloudaccess.net/ws/www/users/1</a> (the root user)</p>
+            
+            <h3>Fields</h3>
+            <p>The <span>User</span> object has the following fields:</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Name</th>
+                        <th>Description</th>
+                        <th>Returns</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    	<td><span>id</span></td>
+                        <td>The user ID</td>
+                        <td><span>integer</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>name</span></td>
+                        <td>The user's full name</td>
+                        <td><span>string</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>username</span></td>
+                        <td>The user's JWS username</td>
+                        <td><span>string</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>password</span></td>
+                        <td>
+                        	The user's password<br/>
+                            <strong>Note:</strong> Since we don't make any encoding to the user password we do strongly recommend to use a safe encoding method such as <span>SHA1</span> before saving the user's password
+                        </td>
+                        <td><span>string</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>email</span></td>
+                        <td>The user's email</td>
+                        <td><span>string</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>user_id</span></td>
+                        <td>The user ID that created this user</td>
+                        <td><span>integer</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>created_at</span></td>
+                        <td>
+                        	The created date
+                        </td>
+                        <td>A struncture with <span>date</span>, <span>timezone_type</span> and <span>timezone</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>last_visit</span></td>
+                        <td>
+                        	The last visit date of the user<br/>
+                        </td>
+                        <td><span>date</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>user_type</span></td>
+                        <td>
+                        	The user's type
+                        </td>
+                        <td><span>string</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>activation</span></td>
+                        <td>An activation code that you can set in order to activate the user by email</td>
+                        <td><span>string</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>hits</span></td>
+                        <td>Hits count for this user</td>
+                        <td><span>integer</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>GET</h3>
+            <p>GET requests can be made to <span>/users</span> in order to get all users or to <span>/users/:user_id</span> in order to get information about a specific user.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Field</th>
+                        <th>Description</th>
+                        <th>Default</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td><span>fields</span></td>
+                        <td>A <span>string</span> with fields separated by comma with the fields that are returned. We recommend to request only the necessary fields in order to save time.</td>
+                        <td>All</td>
+                    </tr>
+                    <tr>
+                    	<td><span>order</span></td>
+                        <td>A <span>string</span> with fields separated by comma with the sort order of the returned objects.</td>
+                        <td>ID</td>
+                    </tr>
+                    <tr>
+                    	<td><span>since</span></td>
+                        <td>A <span>string</span> in date format (<span>yyyy-MM-dd</span>) representing the minimum created date</td>
+                        <td><span>01-01-1970</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>before</span></td>
+                        <td>A <span>string</span> in date format (<span>yyyy-MM-dd</span>) representing the maximum created date</td>
+                        <td><span>now</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>offset</span></td>
+                        <td>An <span>integer</span> representing the first result</td>
+                        <td><span>0</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>limit</span></td>
+                        <td>An <span>integer</span> representing the number of results<br/>
+                        	<strong>Note:</strong> The maximum results that can be returned are 100.
+                        </td>
+                        <td><span>20</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="clear"></div>
+    </div>
+</body>
+</html> 
