@@ -267,38 +267,6 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	}
 
 	/**
-	 * Compare 2 JContent objects
-	 *
-	 * @param   JContent  $obj1  First JContent object
-	 * @param   JContent  $obj2  Second JContent object
-	 *
-	 * @return  integer
-	 *
-	 * @since   1.0
-	 */
-	protected function orderData($obj1, $obj2)
-	{
-		foreach ($this->order as $key => $field)
-		{
-			if ($obj1->{$field} instanceof JDate)
-			{
-				return (int) ($obj1->{$field}->toUnix()) > (int) ($obj2->{$field}->toUnix()) ? 1 : -1;
-			}
-			if (is_int((int) $obj1->{$field}))
-			{
-				return (int) $obj1->{$field} > (int) $obj2->{$field} ? 1 : -1;
-			}
-
-			if (is_string($obj1->{$field}))
-			{
-				return -strcmp($obj1->{$field}, $obj2->{$field});
-			}
-		}
-
-		return 0;
-	}
-
-	/**
 	 * Map in a string
 	 *
 	 * @param   string  $string  String to map in

@@ -59,12 +59,6 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	protected $application_id = null;
 
 	/**
-	 * @var    string  The order of the results
-	 * @since  1.0
-	 */
-	protected $order = null;
-
-	/**
 	 * @var    string  The minimum created date of the results
 	 * @since  1.0
 	 */
@@ -206,44 +200,6 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	}
 
 	/**
-	 * Get the order from input or the default one
-	 *
-	 * @return  mixed
-	 *
-	 * @since   1.0
-	 */
-	protected function getOrder()
-	{
-
-		$order = $this->input->get->getString('order');
-
-		if (isset($order))
-		{
-			$order = preg_split('#[\s,]+#', $order, null, PREG_SPLIT_NO_EMPTY);
-
-			foreach ($order as $key => $field)
-			{
-				if (!array_key_exists($field, $this->fieldsMap))
-				{
-					$this->app->errors->addError("307");
-					return;
-				}
-			}
-
-			if ($order == false)
-			{
-				return null;
-			}
-
-			return $order;
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	/**
 	 * Get the since date limitation from input or the default one
 	 *
 	 * @return  string
@@ -366,14 +322,6 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		if ($this->fields != null)
 		{
 			$this->fields = $this->mapFieldsIn($this->fields);
-		}
-
-		// Results order
-		$this->order = $this->getOrder();
-
-		if ($this->order != null)
-		{
-			$this->order = $this->mapFieldsIn($this->order);
 		}
 
 		// Since
@@ -525,12 +473,6 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			if ($data == false)
 			{
 				$data = null;
-			}
-
-			// Sort data
-			if (count($this->order) > 0 && is_array($data) && count($data) > 1)
-			{
-				usort($data, array($this, "orderData"));
 			}
 
 			$data = $this->pruneFields($data, $this->fields);
