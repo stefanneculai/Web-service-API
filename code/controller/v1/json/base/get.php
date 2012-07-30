@@ -476,10 +476,17 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		// There is no content for the request
 		if ($data == false)
 		{
-			$this->app->errors->addError("204", array($this->type . '_id', $this->id));
-			$this->app->setBody(json_encode($this->app->errors->getErrors()));
-			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
-			return;
+			if (strcmp($this->id, '*') !== 0)
+			{
+				$this->app->errors->addError("204", array($this->type . '_id', $this->id));
+				$this->app->setBody(json_encode($this->app->errors->getErrors()));
+				$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
+				return;
+			}
+			else
+			{
+				$data = array();
+			}
 		}
 
 		// Get only requested fields

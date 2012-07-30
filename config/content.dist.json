@@ -99,7 +99,6 @@
 		{
 			"id": "content_id",
 			"created_at": "created_date",
-			"user_id": "created_user_id",
 			"name": "name",
 			"username": "username",
 			"email": "email",
