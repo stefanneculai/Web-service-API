@@ -42,14 +42,14 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 				'#(applications)/(\d+)/(tags)#i' => '$3',
 				'#(applications)/(\d+)/(screenshots)#i' => '$3',
 			),
-		'Post' =>
+		'Create' =>
 			array(
 				'#(users)/(\d+)/(applications)#i' => '$3',
 				'#(applications)/(\d+)/(comments)#i' => '$3',
 				'#(applications)/(\d+)/(tags)#i' => '$3',
 				'#(applications)/(\d+)/(screenshots)#i' => '$3',
 			),
-		'Put' =>
+		'Update' =>
 			array(
 				'#(applications)/(\d+)/(comments)#i' => '$3',
 				'#(applications)/(\d+)/(tags)#i' => '$3',

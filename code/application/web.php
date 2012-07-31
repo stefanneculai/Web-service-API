@@ -157,7 +157,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 			{
 				$md = new stdClass;
 				$md->id = $key;
-				$md->image = $value;
+				$md->image_url = $value;
 
 				array_push($mediaArray, $md);
 			}

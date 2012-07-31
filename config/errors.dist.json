@@ -158,5 +158,13 @@
 		"message": "Invalid action \"$1\".",
 		"more_info": "",
 		"response_code": "400"
+	},
+	
+	"601":
+	{
+		"code": "JWS601",
+		"message": "Invalid HTTP method for $1.",
+		 "more_info": "",
+		"response_code": "400"
 	}
 }

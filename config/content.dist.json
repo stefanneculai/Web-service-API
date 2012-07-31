@@ -42,7 +42,7 @@
 	"screenshot":
 	{
 		"mandatory": "application_id",
-		"optional": "screenshot, list",
+		"optional": "",
 		"actions": "count",
 		"map":
 		{
