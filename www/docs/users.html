@@ -43,7 +43,6 @@
                             <li><a href="#delete">&raquo; DELETE method</a></li>
                             <li><a href="#connections">&raquo; Connections</a></li>
                             <li><a href="#applications">&raquo; Applications</a></li>
-                            <li><a href="#comments">&raquo; Comments</a></li>
                             <li><a href="#likes">&raquo; Likes</a></li>
                             <li><a href="#actions">&raquo; Actions</a></li>
                         </ul>
@@ -425,11 +424,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                	<tr>
-                    	<td><a href="#comments">comments</a></td>
-                        <td>All comments of this user</td>
-                        <td><span>array</span> of <span>comment</span> objects</td>
-                    </tr>
                     <tr>
                     	<td><a href="#applications">applications</a></td>
                         <td>All applications of this user</td>
@@ -442,6 +436,15 @@
                     </tr>
                 </tbody>
             </table>
+            
+            <a name="applications"></a>
+            <h3>Applications</h3>
+            <p>Get all <span>applications</span> of this user<br/><span class="code">GET users/:user_id/applications</span></p>
+            <p>Create a new <span>application</span> of this user<br/><span class="code">POST users/:user_id/applications</span></p>
+            
+            <a name="likes"></a>
+            <h3>Likes</h3>
+            <p>Get all <span>likes</span> of this user<br/><span class="code">GET users/:user_id/likes</span></p>
             
             <h3><a name="actions"></a>Actions</h3>
             <p>Below are the available actions for <span>User</span> object</p>
