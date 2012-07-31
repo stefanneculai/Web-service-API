@@ -57,12 +57,12 @@
         </div>
         <div class="right">
         	<h2>User</h2>
-            <p>A user profile in the application.</p>
+            <p>A user in the directory.</p>
             <h3>Example</h3>
             <p><a href="#">http://ws-api.cloudaccess.net/ws/www/users/:user_id</a></p>
             
             <h3><a name="fields"></a>Fields</h3>
-            <p>The <span>User</span> object has the following fields:</p>
+            <p>The <span>User</span> object has the following fields.</p>
             <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -74,7 +74,7 @@
                 <tbody>
                     <tr>
                     	<td><span>id</span></td>
-                        <td>The user ID</td>
+                        <td>The user's ID</td>
                         <td><span>integer</span></td>
                     </tr>
                     <tr>
@@ -84,14 +84,14 @@
                     </tr>
                     <tr>
                     	<td><span>username</span></td>
-                        <td>The user's JWS username</td>
+                        <td>The user's username</td>
                         <td><span>string</span></td>
                     </tr>
                     <tr>
                     	<td><span>password</span></td>
                         <td>
                         	The user's password<br/>
-                            <strong>Note:</strong> Since we don't make any encoding to the user password we do strongly recommend to use a safe encoding method such as <span>SHA1</span> before saving the user's password
+                            <strong>Note:</strong> Because we don't make any encoding to the user's password, we do strongly recommend to use a strong encoding method such as <span>SHA1</span> before saving it to the database
                         </td>
                         <td><span>string</span></td>
                     </tr>
@@ -110,17 +110,17 @@
                         <td>
                         	The created date
                         </td>
-                        <td>A struncture with <span>date</span>, <span>timezone_type</span> and <span>timezone</span></td>
+                        <td>A structure with <span>date</span>, <span>timezone_type</span> and <span>timezone</span> fields</td>
                     </tr>
                     <tr>
                     	<td><span>modified_at</span></td>
-                        <td>The date when the user was modified last time</td>
-                        <td>A struncture with <span>date</span>, <span>timezone_type</span> and <span>timezone</span></td>
+                        <td>The date when the user profile was modified last time</td>
+                        <td>A structure with <span>date</span>, <span>timezone_type</span> and <span>timezone</span> fields</td>
                     </tr>
                     <tr>
                     	<td><span>last_visit</span></td>
                         <td>
-                        	The last visit date of the user<br/>
+                        	Last user visit
                         </td>
                         <td><span>date</span></td>
                     </tr>
@@ -133,12 +133,12 @@
                     </tr>
                     <tr>
                     	<td><span>activation</span></td>
-                        <td>An activation code that you can set in order to activate the user by email</td>
+                        <td>An activation code that can be set in order to activate the user by email</td>
                         <td><span>string</span></td>
                     </tr>
                     <tr>
                     	<td><span>hits</span></td>
-                        <td>Hits count for this user</td>
+                        <td>The number of hits for this user</td>
                         <td><span>integer</span></td>
                     </tr>
                 </tbody>
@@ -157,7 +157,7 @@
                 <tbody>
                 	<tr>
                     	<td><span>fields</span></td>
-                        <td>A <span>string</span> with fields separated by comma with the fields that are returned. We recommend to request only the necessary fields in order to save time.</td>
+                        <td>A <span>string</span> with the returned fields separated by comma. We recommend to request only the necessary fields in order to save computing time.</td>
                         <td>All</td>
                     </tr>
                     <tr>
@@ -196,12 +196,12 @@
                 </thead>
                 <tbody>
                 	<tr>
-                    	<td>If request is successful to <span>/users</span></td>
-                        <td><span>array</span> of objects containing the requested <span>fields</span></td> 
+                    	<td>If request succeeded to <span>/users</span></td>
+                        <td><span>array</span> of structures containing the requested <span>fields</span></td> 
                         <td>200</td>
                     </tr>
                     <tr>
-                    	<td>If request is successful to <span>/users/:user_id</span></td>
+                    	<td>If request succeeded to <span>/users/:user_id</span></td>
                         <td>Structure containing the requested <span>fields</span></td> 
                         <td>200</td>
                     </tr>
@@ -209,7 +209,7 @@
             </table>
             
             <h3><a name="post"></a>POST</h3>
-            <p>POST requests can be made to <span>/users</span> in order to create a new user or to <span>/users/:user_id</span> to simulate <span><a href="#put">PUT</a></span> or <span><a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
+            <p>POST requests can be made to <span>/users</span> in order to create a new user or to <span>/users/:user_id</span> to make <span><a href="#put">PUT</a></span> or <span><a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
              <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -226,14 +226,14 @@
                         <td>The user's fullname</td>
                         <td><span>string</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>yes</td>
                     </tr>
                     <tr>
                     	<td><span>username</span></td>
-                        <td>The user's JWS username</td>
+                        <td>The user's username</td>
                         <td><span>string</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>yes</td>
                     </tr>
                     <tr>
                     	<td><span>password</span></td>
@@ -241,42 +241,42 @@
                             <strong>Note:</strong> Since we don't make any encoding to the user password we do strongly recommend to use a safe encoding method such as <span>SHA1</span> before saving the user's password</td>
                         <td><span>string</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>yes</td>
                     </tr>
                     <tr>
                     	<td><span>email</span></td>
                         <td>The user's email</td>
                         <td><span>string</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>yes</td>
                     </tr>
                     <tr>
                     	<td><span>last_visit</span></td>
                         <td>The last visit date</td>
                         <td><span>date</span></td>
                         <td><span>created_date</span></td>
-                        <td><span>no</span></td>
+                        <td>no</td>
                     </tr>
                     <tr>
                     	<td><span>usertype</span></td>
                         <td>The user's type</td>
                         <td><span>string</span></td>
                         <td><span>null</span></td>
-                        <td><span>no</span></td>
+                        <td>no</td>
                     </tr>
                     <tr>
                     	<td><span>send_mail</span></td>
                         <td>Send email state</td>
                         <td><span>tinyint</span></td>
                         <td><span>0</span></td>
-                        <td><span>no</span></td>
+                        <td>no</td>
                     </tr>
                     <tr>
                     	<td><span>activation</span></td>
                         <td>An activation string</td>
                         <td><span>string</span></td>
                         <td><span>""</span></td>
-                        <td><span>no</span></td>
+                        <td>no</td>
                     </tr>
             	</tbody>
 			</table>
@@ -292,7 +292,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                    	<td>If the create is successful</td>
+                    	<td>If the create succeeded</td>
                         <td>Structure containing the <span>id</span> of the created user</td> 
                         <td>200</td>
                     </tr>
@@ -317,7 +317,7 @@
                     </tr>
                     <tr>
                     	<td><span>username</span></td>
-                        <td>The user's JWS username</td>
+                        <td>The user's username</td>
                         <td><span>string</span></td>
                     </tr>
                     <tr>
@@ -385,12 +385,12 @@
                 <tbody>
                 	<tr>
                     	<td><span>before</span></td>
-                        <td>The maximum created date of the user to delete</td>
+                        <td>The maximum created date</td>
                         <td><span>date</span> (yyyy-MM-dd)</td> 
                     </tr>
                     <tr>
                     	<td><span>since</span></td>
-                        <td>The maximum created date of the user to delete</td>
+                        <td>The maximum created date</td>
                         <td><span>date</span> (yyyy-MM-dd)</td> 
                     </tr>
                 </tbody>
@@ -436,9 +436,9 @@
                         <td>Structure containing a <span>data</span> object and the <span>count</span> of total likes, with <span>data</span> containing an <span>array</span> of objects, each with the <span>state<span>, <span>object_id</span> and <span>object</span> name.</td>
                     </tr>
                     <tr>
-                    	<td><a href="#comments">likes</a></td>
+                    	<td><a href="#comments">comments</a></td>
                         <td>All comments of this user</td>
-                        <td><span>array</span> of <span>comments</span> objects</td>
+                        <td><span>array</span> of <span>comment</span> objects</td>
                     </tr>
                 </tbody>
             </table>
@@ -446,38 +446,38 @@
             <a name="applications"></a>
             <h3>Applications</h3>
             <p>Get all <span>applications</span> of this user<br/>
-            	<span class="code">GET users/:user_id/applications<br/>
-                GET applications?user_id=:user_id</span>
+            	<span class="code">GET /users/:user_id/applications<br/>
+                GET /applications?user_id=:user_id</span>
 			</span>                
             <p>Create a new <span>application</span> of this user<br/>
-            	<span class="code">POST users/:user_id/applications<br/>
-                POST applications?user_id=:user_id</span>
+            	<span class="code">POST /users/:user_id/applications<br/>
+                POST /applications?user_id=:user_id</span>
             </p>
             <p>Delete all <span>applications</span> of this user<br/>
-            	<span class="code">DELETE users/:user_id/applications<br/>
-                DELETE applications?user_id=:user_id</span>
+            	<span class="code">DELETE /users/:user_id/applications<br/>
+                DELETE /applications?user_id=:user_id</span>
             </p>
             
             <a name="likes"></a>
             <h3>Likes</h3>
             <p>Get all <span>likes</span> of this user<br/>
-            	<span class="code">GET users/:user_id/likes<br/>
-                GET likes?user_id=:user_id</span>
+            	<span class="code">GET /users/:user_id/likes<br/>
+                GET /likes?user_id=:user_id</span>
              </p>
             
             <a name="comments"></a>
             <h3>Comments</h3>
             <p>Get all <span>comments</span> of this user<br/>
-            	<span class="code">GET users/:user_id/comments<br/>
-               GET comments?user_id=:user_id</span>
+            	<span class="code">GET /users/:user_id/comments<br/>
+               GET /comments?user_id=:user_id</span>
             </p>
             <p>Create a new <span>comment</span> of this user<br/>
-            	<span class="code">POST users/:user_id/comments<br/>
-                POST comments?user_id=:user_id</span>
+            	<span class="code">POST /users/:user_id/comments<br/>
+                POST /comments?user_id=:user_id</span>
             </p>
             
             <h3><a name="actions"></a>Actions</h3>
-            <p>Below are the available actions for <span>User</span> object</p>
+            <p>Below are the available actions for the <span>User</span> object.</p>
              <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -492,13 +492,13 @@
                     	<td>GET</td>
                         <td><span>count</span></td>
                         <td>The number of results</td>
-                        <td>Structure containing the <span>count</span> of results</td>
+                        <td>Structure containing the result's <span>count</span></td>
 					</tr> 
                     <tr>
                     	<td>PUT</td>
                         <td><span>hit</span></td>
                         <td>Increase the hit number</td>
-                        <td><span>boolean</span> indicating if successful</td>
+                        <td><span>boolean</span> indicating if succeeded</td>
 					</tr>                        
                 </tbody>
             </table>

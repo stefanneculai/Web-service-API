@@ -53,7 +53,7 @@
         </div>
         <div class="right">
         	<h2>Comments</h2>
-            <p>A comment in the application.</p>
+            <p>A comment always belongs to an application and a user.</p>
             <h3>Example</h3>
             <p><a href="#">http://ws-api.cloudaccess.net/ws/www/comments/:comment_id</a></p>
             
@@ -70,17 +70,17 @@
                 <tbody>
                     <tr>
                     	<td><span>id</span></td>
-                        <td>The comment ID</td>
+                        <td>The comment'ID</td>
                         <td><span>integer</span></td>
                     </tr>
                     <tr>
                     	<td><span>message</span></td>
-                        <td>The comments's message</td>
+                        <td>The comment's text</td>
                         <td><span>string</span></td>
                     </tr>
                     <tr>
                     	<td><span>user_id</span></td>
-                        <td>The user ID who created the comment</td>
+                        <td>The comment's author</td>
                         <td><span>integer</span></td>
                     </tr>
                     <tr>
@@ -88,21 +88,21 @@
                         <td>
                         	The created date
                         </td>
-                        <td>A structure with <span>date</span>, <span>timezone_type</span> and <span>timezone</span></td>
+                        <td>A structure with <span>date</span>, <span>timezone_type</span> and <span>timezone</span> fields</td>
                     </tr>
                     <tr>
                     	<td><span>modified_at</span></td>
-                        <td>The date when the <span>comment</span> was modified last time</td>
-                        <td>A structure with <span>date</span>, <span>timezone_type</span> and <span>timezone</span></td>
+                        <td>The date when the comment was modified last time</td>
+                        <td>A structure with <span>date</span>, <span>timezone_type</span> and <span>timezone</span> fields</td>
                     </tr>
                     <tr>
                     	<td><span>hits</span></td>
-                        <td>Hits count for this <span>comment</span></td>
+                        <td>The number of comment's hits</td>
                         <td><span>integer</span></td>
                     </tr>
                     <tr>
                     	<td><span>likes</span></td>
-                        <td>The <span>comment</span>'s likes</td>
+                        <td>The comment's likes</td>
                         <td>Structure containing a <span>data</span> object and the <span>count</span> of total likes, with data containing an <span>array</span> of objects, each with the <span>state</span> and <span>user_id</span> of the like.</td>
                     </tr>
                 </tbody>
@@ -121,7 +121,7 @@
                 <tbody>
                 	<tr>
                     	<td><span>fields</span></td>
-                        <td>A <span>string</span> with fields separated by comma with the fields that are returned. We recommend to request only the necessary fields in order to save time.</td>
+                        <td>A <span>string</span> with the returned fields separated by comma. We recommend to request only the necessary fields in order to save computing time.</td>
                         <td>All</td>
                     </tr>
                     <tr>
@@ -148,12 +148,12 @@
                     </tr>
                     <tr>
                     	<td><span>application_id</span></td>
-                        <td>The <span>application</span> ID of the comments returned</td>
+                        <td>The appplication's ID of the returned comments</td>
                         <td><span>-</span></td>
                     </tr>
                     <tr>
                     	<td><span>user_id</span></td>
-                        <td>The <span>user</span> ID of the comments returned</td>
+                        <td>The user's ID of the returned comments</td>
                         <td><span>-</span></td>
                     </tr>
                 </tbody>
@@ -170,12 +170,12 @@
                 </thead>
                 <tbody>
                 	<tr>
-                    	<td>If request is successful to <span>/comments</span></td>
+                    	<td>If request succeeded to <span>/comments</span></td>
                         <td><span>array</span> of objects containing the requested <span>fields</span></td> 
                         <td>200</td>
                     </tr>
                     <tr>
-                    	<td>If request is successful to <span>/comments/:comment_id</span></td>
+                    	<td>If request succeeded to <span>/comments/:comment_id</span></td>
                         <td>Structure containing the requested <span>fields</span></td> 
                         <td>200</td>
                     </tr>
@@ -183,7 +183,7 @@
             </table>
             
             <h3><a name="post"></a>POST</h3>
-            <p>POST requests can be made to <span>/comments</span> in order to create a new comment or to <span>/comments/:comment_id</span> to simulate <span><a href="#put">PUT</a></span> or <span><a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
+            <p>POST requests can be made to <span>/comments</span> in order to create a new comment or to <span>/comments/:comment_id</span> to make <span><a href="#put">PUT</a></span> or <span><a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
              <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -197,24 +197,24 @@
                 <tbody>
                 	<tr>
                     	<td><span>message</span></td>
-                        <td>The <span>comment</span>'s message</td>
+                        <td>The comment's text</td>
                         <td><span>string</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>yes</td>
                     </tr>
                     <tr>
                     	<td><span>user_id</span></td>
-                        <td>The <span>user</span> ID of the comment</td>
+                        <td>The ID of the user to which the comment belongs</td>
                         <td><span>integer</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>yes</td>
                     </tr>
                     <tr>
                     	<td><span>application_id</span></td>
-                        <td>The <span>application_id</span> where the <span>comment</span> is posted</td>
+                        <td>The applications'ID where the comment is posted</td>
                         <td><span>integer</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>yes</td>
                     </tr>
             	</tbody>
 			</table>
@@ -230,7 +230,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                    	<td>If the create is successful</td>
+                    	<td>If the create succeeded</td>
                         <td>Structure containing the <span>id</span> of the created <span>comment</span></td> 
                         <td>200</td>
                     </tr>
@@ -238,7 +238,7 @@
             </table>
             
             <h3><a name="put"></a>PUT</h3>
-            <p>PUT requests can be made to <span>/comments/:comment_id</span> to update comments's data. If your client does not support the <span>PUT</span> method you can use <span><a href="#">POST</a></span> requests with the parameter <span>_method=PUT</span>.</p>
+            <p>PUT requests can be made to <span>/comments/:comment_id</span> to update comment's data. If your client does not support the <span>PUT</span> method you can use <span><a href="#">POST</a></span> requests with the parameter <span>_method=PUT</span>.</p>
             <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -250,12 +250,12 @@
                 <tbody>
                 	<tr>
                     	<td><span>message</span></td>
-                        <td>The <span>comment</span>'s message</td>
+                        <td>The comment's message</td>
                         <td><span>string</span></td>
                     </tr>
                     <tr>
                     	<td><span>user_id</span></td>
-                        <td>The <span>user</span> ID of the comment</td>
+                        <td>The ID of the user to which the commment belongs</td>
                         <td><span>integer</span></td>
                     </tr>
             	</tbody>
@@ -292,22 +292,22 @@
                 <tbody>
                 	<tr>
                     	<td><span>before</span></td>
-                        <td>The maximum created date of the user to delete</td>
+                        <td>The maximum created date</td>
                         <td><span>date</span> (yyyy-MM-dd)</td> 
                     </tr>
                     <tr>
                     	<td><span>since</span></td>
-                        <td>The maximum created date of the user to delete</td>
+                        <td>The maximum created date</td>
                         <td><span>date</span> (yyyy-MM-dd)</td> 
                     </tr>
                     <tr>
                     	<td><span>user_id</span></td>
-                        <td>The <span>user</span> ID of the comment</td>
+                        <td>The user's ID to which the comment belongs</td>
                         <td><span>integer</span></td>
                     </tr>
                     <tr>
                     	<td><span>application_id</span></td>
-                        <td>The <span>application_id</span> where the <span>comment</span> is posted</td>
+                        <td>The application's ID where the comment is posted</td>
                         <td><span>integer</span></td>
                     </tr>
                 </tbody>
@@ -347,13 +347,13 @@
                     	<td>GET</td>
                         <td><span>count</span></td>
                         <td>The number of results</td>
-                        <td>Structure containing the <span>count</span> of results</td>
+                        <td>Structure containing the result's <span>count</span></td>
 					</tr> 
                     <tr>
                     	<td>PUT</td>
                         <td><span>hit</span></td>
                         <td>Increase the hit number</td>
-                        <td><span>boolean</span> indicating if successful</td>
+                        <td><span>boolean</span> indicating if succeeded</td>
 					</tr>  
                     <tr>
                     	<td>PUT</td>
@@ -361,7 +361,7 @@
                         <td>Like the comment<br/>
                         	<strong>Note:</strong> <span>user_id</span> should be specified
                         </td>
-                        <td><span>boolean</span> indicating if successful</td>
+                        <td><span>boolean</span> indicating if succeeded</td>
                     </tr>
                     <tr>
                     	<td>PUT</td>
@@ -369,7 +369,7 @@
                         <td>Unlike the comment<br/>
                         	<strong>Note:</strong> <span>user_id</span> should be specified
                         </td>
-                        <td><span>boolean</span> indicating if successful</td>
+                        <td><span>boolean</span> indicating if succeeded</td>
                     </tr>                      
                 </tbody>
             </table>

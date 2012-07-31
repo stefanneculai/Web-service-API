@@ -50,7 +50,7 @@
                             <li><a href="#actions">&raquo; Actions</a></li>
                         </ul>
                     </li>
-                    <li><a href="screenshots.html">Screnshots</a></li>
+                    <li><a href="screenshots.html">Screenshots</a></li>
                     <li><a href="comments.html">Comments</a></li>
                     <li><a href="tags.html">Tags</a></li>
                 </ul>
@@ -63,7 +63,7 @@
             <p><a href="#">http://ws-api.cloudaccess.net/ws/www/applications/:application_id</a></p>
             
             <h3><a name="fields"></a>Fields</h3>
-            <p>The <span>Application</span> object has the following fields:</p>
+            <p>The <span>Application</span> object has the following fields.</p>
             <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -96,26 +96,26 @@
                     <tr>
                     	<td><span>created_at</span></td>
                         <td>The created date</td>
-                        <td>A struncture with <span>date</span>, <span>timezone_type</span> and <span>timezone</span></td>
+                        <td>A struncture with <span>date</span>, <span>timezone_type</span> and <span>timezone</span> fields</td>
                     </tr>
                     <tr>
                     	<td><span>modified_at</span></td>
                         <td>The date when the application was modified last time</td>
-                        <td>A struncture with <span>date</span>, <span>timezone_type</span> and <span>timezone</span></td>
+                        <td>A struncture with <span>date</span>, <span>timezone_type</span> and <span>timezone</span> fields</td>
                     </tr>
                     <tr>
-                    	<td><span>screnshots</span></td>
-                        <td>The application's screnshots</td>
-                        <td>Structure containing a <span>data</span> object and the <span>count</span> of total screenshots, with <span>data</span> containing an <span>array</span> of objects, each with the <span>id</span> and <span>link</span> of the screenshot.</td>
+                    	<td><span>screenshots</span></td>
+                        <td>The application's screenshots</td>
+                        <td>Structure containing a <span>data</span> object and the <span>count</span> of total screenshots, with <span>data</span> containing an <span>array</span> of objects, each with the <span>id</span> and <span>image_url</span> to the screenshot</td>
                     </tr>
                     <tr>
                     	<td><span>likes</span></td>
                         <td>The application's likes</td>
-                        <td>Structure containing a <span>data</span> object and the <span>count</span> of total likes, with data containing an <span>array</span> of objects, each with the <span>state</span> and <span>user_id</span> of the like.</td>
+                        <td>Structure containing a <span>data</span> object and the <span>count</span> of total likes, with data containing an <span>array</span> of objects, each with the <span>state</span> and <span>user_id</span> of the like</td>
                     </tr>
                     <tr>
                     	<td><span>hits</span></td>
-                        <td>Hits count for this application</td>
+                        <td>The number of application's hits</td>
                         <td><span>integer</span></td>
                     </tr>
                 </tbody>
@@ -134,7 +134,7 @@
                 <tbody>
                 	<tr>
                     	<td><span>fields</span></td>
-                        <td>A <span>string</span> with fields separated by comma with the fields that are returned. We recommend to request only the necessary fields in order to save time.</td>
+                        <td>A <span>string</span> with the returned fields separated by comma. We recommend to request only the necessary fields in order to save computing time.</td>
                         <td>All</td>
                     </tr>
                     <tr>
@@ -161,7 +161,7 @@
                     </tr>
                     <tr>
                     	<td><span>user_id</span></td>
-                        <td>The <span>user</span> ID of the applications returned</td>
+                        <td>The user's ID of the returned applications</td>
                         <td><span>-</span></td>
                     </tr>
                 </tbody>
@@ -178,12 +178,12 @@
                 </thead>
                 <tbody>
                 	<tr>
-                    	<td>If request is successful to <span>/applications</span></td>
+                    	<td>If request succeeded to <span>/applications</span></td>
                         <td><span>array</span> of objects containing the requested <span>fields</span></td> 
                         <td>200</td>
                     </tr>
                     <tr>
-                    	<td>If request is successful to <span>/applications/:application_id</span></td>
+                    	<td>If request succeeded to <span>/applications/:application_id</span></td>
                         <td>Structure containing the requested <span>fields</span></td> 
                         <td>200</td>
                     </tr>
@@ -191,7 +191,7 @@
             </table>
             
             <h3><a name="post"></a>POST</h3>
-            <p>POST requests can be made to <span>/applications</span> in order to create a new application or to <span>/applications/:application_id</span> to simulate <span><a href="#put">PUT</a></span> or <span><a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
+            <p>POST requests can be made to <span>/applications</span> in order to create a new application or to <span>/applications/:application_id</span> to make <span><a href="#put">PUT</a></span> or <span><a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
              <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -208,35 +208,35 @@
                         <td>The application's title</td>
                         <td><span>string</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>yes</td>
                     </tr>
                     <tr>
                     	<td><span>description</span></td>
                         <td>The application's description</td>
                         <td><span>string</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>yes</td>
                     </tr>
                     <tr>
                     	<td><span>user_id</span></td>
                         <td>The id of the user that creates the application</td>
                         <td><span>integer</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>yes</td>
                     </tr>
                     <tr>
                     	<td><span>website</span></td>
                         <td>The application's website</td>
                         <td><span>string</span></td>
                         <td>null</td>
-                        <td><span>no</span></td>
+                        <td>no</td>
                     </tr>
                     <tr>
-                    	<td><span>screenshots</span></td>
+                    	<td><span>screenshots[]</span></td>
                         <td>The application's screenshots</td>
                         <td><span>multipart/form-data</span></td>
                         <td>none</td>
-                        <td><span>no</span></td>
+                        <td>no</td>
                     </tr>
             	</tbody>
 			</table>
@@ -252,7 +252,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                    	<td>If the create is successful</td>
+                    	<td>If the create succeeded</td>
                         <td>Structure containing the <span>id</span> of the created application</td> 
                         <td>200</td>
                     </tr>
@@ -282,7 +282,7 @@
                     </tr>
                     <tr>
                     	<td><span>user_id</span></td>
-                        <td>The id of the user that creates the application</td>
+                        <td>The id of the user that created the application</td>
                         <td><span>integer</span></td>
                     </tr>
                     <tr>
@@ -324,13 +324,20 @@
                 <tbody>
                 	<tr>
                     	<td><span>before</span></td>
-                        <td>The maximum created date of the user to delete</td>
+                        <td>The maximum created date</td>
                         <td><span>date</span> (yyyy-MM-dd)</td> 
                     </tr>
                     <tr>
                     	<td><span>since</span></td>
-                        <td>The maximum created date of the user to delete</td>
+                        <td>The maximum created date</td>
                         <td><span>date</span> (yyyy-MM-dd)</td> 
+                    </tr>
+                    <tr>
+                    	<td><span>user_id</span></td>
+                        <td>The <span>user_id</span> of the aplication<br/>
+                        <strong>Note:</strong> Works only for <span>/applications</span> requests
+                        </td>
+                        <td><span>integer</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -366,23 +373,23 @@
                 <tbody>
                 	<tr>
                     	<td><a href="comments.html">comments</a></td>
-                        <td>All <span>comments</span> of this applicaton</td>
+                        <td>All comments of this applicaton</td>
                         <td><span>array</span> of <span>comment</span> objects</td>
                     </tr>
                     <tr>
                     	<td><a href="tags.html">tags</a></td>
-                        <td>All <span>tags</span> of this application</td>
+                        <td>All tags of this application</td>
                         <td><span>array</span> of <span>tag</span> objects</td>
                     </tr>
                     <tr>
                     	<td><a href="likes.html">likes</a></td>
-                        <td>All <span>likes</span> of this application</td>
+                        <td>All likes of this application</td>
                         <td>Structure containing a <span>data</span> object and the <span>count</span> of total likes, with data containing an <span>array</span> of objects, each with the <span>state</span> and <span>user_id</span> of the like.</td>
                     </tr>
                     <tr>
                     	<td><a href="screenshots.html">screenshots</a></td>
-                        <td>All <span>screenshots</span> of this application</td>
-                        <td>Structure containing a <span>data</span> object and the <span>count</span> of total screenshots, with <span>data</span> containing an <span>array</span> of objects, each with the <span>id</span> and <span>image</span> link.</td>
+                        <td>All screenshots of this application</td>
+                        <td>Structure containing a <span>data</span> object and the <span>count</span> of total screenshots, with <span>data</span> containing an <span>array</span> of objects, each with the <span>id</span> and <span>image_url</span> of the screenshot.</td>
                     </tr>
                 </tbody>
             </table>
@@ -390,88 +397,88 @@
             <a name="comments"></a>
             <h3>Comments</h3>
             <p>Get all <span>comments</span> for this application<br/>
-            	<span class="code">GET applications/:application_id/comments<br/>
-                GET comments?application_id=:application_id</span>
+            	<span class="code">GET /applications/:application_id/comments<br/>
+                GET /comments?application_id=:application_id</span>
             </p>
             <p>Create a <span>comment</span> for this application<br/>
-            	<span class="code">POST applications/:application_id/comments<br/>
-               POST comments?application_id=:application_id</span>
+            	<span class="code">POST /applications/:application_id/comments<br/>
+               POST /comments?application_id=:application_id</span>
             </p>
             <p>Delete all application's <span>comments</span><br/>
-            	<span class="code">DELETE applications/:application_id/comments<br/>
-                DELETE comments?application_id=:application_id</span>
+            	<span class="code">DELETE /applications/:application_id/comments<br/>
+                DELETE /comments?application_id=:application_id</span>
             </p>
             
             <a name="tags"></a>
             <h3>Tags</h3>
             <p>Get all <span>tags</span> for this application<br/>
-            	<span class="code">GET applications/:application_id/tags<br/>
-                GET tags?application_id=:application_id</span>
+            	<span class="code">GET /applications/:application_id/tags<br/>
+                GET /tags?application_id=:application_id</span>
             </p>
             <p>Add a <span>tag</span> to this application<br/>
-            	<span class="code">POST applications/:application_id/tags?name=tag<br/>
-               POST tags?application_id=:application_id&name=tag</span>
+            	<span class="code">POST /applications/:application_id/tags?name=tag<br/>
+               POST /tags?application_id=:application_id&name=tag</span>
             </p>
             <p>Add a list of <span>tags</span> to this application<br/>
-            	<span class="code">POST applications/:application_id/tags?list=tag1,tag2,tag3<br/>
-                POST tags?application_id=:application_id&list=tag1,tag2,tag3</span>
+            	<span class="code">POST /applications/:application_id/tags?list=tag1,tag2,tag3<br/>
+                POST /tags?application_id=:application_id&list=tag1,tag2,tag3</span>
             </p>
             <p>Add a list of <span>tag_id</span> to this application<br/>
-            	<span class="code">POST applications/:application_id/tags?ids=tag_id1,tag_id2,tag_id3<br/>
-                POST tags?application_id=:application_id&ids=tag_id1,tag_id2,tag_id3</span>
+            	<span class="code">POST /applications/:application_id/tags?ids=tag_id1,tag_id2,tag_id3<br/>
+                POST /tags?application_id=:application_id&ids=tag_id1,tag_id2,tag_id3</span>
             </p>
             <p>Remove a <span>tag</span> from this application<br/>
-            	<span class="code">DELETE applications/:application_id/tags?name=tag<br/>
-                DELETE tags?application_id=:application_id&name=tag</span>
+            	<span class="code">DELETE /applications/:application_id/tags?name=tag<br/>
+                DELETE /tags?application_id=:application_id&name=tag</span>
             </p>
             <p>Remove a list of <span>tags</span> from this application<br/>
-            	<span class="code">DELETE applications/:application_id/tags?list=tag1,tag2,tag3<br/>
-                DELETE tags?application_id=:application_id&list=tag1,tag2,tag3</span>
+            	<span class="code">DELETE /applications/:application_id/tags?list=tag1,tag2,tag3<br/>
+                DELETE /tags?application_id=:application_id&list=tag1,tag2,tag3</span>
             </p>
             <p>Remove a list of <span>tag_id</span> from this application<br/>
-            	<span class="code">DELETE applications/:application_id/tags?ids=tag_id1,tag_id2,tag_id3<br/>
-                DELETE tags?application_id=:application_id&ids=tag_id1,tag_id2,tag_id3</span>
+            	<span class="code">DELETE /applications/:application_id/tags?ids=tag_id1,tag_id2,tag_id3<br/>
+                DELETE /tags?application_id=:application_id&ids=tag_id1,tag_id2,tag_id3</span>
             </p>
             <p>Remove all <span>tags</span> of this application<br/>
-            	<span class="code">DELETE applications/:application_id/tags<br/>
-                DELETE tags?application_id=:application_id</span>
+            	<span class="code">DELETE /applications/:application_id/tags<br/>
+                DELETE /tags?application_id=:application_id</span>
             </p>
             
             <a name="likes"></a>
             <h3>Likes</h3>
             <p>Get all <span>likes</span> for this application<br/>
-            	<span class="code">GET applications/:application_id/likes<br/>
-                GET likes?application_id=:application_id</span>
+            	<span class="code">GET /applications/:application_id/likes<br/>
+                GET /likes?application_id=:application_id</span>
             </p>
-            <p>Like this application<br/><span class="code">PUT applications/:application_id/like</span></p>
-            <p>Unlike this application<br/><span class="code">PUT applications/:application_id/unlike</span></p>
+            <p>Like this application<br/><span class="code">PUT /applications/:application_id/like</span></p>
+            <p>Unlike this application<br/><span class="code">PUT /applications/:application_id/unlike</span></p>
             
             <a name="screenshots"></a>
             <h3>Screenshots</h3>
             <p>Get all <span>screenshots</span> for this application<br/>
-            	<span class="code">GET applications/:application_id/screenshots<br/>
-                GET screenshots?application_id=:application_id</span>
+            	<span class="code">GET /applications/:application_id/screenshots<br/>
+                GET /screenshots?application_id=:application_id</span>
             </p>
             <p>Add a <span>screenshot</span> to this application (<span>screenshots[]</span> parameter as <span>multipart/form-data</span>)<br/>
-            	<span class="code">POST applications/:application_id/screnshots<br/>
-                POST screnshots?applications_id=:application_id/</span>
+            	<span class="code">POST /applications/:application_id/screenshots<br/>
+                POST /screenshots?applications_id=:application_id</span>
             </p>
             <p>Delete a <span>screenshot</span> from this application<br/>
-            	<span class="code">DELETE applications/:application_id/screenshots/:screenshot_id<br/>
-                DELETE screenshots/:screenshot_id?application_id=:application_id</span>
+            	<span class="code">DELETE /applications/:application_id/screenshots/:screenshot_id<br/>
+                DELETE /screenshots/:screenshot_id?application_id=:application_id</span>
             </p>
             <p>Delete more <span>screenshots</span> from this application<br/>
-            	<span class="code">DELETE applications/:application_id/screenshots?ids=screenshot_id1,screenshot_id2,screenshot_id3<br/>
-                DELETE screenshots?application_id=:application_id&ids=screenshot_id1,screenshot_id2,screenshot_id3</span>
+            	<span class="code">DELETE /applications/:application_id/screenshots?ids=ss_id1,ss_id2,ss_id3<br/>
+                DELETE /screenshots?application_id=:application_id&ids=ss_id1,ss_id2,ss_id3</span>
             </p>
             <p>Delete all <span>screenshots</span> of this application<br/>
-            	<span class="code">DELETE applications/:application_id/screenshots<br/>
-                DELETE screenshots?application_id=:application_id</span>
+            	<span class="code">DELETE /applications/:application_id/screenshots<br/>
+                DELETE /screenshots?application_id=:application_id</span>
             </p>
             
             
             <h3><a name="actions"></a>Actions</h3>
-            <p>Below are the available actions for <span>applications</span> object</p>
+            <p>Below are the available actions for <span>applications</span> object.</p>
              <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -486,13 +493,13 @@
                     	<td>GET</td>
                         <td><span>count</span></td>
                         <td>The number of results</td>
-                        <td>Structure containing the <span>count</span> of results</td>
+                        <td>Structure containing the result's <span>count</span></td>
                     </tr>
                     <tr>
                     	<td>PUT</td>
                         <td><span>hit</span></td>
                         <td>Increase the hit number</td>
-                        <td><span>boolean</span> indicating if successful</td>
+                        <td><span>boolean</span> indicating if succeeded</td>
 					</tr>
                     <tr>
                     	<td>PUT</td>
@@ -500,7 +507,7 @@
                         <td>Like the application<br/>
                         	<strong>Note:</strong> <span>user_id</span> should be specified
                         </td>
-                        <td><span>boolean</span> indicating if successful</td>
+                        <td><span>boolean</span> indicating if succeeded</td>
                     </tr>
                     <tr>
                     	<td>PUT</td>
@@ -508,7 +515,7 @@
                         <td>Unlike the application<br/>
                         	<strong>Note:</strong> <span>user_id</span> should be specified
                         </td>
-                        <td><span>boolean</span> indicating if successful</td>
+                        <td><span>boolean</span> indicating if succeeded</td>
                     </tr>
                 </tbody>
             </table>

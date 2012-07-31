@@ -53,12 +53,12 @@
         </div>
         <div class="right">
         	<h2>Tags</h2>
-            <p>A tag in the application.</p>
+            <p>A tag in the directoy.</p>
             <h3>Example</h3>
             <p><a href="#">http://ws-api.cloudaccess.net/ws/www/tags/:tag_id</a></p>
             
             <h3><a name="fields"></a>Fields</h3>
-            <p>The <span>Tag</span> object has the following fields:</p>
+            <p>The <span>Tag</span> object has the following fields.</p>
             <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -70,12 +70,12 @@
                 <tbody>
                     <tr>
                     	<td><span>id</span></td>
-                        <td>The tag ID</td>
+                        <td>The tag's ID</td>
                         <td><span>integer</span></td>
                     </tr>
                     <tr>
                     	<td><span>name</span></td>
-                        <td>The tag</td>
+                        <td>The tag's text</td>
                         <td><span>string</span></td>
                     </tr>
                     <tr>
@@ -83,7 +83,7 @@
                         <td>
                         	The created date
                         </td>
-                        <td>A structure with <span>date</span>, <span>timezone_type</span> and <span>timezone</span></td>
+                        <td>A structure with <span>date</span>, <span>timezone_type</span> and <span>timezone</span> fields</td>
                     </tr>
                 </tbody>
             </table>
@@ -101,7 +101,7 @@
                 <tbody>
                 	<tr>
                     	<td><span>fields</span></td>
-                        <td>A <span>string</span> with fields separated by comma with the fields that are returned. We recommend to request only the necessary fields in order to save time.</td>
+                        <td>A <span>string</span> with the requested fields separated by comma. We recommend to request only the necessary fields in order to save computing time.</td>
                         <td>All</td>
                     </tr>
                     <tr>
@@ -140,12 +140,12 @@
                 </thead>
                 <tbody>
                 	<tr>
-                    	<td>If request is successful to <span>/tags</span></td>
+                    	<td>If request succeeded to <span>/tags</span></td>
                         <td><span>array</span> of objects containing the requested <span>fields</span></td> 
                         <td>200</td>
                     </tr>
                     <tr>
-                    	<td>If request is successful to <span>/tags/:tag_id</span></td>
+                    	<td>If request succeeded to <span>/tags/:tag_id</span></td>
                         <td>Structure containing the requested <span>fields</span></td> 
                         <td>200</td>
                     </tr>
@@ -153,7 +153,7 @@
             </table>
             
             <h3><a name="post"></a>POST</h3>
-            <p>POST requests can be made to <span>/tags</span> in order to create a new tag or to <span>/tags/:tag_id</span> to simulate <a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
+            <p>POST requests can be made to <span>/tags</span> in order to create a new tag or to <span>/tags/:tag_id</span> to make <a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
              <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -168,21 +168,21 @@
                 	<tr>
                     	<td><span>name</span></td>
                         <td>
-                        	Tag's name<br/>
-                            <strong>Note:</strong> can be ommitted if the list or ids parameters are passed in query
+                        	Tag's text<br/>
+                            <strong>Note:</strong> if application_id is specified, the tag id added to the application
                         </td>
                         <td><span>string</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>Mandatory but can be ommitted if the <span>list</span> or <span>ids</span> parameters are passed in query</td>
                     </tr>
                     <tr>
                     	<td><span>list</span></td>
                         <td>A list of tags separated by comma<br/>
-                        	<strong>Note:</strong> if application_id is specified, the tag is added to the application
+                        	<strong>Note:</strong> if application_id is specified, the tags are added to the application
                         </td>
                         <td><span>string</span></td>
                         <td>-</td>
-                        <td><span>no</span></td>
+                        <td>no</td>
                     </tr>
                     <tr>
                     	<td><span>ids</span></td>
@@ -191,7 +191,7 @@
                        	</td>
                         <td><span>string</span></td>
                         <td>-</td>
-                        <td><span>no</span></td>
+                        <td>no</td>
                     </tr>
             	</tbody>
 			</table>
@@ -207,12 +207,12 @@
                 </thead>
                 <tbody>
                     <tr>
-                    	<td>If the create is successful</td>
+                    	<td>If the create succeeded</td>
                         <td>Array of objects containing the <span>id</span> of the created <span>tag</span></td> 
                         <td>200</td>
                     </tr>
                     <tr>
-                    	<td>If the create is successful and application_id is specified</td>
+                    	<td>If the create succeeded and application_id is specified</td>
                         <td>boolean</td> 
                         <td>200</td>
                     </tr>
@@ -246,7 +246,7 @@
                     <tr>
                     	<td><span>application_id</span></td>
                         <td>If application_id is specified, the request will only remove the tag from application.<br/>
-                        	<strong>Note:</strong><span>since<span> and <span>before</span> does not mattter at this request.</td>
+                        	<strong>Note:</strong> <span>since</span> and <span>before</span> does not mattter if this parameter exists</td>
                         <td><span>integer</span></td>
                     </tr>
                 </tbody>
@@ -286,7 +286,7 @@
                     	<td>GET</td>
                         <td><span>count</span></td>
                         <td>The number of results</td>
-                        <td>Structure containing the <span>count</span> of results</td>
+                        <td>Structure containing the result's <span>count</span></td>
 					</tr>                    
                 </tbody>
             </table>

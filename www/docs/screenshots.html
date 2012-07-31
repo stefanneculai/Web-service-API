@@ -36,7 +36,7 @@
                     <li><a href="users.html">Users</a></li>
                     <li><a href="applications.html">Applications</a></li>
                     <li class="active">
-                    	<a href="screenshots.html">Screnshots</a>
+                    	<a href="screenshots.html">Screenshots</a>
                         <ul>
                             <li><a href="#fields">&raquo; Fields</a></li>
                             <li><a href="#get">&raquo; GET method</a></li>
@@ -52,13 +52,13 @@
             </div>
         </div>
         <div class="right">
-        	<h2>Application</h2>
-            <p>An application in the directory.</p>
+        	<h2>Screenshots</h2>
+            <p>A screenshot always belongs to an application.</p>
             <h3>Example</h3>
-            <p><a href="#">http://ws-api.cloudaccess.net/ws/www/applications/:application_id</a></p>
+            <p><a href="#">http://ws-api.cloudaccess.net/ws/www/screenshots/:screenshot_id</a></p>
             
             <h3><a name="fields"></a>Fields</h3>
-            <p>The <span>Application</span> object has the following fields:</p>
+            <p>The <span>Screenshot</span> object has the following fields.</p>
             <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -70,12 +70,12 @@
                 <tbody>
                     <tr>
                     	<td><span>id</span></td>
-                        <td>The screenshot ID</td>
+                        <td>The screenshot's ID</td>
                         <td><span>integer</span></td>
                     </tr>
                     <tr>
                     	<td><span>image_url</span></td>
-                        <td>URL to the image</td>
+                        <td>URL to the screenshot image</td>
                         <td><span>string</span></td>
                     </tr>
                 </tbody>
@@ -94,7 +94,7 @@
                 <tbody>
                     <tr>
                     	<td><span>application_id</span></td>
-                        <td>The <span>application_id</span> to which the screenshots are associated</td>
+                        <td>The application's ID to which the screenshots belong</td>
                         <td><span>-</span></td>
                     </tr>
                 </tbody>
@@ -111,12 +111,12 @@
                 </thead>
                 <tbody>
                 	<tr>
-                    	<td>If request is successful to <span>/screenshots</span></td>
-                        <td>Structure containing <span>count</span> field and an <span>array</span> of objects with <span>id</span> and <span>image_url</span> fields.</td> 
+                    	<td>If request succeeded to <span>/screenshots</span></td>
+                        <td>Structure containing <span>count</span> field and an <span>array</span> of objects with <span>id</span> and <span>image_url</span> fields</td> 
                         <td>200</td>
                     </tr>
                     <tr>
-                    	<td>If request is successful to <span>/screenshots/:screenshot_id</span></td>
+                    	<td>If request succeeded to <span>/screenshots/:screenshot_id</span></td>
                         <td>Structure containing <span>id</span> and <span>image_url</span> fields</td> 
                         <td>200</td>
                     </tr>
@@ -124,7 +124,7 @@
             </table>
             
             <h3><a name="post"></a>POST</h3>
-            <p>POST requests can be made to <span>/screenshots</span> in order to new screenshots or to <span>/screenshots/:screenshot_id</span> to simulate <span><a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
+            <p>POST requests can be made to <span>/screenshots</span> to add new screenshots or to <span>/screenshots/:screenshot_id</span> to make <span><a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
              <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -141,14 +141,14 @@
                         <td>The <span>application</span>'s id</td>
                         <td><span>integer</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>yes</td>
                     </tr>
                     <tr>
                     	<td><span>screenshots[]</span></td>
                         <td>An array of screenshots</td>
                         <td><span>array</span> of <span>multipart/form-data</span></td>
                         <td>-</td>
-                        <td><span>yes</span></td>
+                        <td>yes</td>
                     </tr>
             	</tbody>
 			</table>
@@ -192,7 +192,7 @@
                     </tr>
                     <tr>
                     	<td><span>ids</span></td>
-                        <td>a list of <span>screenshot_ids<span> separated by comma</td>
+                        <td>A list of <span>screenshot_ids</span> separated by comma</td>
                         <td><span>string</span></td> 
                     </tr>
                 </tbody>
@@ -217,7 +217,7 @@
             </table>
             
             <h3><a name="actions"></a>Actions</h3>
-            <p>Below are the available actions for <span>screenshot</span> object</p>
+            <p>Below are the available actions for <span>screenshot</span> object.</p>
              <table cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
@@ -232,7 +232,7 @@
                     	<td>GET</td>
                         <td><span>count</span></td>
                         <td>The number of results</td>
-                        <td>Structure containing the <span>count</span> of results</td>
+                        <td>Structure containing the result's <span>count</span></td>
                     </tr>
                 </tbody>
             </table>
