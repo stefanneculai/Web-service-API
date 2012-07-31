@@ -23,7 +23,7 @@
 	{
 		"mandatory": "title, description, user_id",
 		"optional": "website, screenshots",
-		"actions": "like,unlike,hit,count",
+		"actions": "like, unlike, hit, count",
 		"map":
 		{
 			"id": "content_id",
@@ -94,7 +94,7 @@
 	{
 		"mandatory": "name, username, email, password",
 		"optional": "last_visit, usertype, send_email, activation",
-		"actions": "hit,count",
+		"actions": "hit, count",
 		"map":
 		{
 			"id": "content_id",
@@ -116,7 +116,7 @@
 	{
 		"mandatory": "message, application_id, user_id",
 		"optional": "",
-		"actions": "like,unlike,count,hit",
+		"actions": "like, unlike, count, hit",
 		"map":
 		{
 			"id": "content_id",
