@@ -371,9 +371,9 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	 */
 	protected function addRoutes($routes)
 	{
-		foreach ($routes as $key => $route)
+		foreach ($routes as $route => $controller)
 		{
-			$this->router->addMap($route->route, $route->controller);
+			$this->router->addMap($route, $controller);
 		}
 	}
 

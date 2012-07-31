@@ -1,66 +1,18 @@
-[
-	{
-		"route" : "/general",
-		"controller": "general"
-	},
-	
-	{
-		"route" : "/general/:general_id",
-		"controller": "general"
-	},
-	
-	{
-		"route" : "/applications",
-		"controller": "applications"
-	},
-	
-	{
-		"route" : "/applications/:application_id",
-		"controller": "applications"
-	},
-	
-	{
-		"route" : "/tags",
-		"controller": "tags"
-	},
-	
-	{
-		"route" : "/tags/:tag_id",
-		"controller": "tags"
-	},
-	
-	{
-		"route" : "/users",
-		"controller": "users"
-	},
-	
-	{
-		"route" : "/users/:user_id",
-		"controller": "users"
-	},
-	
-	{
-		"route" : "/comments",
-		"controller": "comments"
-	},
-	
-	{
-		"route" : "/comments/:comment_id",
-		"controller": "comments"
-	},
-	
-	{
-		"route" : "/likes",
-		"controller": "likes"
-	},
-	
-	{
-		"route" : "/screenshots",
-		"controller": "screenshots"
-	},
-	
-	{
-		"route" : "/screenshots/:screenshot_id",
-		"controller": "screenshots"
-	}
-]
+{
+	"/applications":								"applications",
+	"/applications/:content_id": 					"applications",
+	"/users/:user_id/applications": 				"applications",
+	"/users": 										"users",
+	"/users/:content_id": 							"users",
+	"/comments": 									"comments",
+	"/comments/:content_id": 						"comments",
+	"/applications/:application_id/comments": 		"comments",
+	"/users/:user_id/comments": 					"comments",
+	"/tags": 										"tags",
+	"/tags/:tag_id": 								"tags",
+	"/applications/:application_id/tags": 			"tags",
+	"/applications/:application_id/screenshots":	"screenshots",
+	"/screenshots/:content_id": 					"screenshots",
+	"/applications/:application_id/likes": 			"likes",
+	"/comments/:comment_id/likes": 					"likes"
+}

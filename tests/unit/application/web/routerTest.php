@@ -25,56 +25,6 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	private $_instance;
 
 	/**
-	 * Provides test data for reordering route
-	 *
-	 * @return  array
-	 *
-	 * @since   1.0
-	 */
-	public function seedReorderRouteData()
-	{
-		// Input, Expected
-		return array(
-			array('/collection1/1', '/collection1/1', false, null, null),
-			array('collection', 'collection', false, null, null),
-			array('collection', 'collection', false, null, null),
-			array('collection1/2/collection2', 'collection2', true, "collection1", "2"),
-			array('collection1/2/collection2?fields', 'collection2?fields', true, "collection1", "2"),
-		);
-	}
-
-	/**
-	 * Tests reorderRoute()
-	 *
-	 * @param   string   $input      Input string to test.
-	 * @param   string   $expected   Expected fetched string.
-	 * @param   boolean  $testInput  Test input or not
-	 * @param   string   $key        Input key
-	 * @param   string   $value      Input value
-	 *
-	 * @return  void
-	 *
-	 * @covers        WebServiceApplicationWebRouter::reorderRoute
-	 * @dataProvider  seedReorderRouteData
-	 * @since         1.0
-	 */
-	public function testReorderRoute($input,  $expected, $testInput, $key, $value)
-	{
-		// Execute the code to test.
-		$actual = TestReflection::invoke($this->_instance, 'reorderRoute', $input);
-
-		// Verify the value.
-		$this->assertEquals($expected, $actual);
-
-		// Test input value
-		if ($testInput == true)
-		{
-			$input = TestReflection::getValue($this->_instance, 'input');
-			$this->assertEquals($input->get->getString($key), $value);
-		}
-	}
-
-	/**
 	 * Provides test data for removing controller from route
 	 *
 	 * @return  array

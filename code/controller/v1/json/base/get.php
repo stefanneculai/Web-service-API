@@ -86,26 +86,25 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	protected function getContentId()
 	{
 		// Get route from the input
-		$route = $this->input->get->getString('@route');
-
-		// Break route into more parts
-		$routeParts = explode('/', $route);
+		$id = $this->input->get->getInteger('content_id');
 
 		// Content is not refered by a number id
-		if (count($routeParts) > 0 && (!is_numeric($routeParts[0]) || $routeParts[0] < 0) && !empty($routeParts[0]))
+		if (isset($id))
 		{
-			$this->app->errors->addError("301");
-			return;
+			if ($id <= 0)
+			{
+				$this->app->errors->addError("301");
+				return;
+			}
+			else
+			{
+				return $id;
+			}
 		}
-
-		// All content is refered
-		if ( count($routeParts) == 0 || strlen($routeParts[0]) === 0 )
+		else
 		{
 			return $this->id;
 		}
-
-		// Specific content id
-		return $routeParts[0];
 	}
 
 	/**

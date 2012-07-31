@@ -196,9 +196,6 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		// Move actions from route to input
 		$route = $this->actionRoute($route);
 
-		// Make route to match our API structure
-		$route = $this->reorderRoute($route, $method);
-
 		// Parse route to get only the main
 		$route = $this->rewriteRoute($route);
 
@@ -208,6 +205,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		// Get the controller name based on the route patterns and requested route.
 		$name = $this->parseRoute($route);
 
+		// Singularize type
 		$type = $this->singularize($name);
 
 		// Get the effective route after matching the controller
@@ -224,38 +222,6 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 
 		// Execute the controller.
 		$controller->execute();
-	}
-
-	/**
-	 * Rewrite routes to be compatible with the application's controller layout.
-	 *
-	 * @param   string  $input   Route string to rewrite.
-	 * @param   string  $method  The HTTP method to match in map
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0
-	 */
-	protected function reorderRoute($input, $method)
-	{
-		// Get the patterns and replacement fields from the route map.
-		$pattern = array_keys($this->routeMap[$method]);
-		$replace = array_values($this->routeMap[$method]);
-
-		// Replace the route
-		$output = preg_replace($pattern, $replace, $input);
-
-		// If there are changes in the route, make the changes in the input
-		foreach ($this->routeMap[$method] as $pattern => $replace)
-		{
-			// /collection1/id/collection2 becames /collection2?collection1=id
-			if (preg_match($pattern, $input, $matches))
-			{
-				$this->input->get->set($this->singularize($matches[1]) . '_id', $matches[2]);
-			}
-		}
-
-		return $output;
 	}
 
 	/**
