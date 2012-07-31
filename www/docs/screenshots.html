@@ -1,0 +1,244 @@
+<html>
+<head>
+	<title>Joomla Web Service API for Directory-like Applications</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    
+    <script language="javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>  
+	<script language="javascript" type="text/javascript">
+		<!--//
+		$(function(){
+			function moveFloatMenu() {
+				var menuOffset = menuYloc.top + $(this).scrollTop() + "px";
+				$('#floatMenu').animate({top:menuOffset},{duration:300,queue:false});
+			}
+		 
+			menuYloc = $('#floatMenu').offset();
+		 
+			$(window).scroll(moveFloatMenu);
+		 
+			moveFloatMenu();
+		});
+		//-->
+	</script>
+</head>
+
+<body>
+	<div class="wrapper">
+    	<div class="left">
+        	<div id="floatMenu">
+                <h1>Useful</h1>
+                <ul>
+                    <li><a href="index.html">Concepts</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                </ul>
+                <h1>Objects</h1>
+                <ul>
+                    <li><a href="users.html">Users</a></li>
+                    <li><a href="applications.html">Applications</a></li>
+                    <li class="active">
+                    	<a href="screenshots.html">Screnshots</a>
+                        <ul>
+                            <li><a href="#fields">&raquo; Fields</a></li>
+                            <li><a href="#get">&raquo; GET method</a></li>
+                            <li><a href="#post">&raquo; POST method</a></li>
+                            <li><a href="#put">&raquo; PUT method</a></li>
+                            <li><a href="#delete">&raquo; DELETE method</a></li>
+                            <li><a href="#actions">&raquo; Actions</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="comments.html">Comments</a></li>
+                    <li><a href="tags.html">Tags</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="right">
+        	<h2>Application</h2>
+            <p>An application in the directory.</p>
+            <h3>Example</h3>
+            <p><a href="#">http://ws-api.cloudaccess.net/ws/www/applications/:application_id</a></p>
+            
+            <h3><a name="fields"></a>Fields</h3>
+            <p>The <span>Application</span> object has the following fields:</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Name</th>
+                        <th>Description</th>
+                        <th>Returns</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    	<td><span>id</span></td>
+                        <td>The screenshot ID</td>
+                        <td><span>integer</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>image_url</span></td>
+                        <td>URL to the image</td>
+                        <td><span>string</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3><a name="get"></a>GET</h3>
+            <p>GET requests can be made to <span>/screenshots</span> in order to get all screenshots or to <span>/screenshots/:screenshot_id</span> in order to get information about a specific screenshot of an application.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Parameter</th>
+                        <th>Description</th>
+                        <th>Default</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    	<td><span>application_id</span></td>
+                        <td>The <span>application_id</span> to which the screenshots are associated</td>
+                        <td><span>-</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>If the request is successful, you get the following return.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Description</th>
+                        <th>Type</th>
+                        <th>Response Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td>If request is successful to <span>/screenshots</span></td>
+                        <td>Structure containing <span>count</span> field and an <span>array</span> of objects with <span>id</span> and <span>image_url</span> fields.</td> 
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                    	<td>If request is successful to <span>/screenshots/:screenshot_id</span></td>
+                        <td>Structure containing <span>id</span> and <span>image_url</span> fields</td> 
+                        <td>200</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3><a name="post"></a>POST</h3>
+            <p>POST requests can be made to <span>/screenshots</span> in order to new screenshots or to <span>/screenshots/:screenshot_id</span> to simulate <span><a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
+             <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Parameter</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td><span>application_id</span></td>
+                        <td>The <span>application</span>'s id</td>
+                        <td><span>integer</span></td>
+                        <td>-</td>
+                        <td><span>yes</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>screenshots[]</span></td>
+                        <td>An array of screenshots</td>
+                        <td><span>array</span> of <span>multipart/form-data</span></td>
+                        <td>-</td>
+                        <td><span>yes</span></td>
+                    </tr>
+            	</tbody>
+			</table>
+            
+            <p>If the create is successful, you get the following return.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Description</th>
+                        <th>Type</th>
+                        <th>Response Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    	<td>If the create succeded</td>
+                        <td>boolean</td> 
+                        <td>200</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3><a name="put"></a>PUT</h3>
+            <p>PUT requests are not available for <span>screenshots</span>.</p>
+            
+            <h3><a name="delete"></a>DELETE</h3>
+            <p>DELETE requests can be made to <span>/screenshots/:screenshot_id</span> to delete a screenshot or to <span>/screenshots</span> to delete all screenshots. If your client does not support the <span>DELETE</span> method you can use <span><a href="#">POST</a></span> requests with the parameter <span>_method=DELETE</span>.</p>
+            <table cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td><span>application_id</span></td>
+                        <td>The <span>application</span>'s id</td>
+                        <td><span>integer</span></td> 
+                    </tr>
+                    <tr>
+                    	<td><span>ids</span></td>
+                        <td>a list of <span>screenshot_ids<span> separated by comma</td>
+                        <td><span>string</span></td> 
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>If the delete is successful, you get the following return.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Description</th>
+                        <th>Type</th>
+                        <th>Response Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    	<td>If delete succeded</td>
+                        <td>boolean</td> 
+                        <td>200</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3><a name="actions"></a>Actions</h3>
+            <p>Below are the available actions for <span>screenshot</span> object</p>
+             <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>HTTP_METHOD</th>
+                        <th>Action</th>
+                        <th>Description</th>
+                        <th>Return</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td>GET</td>
+                        <td><span>count</span></td>
+                        <td>The number of results</td>
+                        <td>Structure containing the <span>count</span> of results</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="clear"></div>
+    </div>
+</body>
+</html> 
