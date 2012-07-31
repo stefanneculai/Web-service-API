@@ -93,18 +93,26 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 	 */
 	protected function loadUser()
 	{
-		// Check if the passed user id is correct
-		if ($this->checkUserId() == true)
+		$user_id = $this->input->get->getString('user_id');
+
+		if (!isset($user_id))
 		{
-			// Load user in session
-			$user_id = $this->input->get->getString('user_id');
-			$session = $this->app->getSession();
-			$session->set('user', new JUser($user_id));
+			$this->app->errors->addError("308", array('user_id'));
 		}
 		else
 		{
-			// Bad user id
-			$this->app->errors->addError("201", array($this->input->get->getString('user_id')));
+			// Check if the passed user id is correct
+			if ($this->checkUserId() == true)
+			{
+				// Load user in session
+				$session = $this->app->getSession();
+				$session->set('user', new JUser($user_id));
+			}
+			else
+			{
+				// Bad user id
+				$this->app->errors->addError("201", array($this->input->get->getString('user_id')));
+			}
 		}
 	}
 
@@ -117,7 +125,6 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 	 */
 	protected function getContentId()
 	{
-
 		// Get route from the input
 		$route = $this->input->get->getString('@route');
 
@@ -210,72 +217,10 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 		{
 			$this->loadUser();
 		}
-
-		// Get media and save it
-		if (isset($_FILES['media']))
+		elseif ( !is_null($this->dataFields['user_id']) && $this->checkUserId() == false)
 		{
-			$this->dataFields['media'] = $this->getMedia();
+			$this->app->errors->addError("201", array($this->input->get->getString('user_id')));
 		}
-	}
-
-	/**
-	 * Save media fields to the upload folder
-	 *
-	 * @return  string  A string with the names of the uploaded files
-	 *
-	 * @since   1.0
-	 */
-	protected function saveMedia()
-	{
-		$media = $_FILES['media'];
-
-		$files = array();
-
-		foreach ($media['name'] as $key => $value)
-		{
-			$ext = preg_replace('/^.*\.([^.]+)$/D', '$1', $value);
-			$newName = uniqid("", true) . '.' . $ext;
-
-			// If a file with the same name exists create a new name
-			while (file_exists(JPATH_BASE . "/../www/uploads/" . $newName))
-			{
-				$newName = uniqid("", true) . '.' . $ext;
-			}
-
-			array_push($files, UPLOADS . $newName);
-
-			move_uploaded_file(
-					$media['tmp_name'][$key],
-					JPATH_BASE . "/../www/uploads/" . $newName
-					);
-		}
-
-		return implode('|', $files);
-	}
-
-	/**
-	 * Get media fields from input
-	 *
-	 * @return  array
-	 *
-	 * @since   1.0
-	 */
-	protected function getMedia()
-	{
-		if (isset($_FILES['media']))
-		{
-			try
-			{
-				return $this->saveMedia();
-			}
-			catch (Exception $e)
-			{
-				$this->app->errors->addError("301", $e->getMessage());
-				return;
-			}
-		}
-
-		return null;
 	}
 
 	/**
@@ -300,6 +245,14 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 
 		// Returned data
 		$data = $this->updateContent();
+
+		// Check for errors
+		if ($this->app->errors->errorsExist() == true)
+		{
+			$this->app->setBody(json_encode($this->app->errors->getErrors()));
+			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
+			return;
+		}
 
 		// Parse the returned data
 		$this->parseData($data);
@@ -351,6 +304,11 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 
 		try
 		{
+			if ($this->model->existsItem($this->id) == false)
+			{
+				$this->app->errors->addError("204", array($this->type . '_id', $this->id));
+				return;
+			}
 			if (strcmp($this->action, 'hit') == 0)
 			{
 				$item = $this->model->hitItem();
@@ -368,7 +326,7 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 				$item = $this->model->updateItem();
 			}
 
-			return true;
+			return $item;
 		}
 		catch (Exception $e)
 		{

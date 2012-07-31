@@ -283,6 +283,24 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		return $this->action;
 	}
 
+	/** Get the user_id from input and check if it exists
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 */
+	protected function checkUserId()
+	{
+		$user_id = $this->input->get->getString('user_id');
+		if (isset($user_id))
+		{
+			$user = new JUser;
+			return $user->load($user_id);
+		}
+
+		return false;
+	}
+
 	/**
 	 * Get the user ID associated with the content
 	 *

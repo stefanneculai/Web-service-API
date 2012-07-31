@@ -177,10 +177,11 @@ class WebServiceApplicationWeb extends JApplicationWeb
 		$query->where('content_id = ' . (int) $content->content_id);
 
 		$session = JFactory::getSession();
-		$userLikes = $session->get('user_likes');
+		$userLikes = $session->get('userID');
+
 		if (isset($userLikes))
 		{
-			$query->where('user_id = ' . (int) $session->get('user_likes'));
+			$query->where('user_id = ' . (int) $userLikes);
 		}
 
 		$db->setQuery($query);

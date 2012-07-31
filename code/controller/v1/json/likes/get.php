@@ -98,10 +98,18 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseG
 
 		if (!is_null($this->user_id))
 		{
+			if ($this->checkUserId() == false)
+			{
+				$this->app->errors->addError("204", array('user_id', $this->user_id));
+				$this->app->setBody(json_encode($this->app->errors->getErrors()));
+				$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
+				return;
+			}
+
 			$modelState = $this->model->getState();
 
 			$session = $this->app->getSession();
-			$session->set('user_likes', $this->user_id);
+			$session->set('userID', $this->user_id);
 
 			$modelState->set('list.offset', $this->offset);
 			$modelState->set('list.limit', $this->limit);
@@ -115,7 +123,7 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseG
 				foreach ($content->likesArray->data as $lkey => $like)
 				{
 					$like->object = ucfirst($content->typeAlias);
-					$like->object_id = $content->id;
+					$like->object_id = $content->content_id;
 					unset($like->user_id);
 					array_push($likes, $like);
 				}

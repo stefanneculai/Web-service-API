@@ -42,9 +42,9 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	 */
 	protected $actionsMap = array(
 		'#([\w\/]*)/(\d+)/(like)(\?\w+|\z)#i' => '$1/$2$4',
-		'#([\w\/]*)/(\d+)/(unlike)\?(\w+)#i' => '$1/$2',
-		'#([\w\/]*)/(\d+)/(hit)#i' => '$1/$2',
-		'#([\w\/]*)/(count)#i' => '$1'
+		'#([\w\/]*)/(\d+)/(unlike)(\?\w+|\z)#i' => '$1/$2$4',
+		'#([\w\/]*)/(\d+)/(hit)(\?\w+|\z)#i' => '$1/$2$4',
+		'#([\w\/]*)/(count)(\?\w+|\z)#i' => '$1$3'
 	);
 
 	protected $singular = array(

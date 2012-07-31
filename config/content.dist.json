@@ -21,9 +21,9 @@
 	
 	"application":
 	{
-		"mandatory": "title, description",
+		"mandatory": "title, description, user_id",
 		"optional": "website, screenshots",
-		"actions": "like, unlike, hit, count",
+		"actions": "like,unlike,hit,count",
 		"map":
 		{
 			"id": "content_id",
@@ -34,7 +34,8 @@
 			"description": "body",
 			"screenshots": "mediaArray",
 			"likes": "likesArray",
-			"hits": "hits"
+			"hits": "hits",
+			"modified_at": "modified_date"
 		}
 	},
 	
@@ -107,7 +108,8 @@
 			"user_type": "usertype",
 			"send_email": "sendEmail",
 			"activation": "activation",
-			"hits": "hits"
+			"hits": "hits",
+			"modified_at": "modified_date"
 		}
 	},
 	

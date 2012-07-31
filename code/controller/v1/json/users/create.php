@@ -16,16 +16,4 @@
  */
 class WebServiceControllerV1JsonUsersCreate extends WebServiceControllerV1JsonBaseCreate
 {
-	/**
-	 * Load user
-	 *
-	 * @return void
-	 *
-	 * @since 1.0
-	 */
-	protected function loadUser()
-	{
-		$session = $this->app->getSession();
-		$session->set('user', new JUser);
-	}
 }

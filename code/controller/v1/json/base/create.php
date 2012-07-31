@@ -45,7 +45,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 		$this->getOptionalFields();
 
 		// Get media and save it
-		if (isset($_FILES['screenshots']))
+		if (isset($this->optionalFields['screenshots']) && isset($_FILES['screenshots']))
 		{
 			$this->optionalFields['media'] = $this->getMedia();
 		}
@@ -225,18 +225,29 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 	 */
 	protected function loadUser()
 	{
-		// Check if the passed user id is correct
-		if ($this->checkUserId() == true)
+		if (isset($this->mandatoryFields['user_id']))
 		{
-			// Load user in session
-			$user_id = $this->input->get->getString('user_id');
-			$session = $this->app->getSession();
-			$session->set('user', new JUser($user_id));
+			// Check if the passed user id is correct
+			if ($this->checkUserId() == true)
+			{
+				// Load user in session
+				$user_id = $this->input->get->getString('user_id');
+				$session = $this->app->getSession();
+				$session->set('user', new JUser($user_id));
+
+				unset($this->mandatoryFields['user_id']);
+			}
+
+			// Bad user id
+			elseif (!empty($this->mandatoryFields['user_id']))
+			{
+				$this->app->errors->addError("201", array($this->input->get->getString('user_id')));
+			}
 		}
 		else
 		{
-			// Bad user id
-			$this->app->errors->addError("201", array($this->input->get->getString('user_id')));
+			$session = $this->app->getSession();
+			$session->set('user', new JUser);
 		}
 	}
 
@@ -252,6 +263,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 		// Init
 		$this->init();
 
+		// Check errors
 		if ($this->app->errors->errorsExist() == true)
 		{
 			$this->app->setBody(json_encode($this->app->errors->getErrors()));
@@ -259,8 +271,10 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 			return;
 		}
 
+		// Create contnet
 		$data = $this->createContent();
 
+		// Parse the result
 		$this->parseData($data);
 	}
 
