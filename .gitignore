@@ -6,4 +6,4 @@
 *.swp
 report/*
 build/*
-www/uploads/*.jpg
+www/uploads/*

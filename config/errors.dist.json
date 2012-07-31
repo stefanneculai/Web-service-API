@@ -166,5 +166,13 @@
 		"message": "Invalid HTTP method for $1.",
 		 "more_info": "",
 		"response_code": "400"
+	},
+	
+	"701":
+	{
+		"code": "JWS701",
+		"message": "Invalid uploaded file type.",
+		 "more_info": "",
+		"response_code": "400"
 	}
 }

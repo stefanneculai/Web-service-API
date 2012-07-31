@@ -131,6 +131,28 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 	}
 
 	/**
+	 * Check if the uploaded file is image
+	 *
+	 * @param   string  $path  Path of the image
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 */
+	protected function is_image($path)
+	{
+		$a = getimagesize($path);
+		$image_type = $a[2];
+
+		if (in_array($image_type, array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP)))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Save media fields to the upload folder
 	 *
 	 * @return  string  A string with the names of the uploaded files
@@ -145,6 +167,12 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 
 		foreach ($media['name'] as $key => $value)
 		{
+			if ($this->is_image($media['tmp_name'][$key]) == false)
+			{
+				$this->app->errors->addError("701");
+				return;
+			}
+
 			$ext = preg_replace('/^.*\.([^.]+)$/D', '$1', $value);
 			$newName = uniqid("", true) . '.' . $ext;
 
