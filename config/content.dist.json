@@ -69,7 +69,7 @@
 			{
 				"key": "name",
 				"field": "list",
-				"condition": "application_id"
+				"condition": ""
 			},
 			
 			"1":
@@ -85,7 +85,6 @@
 		{
 			"id": "content_id",
 			"created_at": "created_date",
-			"user_id": "created_user_id",
 			"name": "body",
 			"application_id": "application_id"
 		}
@@ -117,11 +116,12 @@
 	{
 		"mandatory": "message, application_id, user_id",
 		"optional": "",
-		"actions": "like, unlike, count",
+		"actions": "like,unlike,count,hit",
 		"map":
 		{
 			"id": "content_id",
 			"created_at": "created_date",
+			"modified_at": "modified_date",
 			"user_id": "created_user_id",
 			"likes": "likesArray",
 			"hits": "hits",

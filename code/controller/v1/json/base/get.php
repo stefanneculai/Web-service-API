@@ -392,14 +392,15 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		// Init request
 		$this->init();
 
+		// Map other data
+		$this->doMap();
+
 		if ($this->app->errors->errorsExist() == true)
 		{
 			$this->app->setBody(json_encode($this->app->errors->getErrors()));
 			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
 			return;
 		}
-
-		$this->doMap();
 
 		// Returned data
 		$data = $this->getContent();

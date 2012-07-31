@@ -16,4 +16,18 @@
  */
 class WebServiceControllerV1JsonTagsUpdate extends WebServiceControllerV1JsonBaseUpdate
 {
+/**
+	 * Controller logic
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function execute()
+	{
+		$this->app->errors->addError('601', array("/updates"));
+		$this->app->setBody(json_encode($this->app->errors->getErrors()));
+		$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
+		return;
+	}
 }

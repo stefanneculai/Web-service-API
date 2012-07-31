@@ -377,4 +377,32 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 			$modelState->set('where.' . $key, $value);
 		}
 	}
+
+	/**
+	 * Check if content exists in database
+	 *
+	 * @param   integer  $id    The contnet ID
+	 * @param   string   $type  The content type
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 */
+	protected function itemExists($id, $type)
+	{
+		$modelState = $this->model->getState();
+
+		$typeBackup = $modelState->get('content.type');
+		$idBackup = $modelState->get('content.id');
+
+		$modelState->set('content.type', $type);
+		$modelState->set('content.id', $id);
+
+		$exists = $this->model->existsItem($id);
+
+		$modelState->set('content.type', $typeBackup);
+		$modelState->set('content.id', $idBackup);
+
+		return $exists;
+	}
 }

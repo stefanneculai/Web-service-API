@@ -82,7 +82,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 					{
 						// Check condition
 						$condition = $this->input->get->getString($alternative->condition);
-						if (isset($condition))
+						if (isset($condition) || empty($alternative->condition))
 						{
 							// Check if the alternative field is set
 							$field = $this->input->get->getString($alternative->field);

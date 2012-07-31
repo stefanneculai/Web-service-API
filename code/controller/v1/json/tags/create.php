@@ -161,8 +161,6 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 	 */
 	public function execute()
 	{
-		$this->app->input->get->set('user_id', '1');
-
 		// Init
 		$this->init();
 
@@ -189,7 +187,7 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 		if (array_key_exists('application_id', $this->optionalFields))
 		{
 			// Check if application exists in database
-			if ($this->applicationExists($this->optionalFields['application_id']))
+			if ($this->itemExists($this->optionalFields['application_id'], 'application'))
 			{
 				// Get content state
 				$modelState = $this->model->getState();
@@ -213,7 +211,7 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 			// Raise error
 			else
 			{
-				$this->app->errors->addError('202');
+				$this->app->errors->addError('204', array('application_id', $this->optionalFields['application_id']));
 				$this->app->setBody(json_encode($this->app->errors->getErrors()));
 				$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
 				return;
@@ -224,20 +222,26 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 	}
 
 	/**
-	 * Check if an application exists in DB
+	 * Parse the returned data from database
 	 *
-	 * @param   string  $id  The id of the application
+	 * @param   mixed  $data  Fields may be JContent, array of JContent or false
 	 *
-	 * @return  boolean
+	 * @return  void
 	 *
 	 * @since   1.0
 	 */
-	protected function applicationExists($id)
+	protected function parseData($data)
 	{
-		$modelState = $this->model->getState();
-		$modelState->set('content.type', 'application');
+		if (is_array($data))
+		{
+			foreach ($data as $key => $value)
+			{
+				$data[$key] = new stdClass;
+				$data[$key]->id = $value;
+			}
+		}
 
-		return $this->model->existsItem($id);
+		$this->app->setBody(json_encode($data));
 	}
 
 	/**

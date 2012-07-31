@@ -28,10 +28,17 @@ class WebServiceControllerV1JsonTagsGet extends WebServiceControllerV1JsonBaseGe
 		$app_id = $this->input->get->getString('application_id');
 		if (isset($app_id))
 		{
-			$modelState = $this->model->getState();
+			if ($this->itemExists($app_id, 'application'))
+			{
+				$modelState = $this->model->getState();
 
-			// Set content type that we need
-			$modelState->set('tags.content_id', $app_id);
+				// Set content type that we need
+				$modelState->set('tags.content_id', $app_id);
+			}
+			else
+			{
+				$this->app->errors->addError('204', array('application_id', $app_id));
+			}
 		}
 	}
 }

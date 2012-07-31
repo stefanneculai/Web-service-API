@@ -25,8 +25,14 @@ class WebServiceControllerV1JsonTagsDelete extends WebServiceControllerV1JsonBas
 	 */
 	protected function getTagList()
 	{
+		$name = $this->input->get->getString('name');
 		$list = $this->input->get->getString('list');
-		if (isset($list))
+
+		if (isset($name))
+		{
+			return array($name);
+		}
+		elseif (isset($list))
 		{
 			$tagList = explode(',', $list);
 
@@ -90,7 +96,7 @@ class WebServiceControllerV1JsonTagsDelete extends WebServiceControllerV1JsonBas
 		if (isset($app_id))
 		{
 			// Check if application exists in database
-			if ($this->applicationExists($app_id))
+			if ($this->itemExists($app_id, 'application'))
 			{
 				$modelState = $this->model->getState();
 				$modelState->set('content.type', $this->type);
@@ -165,7 +171,7 @@ class WebServiceControllerV1JsonTagsDelete extends WebServiceControllerV1JsonBas
 			// Raise error
 			else
 			{
-				$this->app->errors->addError('202');
+				$this->app->errors->addError('204', array('application_id', $app_id));
 				$this->app->setBody(json_encode($this->app->errors->getErrors()));
 				$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
 				return;
@@ -211,22 +217,5 @@ class WebServiceControllerV1JsonTagsDelete extends WebServiceControllerV1JsonBas
 		}
 
 		return $items;
-	}
-
-	/**
-	 * Check if an application exists in DB
-	 *
-	 * @param   string  $id  The id of the application
-	 *
-	 * @return  boolean
-	 *
-	 * @since   1.0
-	 */
-	protected function applicationExists($id)
-	{
-		$modelState = $this->model->getState();
-		$modelState->set('content.type', 'application');
-
-		return $this->model->existsItem($id);
 	}
 }

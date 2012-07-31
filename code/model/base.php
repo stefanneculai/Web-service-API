@@ -202,6 +202,12 @@ class WebServiceModelBase extends JModelBase
 			$query->where($query->qn('c.content_id') . '=' . $this->state->get('tags.content_id'));
 		}
 
+		if (!is_null($this->state->get('comments.content_id')))
+		{
+			$query->innerJoin($query->qn('#__content_comment_map', 'c') . ' ON ' . $query->qn('c.comment_id') . ' = ' . $query->qn('a.content_id'));
+			$query->where($query->qn('c.content_id') . '=' . $this->state->get('comments.content_id'));
+		}
+
 		return $query;
 	}
 
