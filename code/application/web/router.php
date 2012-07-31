@@ -33,7 +33,33 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	 * @since  1.0
 	 */
 	protected $routeMap = array(
-		'#([\w\/]*)/(\d+)/(\w+)#i' => '$3'
+		'Get' =>
+			array(
+				'#(users)/(\d+)/(likes)#i' => '$3',
+				'#(users)/(\d+)/(applications)#i' => '$3',
+				'#(applications)/(\d+)/(likes)#i' => '$3',
+				'#(applications)/(\d+)/(comments)#i' => '$3',
+				'#(applications)/(\d+)/(tags)#i' => '$3',
+				'#(applications)/(\d+)/(screenshots)#i' => '$3',
+			),
+		'Post' =>
+			array(
+				'#(users)/(\d+)/(applications)#i' => '$3',
+				'#(applications)/(\d+)/(comments)#i' => '$3',
+				'#(applications)/(\d+)/(tags)#i' => '$3',
+				'#(applications)/(\d+)/(screenshots)#i' => '$3',
+			),
+		'Put' =>
+			array(
+				'#(applications)/(\d+)/(comments)#i' => '$3',
+				'#(applications)/(\d+)/(tags)#i' => '$3',
+			),
+		'Delete' =>
+			array(
+				'#(applications)/(\d+)/(comments)#i' => '$3',
+				'#(applications)/(\d+)/(tags)#i' => '$3',
+				'#(applications)/(\d+)/(screenshots)#i' => '$3',
+			)
 	);
 
 	/**
@@ -163,11 +189,13 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		// Allow poor clients to make advanced requests
 		$this->setMethodInPostRequest(true);
 
+		$method = $this->fetchControllerSuffix();
+
 		// Move actions from route to input
 		$route = $this->actionRoute($route);
 
 		// Make route to match our API structure
-		$route = $this->reorderRoute($route);
+		$route = $this->reorderRoute($route, $method);
 
 		// Parse route to get only the main
 		$route = $this->rewriteRoute($route);
@@ -187,7 +215,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		$this->input->get->set('@route', $route);
 
 		// Append the HTTP method based suffix.
-		$name .= $this->fetchControllerSuffix();
+		$name .= $method;
 
 		// Get the controller object by name.
 		$controller = $this->fetchController($name, $type);
@@ -199,23 +227,24 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	/**
 	 * Rewrite routes to be compatible with the application's controller layout.
 	 *
-	 * @param   string  $input  Route string to rewrite.
+	 * @param   string  $input   Route string to rewrite.
+	 * @param   string  $method  The HTTP method to match in map
 	 *
 	 * @return  string
 	 *
 	 * @since   1.0
 	 */
-	protected function reorderRoute($input)
+	protected function reorderRoute($input, $method)
 	{
 		// Get the patterns and replacement fields from the route map.
-		$pattern = array_keys($this->routeMap);
-		$replace = array_values($this->routeMap);
+		$pattern = array_keys($this->routeMap[$method]);
+		$replace = array_values($this->routeMap[$method]);
 
 		// Replace the route
 		$output = preg_replace($pattern, $replace, $input);
 
 		// If there are changes in the route, make the changes in the input
-		foreach ($this->routeMap as $pattern => $replace)
+		foreach ($this->routeMap[$method] as $pattern => $replace)
 		{
 			// /collection1/id/collection2 becames /collection2?collection1=id
 			if (preg_match($pattern, $input, $matches))
