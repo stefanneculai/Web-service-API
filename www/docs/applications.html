@@ -159,6 +159,11 @@
                         </td>
                         <td><span>20</span></td>
                     </tr>
+                    <tr>
+                    	<td><span>user_id</span></td>
+                        <td>The <span>user</span> ID of the applications returned</td>
+                        <td><span>-</span></td>
+                    </tr>
                 </tbody>
             </table>
             
@@ -384,34 +389,85 @@
             
             <a name="comments"></a>
             <h3>Comments</h3>
-            <p>Get all <span>comments</span> for this application<br/><span class="code">GET applications/:application_id/comments</span></p>
-            <p>Create a <span>comment</span> for this application<br/><span class="code">POST applications/:application_id/comments</span></p>
-            <p>Update a <span>comment</span> for this application<br/><span class="code">PUT applications/:application_id/comments/:comment_id</span></p>
-            <p>Delete all application's <span>comments</span><br/><span class="code">DELETE applications/:application_id/comments</span></p>
-            <p>Delete the <span>comment</span> with the specified id<br/><span class="code">DELETE applications/:application_id/comments/:comment_id</span></p>
+            <p>Get all <span>comments</span> for this application<br/>
+            	<span class="code">GET applications/:application_id/comments<br/>
+                GET comments?application_id=:application_id</span>
+            </p>
+            <p>Create a <span>comment</span> for this application<br/>
+            	<span class="code">POST applications/:application_id/comments<br/>
+               POST comments?application_id=:application_id</span>
+            </p>
+            <p>Delete all application's <span>comments</span><br/>
+            	<span class="code">DELETE applications/:application_id/comments<br/>
+                DELETE comments?application_id=:application_id</span>
+            </p>
             
             <a name="tags"></a>
             <h3>Tags</h3>
-            <p>Get all <span>tags</span> for this application<br/><span class="code">GET applications/:application_id/tags</span></p>
-            <p>Add a <span>tag</span> to this application<br/><span class="code">POST applications/:application_id/tags?name=tag</span></p>
-            <p>Add more <span>tags</span> to this application<br/><span class="code">POST applications/:application_id/tags?list=tag1,tag2,tag3</span></p>
-            <p>Add a list of <span>tag_id</span> to this application<br/><span class="code">POST applications/:application_id/tags?ids=tag_id1,tag_id2,tag_id3</span></p>
-            <p>Unlink a <span>tag</span> from this application<br/><span class="code">DELETE applications/:application_id/tags?name=tag</span></p>
-            <p>Unlink more <span>tags</span> from this application<br/><span class="code">DELETE applications/:application_id/tags?list=tag1,tag2,tag3</span></p>
-            <p>Unink a list of <span>tag_id</span> from this application<br/><span class="code">DELETE applications/:application_id/tags?ids=tag_id1,tag_id2,tag_id3</span></p>
+            <p>Get all <span>tags</span> for this application<br/>
+            	<span class="code">GET applications/:application_id/tags<br/>
+                GET tags?application_id=:application_id</span>
+            </p>
+            <p>Add a <span>tag</span> to this application<br/>
+            	<span class="code">POST applications/:application_id/tags?name=tag<br/>
+               POST tags?application_id=:application_id&name=tag</span>
+            </p>
+            <p>Add a list of <span>tags</span> to this application<br/>
+            	<span class="code">POST applications/:application_id/tags?list=tag1,tag2,tag3<br/>
+                POST tags?application_id=:application_id&list=tag1,tag2,tag3</span>
+            </p>
+            <p>Add a list of <span>tag_id</span> to this application<br/>
+            	<span class="code">POST applications/:application_id/tags?ids=tag_id1,tag_id2,tag_id3<br/>
+                POST tags?application_id=:application_id&ids=tag_id1,tag_id2,tag_id3</span>
+            </p>
+            <p>Remove a <span>tag</span> from this application<br/>
+            	<span class="code">DELETE applications/:application_id/tags?name=tag<br/>
+                DELETE tags?application_id=:application_id&name=tag</span>
+            </p>
+            <p>Remove a list of <span>tags</span> from this application<br/>
+            	<span class="code">DELETE applications/:application_id/tags?list=tag1,tag2,tag3<br/>
+                DELETE tags?application_id=:application_id&list=tag1,tag2,tag3</span>
+            </p>
+            <p>Remove a list of <span>tag_id</span> from this application<br/>
+            	<span class="code">DELETE applications/:application_id/tags?ids=tag_id1,tag_id2,tag_id3<br/>
+                DELETE tags?application_id=:application_id&ids=tag_id1,tag_id2,tag_id3</span>
+            </p>
+            <p>Remove all <span>tags</span> of this application<br/>
+            	<span class="code">DELETE applications/:application_id/tags<br/>
+                DELETE tags?application_id=:application_id</span>
+            </p>
             
             <a name="likes"></a>
             <h3>Likes</h3>
-            <p>Get all <span>likes</span> for this application<br/><span class="code">GET applications/:application_id/likes</span></p>
+            <p>Get all <span>likes</span> for this application<br/>
+            	<span class="code">GET applications/:application_id/likes<br/>
+                GET likes?application_id=:application_id</span>
+            </p>
             <p>Like this application<br/><span class="code">PUT applications/:application_id/like</span></p>
             <p>Unlike this application<br/><span class="code">PUT applications/:application_id/unlike</span></p>
             
             <a name="screenshots"></a>
             <h3>Screenshots</h3>
-            <p>Get all <span>screenshots</span> for this application<br/><span class="code">GET applications/:application_id/screenshots</span></p>
-            <p>Add a <span>screenshot</span> to this application (<span>screenshots[]</span> parameter as <span>multipart/form-data</span>)<br/><span class="code">POST applications/:application_id/screnshots</span></p>
-            <p>Delete a <span>screenshot</span> from this application<br/><span class="code">DELETE applications/:application_id/screenshots/:screenshot_id</span></p>
-            <p>Delete more <span>screenshots</span> from this application<br/><span class="code">DELETE applications/:application_id/screenshots?ids=screenshot_id1,screenshot_id2,screenshot_id3</span></p>
+            <p>Get all <span>screenshots</span> for this application<br/>
+            	<span class="code">GET applications/:application_id/screenshots<br/>
+                GET screenshots?application_id=:application_id</span>
+            </p>
+            <p>Add a <span>screenshot</span> to this application (<span>screenshots[]</span> parameter as <span>multipart/form-data</span>)<br/>
+            	<span class="code">POST applications/:application_id/screnshots<br/>
+                POST screnshots?applications_id=:application_id/</span>
+            </p>
+            <p>Delete a <span>screenshot</span> from this application<br/>
+            	<span class="code">DELETE applications/:application_id/screenshots/:screenshot_id<br/>
+                DELETE screenshots/:screenshot_id?application_id=:application_id</span>
+            </p>
+            <p>Delete more <span>screenshots</span> from this application<br/>
+            	<span class="code">DELETE applications/:application_id/screenshots?ids=screenshot_id1,screenshot_id2,screenshot_id3<br/>
+                DELETE screenshots?application_id=:application_id&ids=screenshot_id1,screenshot_id2,screenshot_id3</span>
+            </p>
+            <p>Delete all <span>screenshots</span> of this application<br/>
+            	<span class="code">DELETE applications/:application_id/screenshots<br/>
+                DELETE screenshots?application_id=:application_id</span>
+            </p>
             
             
             <h3><a name="actions"></a>Actions</h3>

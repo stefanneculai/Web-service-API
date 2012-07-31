@@ -44,6 +44,7 @@
                             <li><a href="#connections">&raquo; Connections</a></li>
                             <li><a href="#applications">&raquo; Applications</a></li>
                             <li><a href="#likes">&raquo; Likes</a></li>
+                            <li><a href="#likes">&raquo; Comments</a></li>
                             <li><a href="#actions">&raquo; Actions</a></li>
                         </ul>
                     </li>
@@ -434,17 +435,46 @@
                         <td>All likes of this user</td>
                         <td>Structure containing a <span>data</span> object and the <span>count</span> of total likes, with <span>data</span> containing an <span>array</span> of objects, each with the <span>state<span>, <span>object_id</span> and <span>object</span> name.</td>
                     </tr>
+                    <tr>
+                    	<td><a href="#comments">likes</a></td>
+                        <td>All comments of this user</td>
+                        <td><span>array</span> of <span>comments</span> objects</td>
+                    </tr>
                 </tbody>
             </table>
             
             <a name="applications"></a>
             <h3>Applications</h3>
-            <p>Get all <span>applications</span> of this user<br/><span class="code">GET users/:user_id/applications</span></p>
-            <p>Create a new <span>application</span> of this user<br/><span class="code">POST users/:user_id/applications</span></p>
+            <p>Get all <span>applications</span> of this user<br/>
+            	<span class="code">GET users/:user_id/applications<br/>
+                GET applications?user_id=:user_id</span>
+			</span>                
+            <p>Create a new <span>application</span> of this user<br/>
+            	<span class="code">POST users/:user_id/applications<br/>
+                POST applications?user_id=:user_id</span>
+            </p>
+            <p>Delete all <span>applications</span> of this user<br/>
+            	<span class="code">DELETE users/:user_id/applications<br/>
+                DELETE applications?user_id=:user_id</span>
+            </p>
             
             <a name="likes"></a>
             <h3>Likes</h3>
-            <p>Get all <span>likes</span> of this user<br/><span class="code">GET users/:user_id/likes</span></p>
+            <p>Get all <span>likes</span> of this user<br/>
+            	<span class="code">GET users/:user_id/likes<br/>
+                GET likes?user_id=:user_id</span>
+             </p>
+            
+            <a name="comments"></a>
+            <h3>Comments</h3>
+            <p>Get all <span>comments</span> of this user<br/>
+            	<span class="code">GET users/:user_id/comments<br/>
+               GET comments?user_id=:user_id</span>
+            </p>
+            <p>Create a new <span>comment</span> of this user<br/>
+            	<span class="code">POST users/:user_id/comments<br/>
+                POST comments?user_id=:user_id</span>
+            </p>
             
             <h3><a name="actions"></a>Actions</h3>
             <p>Below are the available actions for <span>User</span> object</p>

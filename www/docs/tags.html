@@ -1,0 +1,298 @@
+<html>
+<head>
+	<title>Joomla Web Service API for Directory-like Applications</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    
+    <script language="javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>  
+	<script language="javascript" type="text/javascript">
+		<!--//
+		$(function(){
+			function moveFloatMenu() {
+				var menuOffset = menuYloc.top + $(this).scrollTop() + "px";
+				$('#floatMenu').animate({top:menuOffset},{duration:300,queue:false});
+			}
+		 
+			menuYloc = $('#floatMenu').offset();
+		 
+			$(window).scroll(moveFloatMenu);
+		 
+			moveFloatMenu();
+		});
+		//-->
+	</script>
+</head>
+
+<body>
+	<div class="wrapper">
+    	<div class="left">
+        	<div id="floatMenu">
+                <h1>Useful</h1>
+                <ul>
+                    <li><a href="index.html">Concepts</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                </ul>
+                <h1>Objects</h1>
+                <ul>
+                    <li><a href="users.html">Users</a></li>
+                    <li><a href="applications.html">Applications</a></li>
+                    <li><a href="screenshots.html">Screnshots</a></li>
+                    <li><a href="comments.html">Comments</a></li>
+                    <li class="active">
+                    	<a href="tags.html">Tags</a>
+                        <ul>
+                            <li><a href="#fields">&raquo; Fields</a></li>
+                            <li><a href="#get">&raquo; GET method</a></li>
+                            <li><a href="#post">&raquo; POST method</a></li>
+                            <li><a href="#put">&raquo; PUT method</a></li>
+                            <li><a href="#delete">&raquo; DELETE method</a></li>
+                            <li><a href="#actions">&raquo; Actions</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="right">
+        	<h2>Tags</h2>
+            <p>A tag in the application.</p>
+            <h3>Example</h3>
+            <p><a href="#">http://ws-api.cloudaccess.net/ws/www/tags/:tag_id</a></p>
+            
+            <h3><a name="fields"></a>Fields</h3>
+            <p>The <span>Tag</span> object has the following fields:</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Name</th>
+                        <th>Description</th>
+                        <th>Returns</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    	<td><span>id</span></td>
+                        <td>The tag ID</td>
+                        <td><span>integer</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>name</span></td>
+                        <td>The tag</td>
+                        <td><span>string</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>created_at</span></td>
+                        <td>
+                        	The created date
+                        </td>
+                        <td>A structure with <span>date</span>, <span>timezone_type</span> and <span>timezone</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3><a name="get"></a>GET</h3>
+            <p>GET requests can be made to <span>/tags</span> in order to get all tags or to <span>/tags/:tag_id</span> in order to get information about a specific tag.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Parameter</th>
+                        <th>Description</th>
+                        <th>Default</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td><span>fields</span></td>
+                        <td>A <span>string</span> with fields separated by comma with the fields that are returned. We recommend to request only the necessary fields in order to save time.</td>
+                        <td>All</td>
+                    </tr>
+                    <tr>
+                    	<td><span>since</span></td>
+                        <td>A <span>string</span> in date format (<span>yyyy-MM-dd</span>) representing the minimum created date</td>
+                        <td><span>01-01-1970</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>before</span></td>
+                        <td>A <span>string</span> in date format (<span>yyyy-MM-dd</span>) representing the maximum created date</td>
+                        <td><span>NOW</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>offset</span></td>
+                        <td>An <span>integer</span> representing the first result</td>
+                        <td><span>0</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>limit</span></td>
+                        <td>An <span>integer</span> representing the number of results<br/>
+                        	<strong>Note:</strong> The maximum results that can be returned are 100.
+                        </td>
+                        <td><span>20</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>If the request is successful, you get the following return.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Description</th>
+                        <th>Type</th>
+                        <th>Response Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td>If request is successful to <span>/tags</span></td>
+                        <td><span>array</span> of objects containing the requested <span>fields</span></td> 
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                    	<td>If request is successful to <span>/tags/:tag_id</span></td>
+                        <td>Structure containing the requested <span>fields</span></td> 
+                        <td>200</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3><a name="post"></a>POST</h3>
+            <p>POST requests can be made to <span>/tags</span> in order to create a new tag or to <span>/tags/:tag_id</span> to simulate <a href="#delete">DELETE</a></span> requests if <span>_method</span> parameter exists in query.</p>
+             <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Parameter</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td><span>name</span></td>
+                        <td>
+                        	Tag's name<br/>
+                            <strong>Note:</strong> can be ommitted if the list or ids parameters are passed in query
+                        </td>
+                        <td><span>string</span></td>
+                        <td>-</td>
+                        <td><span>yes</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>list</span></td>
+                        <td>A list of tags separated by comma<br/>
+                        	<strong>Note:</strong> if application_id is specified, the tag is added to the application
+                        </td>
+                        <td><span>string</span></td>
+                        <td>-</td>
+                        <td><span>no</span></td>
+                    </tr>
+                    <tr>
+                    	<td><span>ids</span></td>
+                        <td>A list of tag's id separated by comma<br/>
+                        	<strong>Note:</strong> applcation_id should be specified if this parameter is used. The tags that match the ids will be added to the application.
+                       	</td>
+                        <td><span>string</span></td>
+                        <td>-</td>
+                        <td><span>no</span></td>
+                    </tr>
+            	</tbody>
+			</table>
+            
+            <p>If the create is successful, you get the following return.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Description</th>
+                        <th>Type</th>
+                        <th>Response Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    	<td>If the create is successful</td>
+                        <td>Array of objects containing the <span>id</span> of the created <span>tag</span></td> 
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                    	<td>If the create is successful and application_id is specified</td>
+                        <td>boolean</td> 
+                        <td>200</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3><a name="put"></a>PUT</h3>
+            <p>PUT requests are not available for <span>tags</span>.</p>
+            
+            <h3><a name="delete"></a>DELETE</h3>
+            <p>DELETE requests can be made to <span>/tags/:tag_id</span> to delete a tag or to <span>/tags</span> to delete all tags. If your client does not support the <span>DELETE</span> method you can use <span><a href="#">POST</a></span> requests with the parameter <span>_method=DELETE</span>.</p>
+            <table cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td><span>before</span></td>
+                        <td>The maximum created date of the user to delete</td>
+                        <td><span>date</span> (yyyy-MM-dd)</td> 
+                    </tr>
+                    <tr>
+                    	<td><span>since</span></td>
+                        <td>The maximum created date of the user to delete</td>
+                        <td><span>date</span> (yyyy-MM-dd)</td> 
+                    </tr>
+                    <tr>
+                    	<td><span>application_id</span></td>
+                        <td>If application_id is specified, the request will only remove the tag from application.<br/>
+                        	<strong>Note:</strong><span>since<span> and <span>before</span> does not mattter at this request.</td>
+                        <td><span>integer</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>If the delete is successful, you get the following return.</p>
+            <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>Description</th>
+                        <th>Type</th>
+                        <th>Response Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    	<td>If delete succeded</td>
+                        <td>boolean</td> 
+                        <td>200</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3><a name="actions"></a>Actions</h3>
+            <p>Below are the available actions for <span>User</span> object</p>
+             <table cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                    	<th>HTTP_METHOD</th>
+                        <th>Action</th>
+                        <th>Description</th>
+                        <th>Return</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td>GET</td>
+                        <td><span>count</span></td>
+                        <td>The number of results</td>
+                        <td>Structure containing the <span>count</span> of results</td>
+					</tr>                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="clear"></div>
+    </div>
+</body>
+</html> 
