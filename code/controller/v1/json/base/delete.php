@@ -29,6 +29,12 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 	protected $since = '1970-01-01';
 
 	/**
+	 * @var    string  The user id associated with the content
+	 * @since  1.0
+	 */
+	protected $user_id = null;
+
+	/**
 	 * @var    string  The maximum created date of the results
 	 * @since  1.0
 	 */
@@ -95,6 +101,49 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 		}
 	}
 
+	/** Get the user_id from input and check if it exists
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 */
+	protected function checkUserId()
+	{
+		$user_id = $this->input->get->getString('user_id');
+		if (isset($user_id))
+		{
+			$user = new JUser;
+			return $user->load($user_id);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get the user ID associated with the content
+	 *
+	 * @return  string
+	 *
+	 * @since   1.0
+	 */
+	protected function getUserId()
+	{
+		$user_id = $this->input->get->getString('user_id');
+		if (isset($user_id))
+		{
+			if ($this->checkUserId() == true)
+			{
+				return $user_id;
+			}
+			else
+			{
+				$this->app->errors->addError("201", array($this->input->get->getString('user_id')));
+			}
+		}
+
+		return $this->user_id;
+	}
+
 	/**
 	 * Get the before date limitation from input or the default one
 	 *
@@ -144,6 +193,9 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 
 		// Before
 		$this->before = $this->getBefore();
+
+		// Get the user id
+		$this->user_id = $this->getUserId();
 	}
 
 	/**
@@ -208,6 +260,11 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 		}
 		else
 		{
+			if ($this->user_id != null)
+			{
+				$modelState->set('content.user_id', $this->user_id);
+			}
+
 			try
 			{
 				$result = $this->model->deleteList();

@@ -167,6 +167,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 
 		foreach ($media['name'] as $key => $value)
 		{
+			// Check if the uploaded file is image
 			if ($this->is_image($media['tmp_name'][$key]) == false)
 			{
 				$this->app->errors->addError("701");

@@ -37,6 +37,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 			array(
 				'#(users)/(\d+)/(likes)#i' => '$3',
 				'#(users)/(\d+)/(applications)#i' => '$3',
+				'#(users)/(\d+)/(comments)#i' => '$3',
 				'#(applications)/(\d+)/(likes)#i' => '$3',
 				'#(applications)/(\d+)/(comments)#i' => '$3',
 				'#(applications)/(\d+)/(tags)#i' => '$3',
@@ -45,17 +46,18 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		'Create' =>
 			array(
 				'#(users)/(\d+)/(applications)#i' => '$3',
+				'#(users)/(\d+)/(comments)#i' => '$3',
 				'#(applications)/(\d+)/(comments)#i' => '$3',
 				'#(applications)/(\d+)/(tags)#i' => '$3',
 				'#(applications)/(\d+)/(screenshots)#i' => '$3',
 			),
 		'Update' =>
 			array(
-				'#(applications)/(\d+)/(comments)#i' => '$3',
 				'#(applications)/(\d+)/(tags)#i' => '$3',
 			),
 		'Delete' =>
 			array(
+				'#(users)/(\d+)/(applications)#i' => '$3',
 				'#(applications)/(\d+)/(comments)#i' => '$3',
 				'#(applications)/(\d+)/(tags)#i' => '$3',
 				'#(applications)/(\d+)/(screenshots)#i' => '$3',

@@ -135,6 +135,10 @@ class WebServiceControllerV1JsonScreenshotsDelete extends WebServiceControllerV1
 							}
 						}
 					}
+					else
+					{
+						$appMedia = new stdClass;
+					}
 				}
 
 				$application->media = json_encode($appMedia);

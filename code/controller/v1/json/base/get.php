@@ -313,7 +313,14 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		$user_id = $this->input->get->getString('user_id');
 		if (isset($user_id))
 		{
-			return $user_id;
+			if ($this->checkUserId() == true)
+			{
+				return $user_id;
+			}
+			else
+			{
+				$this->app->errors->addError("201", array($this->input->get->getString('user_id')));
+			}
 		}
 
 		return $this->user_id;
@@ -422,11 +429,6 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		$modelState->set('filter.since', $this->since);
 		$modelState->set('filter.before', $this->before);
 
-		if ($this->user_id != null)
-		{
-			$modelState->set('content.user_id', $this->user_id);
-		}
-
 		if (strcmp($this->action, 'count') === 0)
 		{
 			return $this->model->countItems();
@@ -456,6 +458,11 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		// All content is requested
 		else
 		{
+			if ($this->user_id != null)
+			{
+				$modelState->set('content.user_id', $this->user_id);
+			}
+
 			// Set offset and results limit
 			$modelState->set('list.offset', $this->offset);
 			$modelState->set('list.limit', $this->limit);
