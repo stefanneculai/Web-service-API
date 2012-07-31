@@ -137,7 +137,7 @@ class WebServiceControllerV1JsonScreenshotsDelete extends WebServiceControllerV1
 					}
 					else
 					{
-						$appMedia = new stdClass;
+						$appMedia = null;
 					}
 				}
 
