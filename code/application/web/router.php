@@ -211,9 +211,6 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		// Get the effective route after matching the controller
 		$route = $this->removeControllerFromRoute($route);
 
-		// Set the remainder of the route path in the input object as a local route.
-		$this->input->get->set('@route', $route);
-
 		// Append the HTTP method based suffix.
 		$name .= $method;
 

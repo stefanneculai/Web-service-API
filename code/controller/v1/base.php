@@ -148,8 +148,6 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 		if (isset($fields['actions']))
 		{
 			$this->availableActions = preg_split('/[\s]*[,][\s]*/', $fields['actions']);
-			print_r($this->availableActions);
-			die();
 		}
 		else
 		{
