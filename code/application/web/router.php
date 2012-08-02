@@ -97,12 +97,10 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		// Allow poor clients to make advanced requests
 		$this->setMethodInPostRequest(true);
 
-		$method = $this->fetchControllerSuffix();
-
-		// Move actions from route to input
+		// Get actions from route
 		$route = $this->actionRoute($route);
 
-		// Parse route to get only the main
+		// Get version and extention from route
 		$route = $this->rewriteRoute($route);
 
 		// Set controller prefix
@@ -114,9 +112,6 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		// Singularize type
 		$stringInflector = JStringInflector::getInstance();
 		$type = $stringInflector->toSingular($name);
-
-		// Get the effective route after matching the controller
-		$route = $this->removeControllerFromRoute($route);
 
 		// Append the HTTP method based suffix.
 		$name .= $method;
