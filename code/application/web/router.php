@@ -75,104 +75,10 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		'#([\w\/]*)/(count)(\?\w+|\z)#i' => '$1$3'
 	);
 
-	protected $singular = array(
-		'/(quiz)zes$/i'             => "$1",
-		'/(matr)ices$/i'		    => "$1ix",
-		'/(vert|ind)ices$/i'        => "$1ex",
-		'/^(ox)en$/i'               => "$1",
-		'/(alias)es$/i'             => "$1",
-		'/(octop|vir)i$/i'          => "$1us",
-		'/(cris|ax|test)es$/i'      => "$1is",
-		'/(shoe)s$/i'               => "$1",
-		'/(o)es$/i'                 => "$1",
-		'/(bus)es$/i'               => "$1",
-		'/([m|l])ice$/i'            => "$1ouse",
-		'/(x|ch|ss|sh)es$/i'        => "$1",
-		'/(m)ovies$/i'              => "$1ovie",
-		'/(s)eries$/i'              => "$1eries",
-		'/([^aeiouy]|qu)ies$/i'     => "$1y",
-		'/([lr])ves$/i'             => "$1f",
-		'/(tive)s$/i'               => "$1",
-		'/(hive)s$/i'               => "$1",
-		'/(li|wi|kni)ves$/i'        => "$1fe",
-		'/(shea|loa|lea|thie)ves$/i' => "$1f",
-		'/(^analy)ses$/i'           => "$1sis",
-		'/((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i'  => "$1$2sis",
-		'/([ti])a$/i'               => "$1um",
-		'/(n)ews$/i'                => "$1ews",
-		'/(h|bl)ouses$/i'           => "$1ouse",
-		'/(corpse)s$/i'             => "$1",
-		'/(us)es$/i'                => "$1",
-		'/s$/i'                     => ""
-	);
-
-	protected $irregular = array(
-		'move'   => 'moves',
-		'foot'   => 'feet',
-		'goose'  => 'geese',
-		'sex'    => 'sexes',
-		'child'  => 'children',
-		'man'    => 'men',
-		'tooth'  => 'teeth',
-		'person' => 'people'
-	);
-
-	protected $uncountable = array(
-		'sheep',
-		'fish',
-		'deer',
-		'series',
-		'species',
-		'money',
-		'rice',
-		'information',
-		'equipment'
-	);
-
 	/**
 	 * @var    array  The possible actions
 	 */
 	protected $actions = array('like', 'unlike', 'count', 'hit');
-
-	/**
-	 * Singularize word
-	 *
-	 * @param   string  $string  A string with the word to singularize
-	 *
-	 * @return  string
-	 *
-	 * @since   1.0
-	 */
-	protected function singularize( $string )
-	{
-		// Save some time in the case that singular and plural are the same
-		if (in_array(strtolower($string), $this->uncountable))
-		{
-			return $string;
-		}
-
-		// Check for irregular plural forms
-		foreach ( $this->irregular as $result => $pattern )
-		{
-			$pattern = '/' . $pattern . '$/i';
-
-			if (preg_match($pattern, $string))
-			{
-				return preg_replace($pattern, $result, $string);
-			}
-		}
-
-		// Check for matches using regular expressions
-		foreach ( $this->singular as $pattern => $result )
-		{
-			if (preg_match($pattern, $string))
-			{
-				return preg_replace($pattern, $result, $string);
-			}
-		}
-
-		return $string;
-	}
 
 	/**
 	 * Find and execute the appropriate controller based on a given route.
@@ -206,7 +112,8 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		$name = $this->parseRoute($route);
 
 		// Singularize type
-		$type = $this->singularize($name);
+		$stringInflector = JStringInflector::getInstance();
+		$type = $stringInflector->toSingular($name);
 
 		// Get the effective route after matching the controller
 		$route = $this->removeControllerFromRoute($route);

@@ -162,45 +162,6 @@ class WebServiceApplicationWebRouterTest extends TestCase
 		}
 	}
 
-/**
-	 * Provides test data for reordering route
-	 *
-	 * @return  array
-	 *
-	 * @since   1.0
-	 */
-	public function seedSingularizeData()
-	{
-		// Input, Expected
-		return array(
-			array('quizzes', 'quiz'),
-			array('moves', 'move'),
-			array('sheep', 'sheep'),
-			array('father', 'father')
-		);
-	}
-
-	/**
-	 * Tests actionRoute()
-	 *
-	 * @param   string  $input     Input string to test.
-	 * @param   string  $expected  Expected string.
-	 *
-	 * @return  void
-	 *
-	 * @covers        WebServiceApplicationWebRouter::singularize
-	 * @dataProvider  seedSingularizeData
-	 * @since         1.0
-	 */
-	public function testSingularize($input,  $expected)
-	{
-		// Execute the code to test.
-		$actual = TestReflection::invoke($this->_instance, 'singularize', $input);
-
-		// Verify the value.
-		$this->assertEquals($expected, $actual);
-	}
-
 	/**
 	 * Prepares the environment before running a test.
 	 *
