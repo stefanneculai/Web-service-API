@@ -114,7 +114,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		$type = $stringInflector->toSingular($name);
 
 		// Append the HTTP method based suffix.
-		$name .= $method;
+		$name .= $this->fetchControllerSuffix();
 
 		// Get the controller object by name.
 		$controller = $this->fetchController($name, $type);

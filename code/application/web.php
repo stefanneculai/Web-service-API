@@ -57,6 +57,14 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	protected $routes;
 
 	/**
+	 * String with path of the configuration directory
+	 *
+	 * @var    string
+	 * @since  1.0
+	 */
+	protected $configPath;
+
+	/**
 	 * Overrides the parent constructor to set the execution start time.
 	 *
 	 * @param   mixed  $input   An optional argument to provide dependency injection for the application's
@@ -247,52 +255,38 @@ class WebServiceApplicationWeb extends JApplicationWeb
 		}
 		catch (Exception $e)
 		{
-			$this->setHeader('status', '400', true);
-			$this->setBody(json_encode(array('message' => $e->getMessage(), 'code' => $e->getCode(), 'type' => get_class($e))));
+			$this->errors->addError('808', array($e->getMessage()));
+			$this->setBody(json_encode($this->errors->getErrors()));
+			$this->setHeader('status', $this->errors->getResponseCode(), true);
+			return;
 		}
 	}
 
 	/**
-	 * Fetch the configuration data for the application.
+	 * Fetch data from configuration file
 	 *
-	 * @return  object  An object to be loaded into the application configuration.
+	 * @param   string  $fileName  The file name
+	 *
+	 * @return  array
 	 *
 	 * @since   1.0
-	 * @throws  RuntimeException if file cannot be read.
 	 */
-	protected function fetchConfigurationData()
+	public function readConfig($fileName)
 	{
 		// Initialise variables.
 		$config = array();
 
-		// Ensure that required path constants are defined.
-		if (!defined('JPATH_CONFIGURATION'))
-		{
-			$path = getenv('WEBSERVICE_CONFIG');
-			if ($path)
-			{
-				define('JPATH_CONFIGURATION', realpath($path));
-			}
-			else
-			{
-				define('JPATH_CONFIGURATION', realpath(dirname(JPATH_BASE) . '/config'));
-			}
-		}
+		$file = JPATH_CONFIGURATION . '\\' . $fileName . '.json';
 
-		// Set the configuration file path for the application.
-		if (file_exists(JPATH_CONFIGURATION . '/config.json'))
+		// Check if file exists
+		if ($file)
 		{
-			$file = JPATH_CONFIGURATION . '/config.json';
-		}
-		else
-		{
-			// Default to the distribution configuration.
-			$file = JPATH_CONFIGURATION . '/config.dist.json';
+			$file = JPATH_CONFIGURATION . '\\' . $fileName . '.dist.json';
 		}
 
 		if (!is_readable($file))
 		{
-			throw new RuntimeException('Configuration file does not exist or is unreadable.');
+			throw new RuntimeException(sprintf('File %s is unreadable.', $file));
 		}
 
 		// Load the configuration file into an object.
@@ -300,7 +294,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 
 		if ($config == null)
 		{
-			throw new RuntimeException('Configuration file cannot be decoded.');
+			throw new RuntimeException(sprintf('Configuration file %s cannot be decoded.', $file));
 		}
 
 		return $config;
@@ -316,48 +310,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	 */
 	protected function fetchRoutes()
 	{
-		// Initialise variables.
-		$routes = array();
-
-		// Ensure that required path constants are defined.
-		if (!defined('JPATH_CONFIGURATION'))
-		{
-			$path = getenv('WEBSERVICE_CONFIG');
-			if ($path)
-			{
-				define('JPATH_CONFIGURATION', realpath($path));
-			}
-			else
-			{
-				define('JPATH_CONFIGURATION', realpath(dirname(JPATH_BASE) . '/config'));
-			}
-		}
-
-		// Set the configuration file path for the application.
-		if (file_exists(JPATH_CONFIGURATION . '/routes.json'))
-		{
-			$file = JPATH_CONFIGURATION . '/routes.json';
-		}
-		else
-		{
-			// Default to the distribution configuration.
-			$file = JPATH_CONFIGURATION . '/routes.dist.json';
-		}
-
-		if (!is_readable($file))
-		{
-			throw new RuntimeException('Routes file does not exist or is unreadable.');
-		}
-
-		// Load the configuration file into an object.
-		$routes = json_decode(file_get_contents($file));
-
-		if ($routes == null)
-		{
-			throw new RuntimeException('Routes file cannot be decoded.');
-		}
-
-		return $routes;
+		return $this->readConfig('routes');
 	}
 
 	/**
@@ -375,6 +328,19 @@ class WebServiceApplicationWeb extends JApplicationWeb
 		{
 			$this->router->addMap($route, $controller);
 		}
+	}
+
+	/**
+	 * Fetch the configuration data for the application.
+	 *
+	 * @return  object  An object to be loaded into the application configuration.
+	 *
+	 * @since   1.0
+	 * @throws  RuntimeException if file cannot be read.
+	 */
+	protected function fetchConfigurationData()
+	{
+		return $this->readConfig('config');
 	}
 
 	/**

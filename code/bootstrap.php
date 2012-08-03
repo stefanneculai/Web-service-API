@@ -38,6 +38,20 @@ if (!defined('JPATH_BASE'))
 	define('JPATH_BASE', realpath(__DIR__));
 }
 
+// Ensure that required path constants are defined.
+if (!defined('JPATH_CONFIGURATION'))
+{
+	$path = getenv('WEBSERVICE_CONFIG');
+	if ($path)
+	{
+		define('JPATH_CONFIGURATION', realpath($path));
+	}
+	else
+	{
+		define('JPATH_CONFIGURATION', realpath(dirname(JPATH_BASE) . '/config'));
+	}
+}
+
 define('JPATH_SITE', realpath(__DIR__) . '/code');
 define('JPATH_CACHE', JPATH_SITE . '/cache');
 

@@ -174,5 +174,13 @@
 		"message": "Invalid uploaded file type.",
 		 "more_info": "",
 		"response_code": "400"
+	},
+	
+	"808":
+	{
+		"code": "JWS808",
+		"message": "Exception: $1",
+		 "more_info": "",
+		"response_code": "400"
 	}
 }
