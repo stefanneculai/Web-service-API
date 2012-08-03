@@ -7,12 +7,12 @@
  */
 
 /**
- * Class to mock JApplicationWeb.
+ * Class to mock WebServiceApplicationWeb.
  *
  * @package  Joomla.Test
  * @since    12.1
  */
-class WebServiceApplicationWebMock
+class MockWebServiceApplicationWeb
 {
 	/**
 	 * Mock storage for the response body.
@@ -23,7 +23,7 @@ class WebServiceApplicationWebMock
 	public static $body = array();
 
 	/**
-	 * Creates and instance of the mock JApplicationWeb object.
+	 * Creates and instance of the mock WebServiceApplicationWeb object.
 	 *
 	 * The test can implement the following overrides:
 	 * - mockAppendBody
@@ -48,7 +48,7 @@ class WebServiceApplicationWebMock
 			$_SERVER['HTTP_HOST'] = 'localhost';
 		}
 
-		// Collect all the relevant methods in JApplicationWeb (work in progress).
+		// Collect all the relevant methods in WebServiceApplicationWeb (work in progress).
 		$methods = array(
 			'allowCache',
 			'appendBody',

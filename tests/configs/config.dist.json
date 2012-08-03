@@ -1,0 +1,45 @@
+{
+	"db_driver":"mysqli",
+	"db_host":"localhost",
+	"db_user":"root",
+	"db_pass":"",
+	"db_name":"ws",
+	"db_prefix":"ws_",
+
+	"mail_transport":"mail",
+	"sendmail_path":"\/usr\/sbin\/sendmail",
+
+	"smtp_auth":"0",
+	"smtp_secure":"none",
+	"smtp_port":"25",
+	"smtp_user":"",
+	"smtp_pass":"",
+	"smtp_host":"localhost",
+
+	"app_name":"WebService",
+	"app_mail_address":"",
+	"app_timezone":"Romania/Bucharest",
+	"app_description":"",
+	"app_token":"B5BhjfY42veydBPc",
+	"app_list_limit":"20",
+	"app_feed_limit":"10",
+	"app_feed_email":"author",
+	"app_gzip":"0",
+	"app_force_ssl":"0",
+	"app_default_domain":"",
+	"app_identity":null,
+
+	"debug":"0",
+	"debug_lang":"0",
+	"error_reporting":"30719",
+
+	"log_path":"\/tmp\/logs\/vangelis",
+	"tmp_path":"\/tmp\/vangelis",
+
+	"cache_enabled":"0",
+	"cache_ttl":"30",
+	"cache_handler":"file",
+	
+	"session_lifetime":"60",
+	"session_handler":"database"
+}

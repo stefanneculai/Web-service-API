@@ -43,8 +43,10 @@ class WebServiceApplicationWebErrorsTest extends TestCase
 				$this->returnValue('ok')
 		);
 
+		$webMock = MockWebServiceApplicationWeb::create($this);
+
 		// Construct the object.
-		$errorsClass = new WebServiceApplicationWebErrors($this->getMockWeb(), $input);
+		$errorsClass = new WebServiceApplicationWebErrors($webMock, $input);
 
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('ok', TestReflection::getValue($errorsClass, 'input')->test());
@@ -62,7 +64,7 @@ class WebServiceApplicationWebErrorsTest extends TestCase
 		parent::setUp();
 
 		$testInput = new JInput;
-		$testMock = $this->getMockWeb();
+		$testMock = MockWebServiceApplicationWeb::create($this);
 		$this->_instance = new WebServiceApplicationWebErrors($testMock, $testInput);
 	}
 
@@ -316,63 +318,19 @@ class WebServiceApplicationWebErrorsTest extends TestCase
 	}
 
 	/**
-	 * Seed data for fetchErrorsData()
-	 *
-	 * @return  array
-	 *
-	 * @since   1.0
-	 */
-	public function seedFetchErrorsData()
-	{
-		// JPATH_CONFIGURATION, JPATH_BASE, WEBSERVICE_CONFIG, Expected, Exception
-		return array(
-				array(null, JPATH_TESTS . '/configs/default', null, 2, null)
-				);
-	}
-
-	/**
 	 * Tests fetchErrorsData()
-	 *
-	 * @param   string   $config     The JPATH_CONFIGURATION string
-	 * @param   string   $base       The JPATH_BASE string
-	 * @param   string   $wsconfig   The WEBSERVICE_CONFIG string
-	 * @param   integer  $expected   The number of the expected errors from config file
-	 * @param   string   $exception  The exception
 	 *
 	 * @return  void
 	 *
 	 * @covers        WebServiceApplicationWebErrors::fetchErrorsData
-	 * @dataProvider  seedFetchErrorsData
 	 * @since         1.0
 	 */
-	public function testFetchErrorsData($config, $base, $wsconfig, $expected, $exception)
+	public function testFetchErrorsData()
 	{
-		$this->markTestIncomplete('Have no idea how to change constants');
-		return;
+		$actual = TestReflection::invoke($this->_instance, 'fetchErrorsData');
 
-		if ($config != null)
-		{
-			define('JPATH_CONFIGURATION', $config);
-		}
-
-		if ($base != null)
-		{
-			define('JPATH_BASE', $base);
-		}
-
-		if ($wsconfig != null)
-		{
-			putenv('WEBSERVICE_CONFIG=' . $wsconfig);
-		}
-
-		if ($exception != null)
-		{
-			$this->setExpectedException($exception);
-		}
-
-		TestReflection::invoke($this->_instance, 'fetchErrorsData');
-
-		$actual = TestReflection::getValue($this->_instance, 'errorsMap');
-
+		$this->assertEquals(true, property_exists($actual, '301'));
+		$this->assertEquals(true, property_exists($actual, '302'));
+		$this->assertEquals(2, count(get_object_vars($actual)));
 	}
 }

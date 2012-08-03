@@ -23,8 +23,15 @@ if (!defined('JPATH_TESTS'))
 	define('JPATH_TESTS', realpath(__DIR__));
 }
 
+// Ensure that required path constants are defined.
+if (!defined('JPATH_CONFIGURATION'))
+{
+	define('JPATH_CONFIGURATION', realpath(JPATH_TESTS . '/configs'));
+}
+
 // Import the platform.
 require_once __DIR__ . '/../code/bootstrap.php';
 
 // Register the core Joomla test classes.
 JLoader::registerPrefix('Test', JPATH_PLATFORM . '/../tests/core');
+JLoader::registerPrefix('MockWebService', JPATH_TESTS . '/core/mock');
