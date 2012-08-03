@@ -7,8 +7,6 @@
 * @license     GNU General Public License version 2 or later; see LICENSE
 */
 
-require_once __DIR__ . '/../../application/stubs/webMock.php';
-
 /**
  * Test Case class for WebServiceControllerV1Base
 *
@@ -259,59 +257,6 @@ class WebServiceControllerV1BaseTest extends TestCase
 	}
 
 	/**
-	 * Provides test data for orderData
-	 *
-	 * @return  array
-	 *
-	 * @since   1.0
-	 */
-	public function seedOrderData()
-	{
-		$order = array('foo' , 'bar');
-
-		// Input, Expected
-		return array(
-				array($order, array('1','2'), array('1', '3'), -1),
-				array($order, array('1','2'), array('1', '1'), 1),
-				array($order, array('1','1'), array('1', '1'), 0),
-		);
-	}
-
-	/**
-	 * Tests orderData()
-	 *
-	 * @param   array    $order     An array with the order of the fields
-	 * @param   string   $input1    Input 1
-	 * @param   array    $input2    Input 2
-	 * @param   integer  $expected  Expected
-	 *
-	 * @return  void
-	 *
-	 * @covers        WebServiceControllerV1Base::orderData
-	 * @dataProvider  seedOrderData
-	 * @since         1.0
-	 */
-	public function testOrderData($order, $input1, $input2, $expected)
-	{
-		$ob = TestReflection::getValue($this->_instance, 'order');
-		TestReflection::setValue($this->_instance, 'order', $order);
-
-		$obj1 = new StdClass;
-		$obj1->foo = $input1[0];
-		$obj1->bar = $input1[1];
-
-		$obj2 = new StdClass;
-		$obj2->foo = $input2[0];
-		$obj2->bar = $input2[1];
-
-		$actual = TestReflection::invoke($this->_instance, 'orderData', $obj1, $obj2);
-
-		TestReflection::setValue($this->_instance, 'order', $ob);
-
-		$this->assertEquals($expected, $actual);
-	}
-
-	/**
 	 * Prepares the environment before running a test.
 	 *
 	 * @return  void
@@ -338,7 +283,7 @@ class WebServiceControllerV1BaseTest extends TestCase
 		JFactory::$application = $this->getMockWeb();
 
 		$testInput = new JInput;
-		$testMock = WebServiceApplicationWebMock::create($this);
+		$testMock = MockWebServiceApplicationWeb::create($this);
 
 		$this->_instance = $this->getMockForAbstractClass('WebServiceControllerV1Base', array('foo', $testInput, $testMock));
 	}
