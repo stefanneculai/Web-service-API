@@ -91,40 +91,9 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	protected function readFields()
 	{
 		// Initialise variables.
-		$fields = array();
-
-		// Ensure that required path constants are defined.
-		if (!defined('JPATH_CONFIGURATION'))
-		{
-			$path = getenv('WEBSERVICE_CONFIG');
-			if ($path)
-			{
-				define('JPATH_CONFIGURATION', realpath($path));
-			}
-			else
-			{
-				define('JPATH_CONFIGURATION', realpath(dirname(JPATH_BASE) . '/config'));
-			}
-		}
-
-		// Set the configuration file path for the application.
-		if (file_exists(JPATH_CONFIGURATION . '/content.json'))
-		{
-			$file = JPATH_CONFIGURATION . '/content.json';
-		}
-		else
-		{
-			// Default to the distribution configuration.
-			$file = JPATH_CONFIGURATION . '/content.dist.json';
-		}
-
-		if (!is_readable($file))
-		{
-			throw new RuntimeException('Content file does not exist or is unreadable.');
-		}
+		$fields = $this->app->readConfig('content');
 
 		// Load the configuration file into an object.
-		$fields = json_decode(file_get_contents($file));
 		$fields = get_object_vars($fields->{$this->type});
 
 		if ($fields == null)
