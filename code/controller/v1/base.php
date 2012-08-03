@@ -90,21 +90,41 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	 */
 	protected function readFields()
 	{
-		// Initialise variables.
-		$fields = $this->app->readConfig('content');
-
 		// Load the configuration file into an object.
+		$fields = $this->app->readConfig('content');
 		$fields = get_object_vars($fields->{$this->type});
 
-		if ($fields == null)
+		// Get mandatory fields
+		if (isset($fields['mandatory']))
 		{
-			throw new RuntimeException('Content file cannot be decoded.');
+			$this->mandatoryFields = $this->getArrayFields($fields['mandatory']);
+		}
+		else
+		{
+			$this->mandatoryFields = array();
 		}
 
-		$this->mandatoryFields = $this->getArrayFields($fields['mandatory']);
-		$this->optionalFields = $this->getArrayFields($fields['optional']);
-		$this->fieldsMap = get_object_vars($fields['map']);
+		// Get optional fields
+		if (isset($fields['optional']))
+		{
+			$this->optionalFields = $this->getArrayFields($fields['optional']);
+		}
+		else
+		{
+			$this->optionalFields = array();
+		}
 
+		// Get fields map
+		if (isset($fields['map']))
+		{
+			$this->fieldsMap = get_object_vars($fields['map']);
+		}
+		else
+		{
+			$this->fieldsMap = array();
+		}
+
+		// Get alternative fields
 		if (isset($fields['alternative']))
 		{
 			$this->alternativeFields = get_object_vars($fields['alternative']);
@@ -114,6 +134,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 			$this->alternativeFields = array();
 		}
 
+		// Get available actions
 		if (isset($fields['actions']))
 		{
 			$this->availableActions = preg_split('/[\s]*[,][\s]*/', $fields['actions']);
@@ -135,18 +156,21 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	 */
 	protected function getArrayFields($fields)
 	{
-		$fieldsArray = explode(',', $fields);
+		// Get an array from fields
+		$fieldsArray = preg_split('/[\s]*[,][\s]*/', $fields);
 
 		$fieldList = array();
 
-		if (count($fieldsArray) == 1 && strlen(trim($fieldsArray[0])) == 0)
+		// The specified field is empty
+		if (count($fieldsArray) == 1 && empty($fieldsArray[0]))
 		{
 			return $fieldList;
 		}
 
+		// Create an array with the key beeing the name of the field
 		foreach ($fieldsArray as $key => $field)
 		{
-			$fieldList[trim($field)] = '';
+			$fieldList[$field] = '';
 		}
 
 		return $fieldList;
@@ -167,6 +191,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 		$this->app = isset($app) ? $app : $this->loadApplication();
 		$this->input = isset($input) ? $input : $this->loadInput();
 
+		// Set type
 		$this->type = $type;
 
 		// Init user load table
@@ -193,6 +218,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 			return array();
 		}
 
+		// If a list of fields is passed
 		if ($fields)
 		{
 			// Flip the fields so we can find the intersection by the array keys.
@@ -223,6 +249,8 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 				$list = $this->mapFieldsOut($list);
 			}
 		}
+
+		// All fields should be returned
 		else
 		{
 			if (is_array($list))
@@ -284,7 +312,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	}
 
 	/**
-	 * Map in an array
+	 * Map in an array of fields
 	 *
 	 * @param   array  $data  An array to map in
 	 *
@@ -303,7 +331,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	}
 
 	/**
-	 * Map out an associative array
+	 * Map out an associative array of fields and value
 	 *
 	 * @param   array  $data  An array to map out
 	 *
@@ -339,8 +367,10 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 		// Get content state
 		$modelState = $this->model->getState();
 
+		// Set where condition fields
 		$modelState->set('where.fields', implode(',', array_keys($conditions)));
 
+		// Set each fields in where condition
 		foreach ($conditions as $key => $value)
 		{
 			$modelState->set('where.' . $key, $value);
@@ -359,16 +389,21 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	 */
 	protected function itemExists($id, $type)
 	{
+		// Get content state
 		$modelState = $this->model->getState();
 
+		// Save old values from state (not sure if that should be done)
 		$typeBackup = $modelState->get('content.type');
 		$idBackup = $modelState->get('content.id');
 
+		// Set new content and id
 		$modelState->set('content.type', $type);
 		$modelState->set('content.id', $id);
 
+		// Check if item exists
 		$exists = $this->model->existsItem($id);
 
+		// Restore old values from state
 		$modelState->set('content.type', $typeBackup);
 		$modelState->set('content.id', $idBackup);
 
