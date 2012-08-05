@@ -30,7 +30,6 @@ class WebServiceControllerV1BaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceControllerV1Base::__construct
 	 * @since   1.0
 	 */
 	public function test__construct()
@@ -75,7 +74,6 @@ class WebServiceControllerV1BaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1Base::getArrayFields
 	 * @dataProvider  seedGetArrayFields
 	 * @since         1.0
 	 */
@@ -113,7 +111,6 @@ class WebServiceControllerV1BaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1Base::mapIn
 	 * @dataProvider  seedMapIn
 	 * @since         1.0
 	 */
@@ -155,7 +152,6 @@ class WebServiceControllerV1BaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1Base::mapFieldsIn
 	 * @dataProvider  seedMapFieldsIn
 	 * @since         1.0
 	 */
@@ -198,7 +194,6 @@ class WebServiceControllerV1BaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1Base::mapOut
 	 * @dataProvider  seedMapOut
 	 * @since         1.0
 	 */
@@ -240,7 +235,6 @@ class WebServiceControllerV1BaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1Base::mapFieldsOut
 	 * @dataProvider  seedMapFieldsOut
 	 * @since         1.0
 	 */
@@ -254,6 +248,101 @@ class WebServiceControllerV1BaseTest extends TestCase
 		TestReflection::setValue($this->_instance, 'fieldsMap', $fb);
 
 		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * Test readFields
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function testReadFields()
+	{
+		TestReflection::setValue($this->_instance, 'type', 'test');
+		TestReflection::invoke($this->_instance, 'readFields');
+
+		$mandatoryActual = TestReflection::getValue($this->_instance, 'mandatoryFields');
+		$this->assertEquals(true, isset($mandatoryActual['mandatory']));
+
+		$optionalActual = TestReflection::getValue($this->_instance, 'optionalFields');
+		$this->assertEquals(true, isset($optionalActual['optional']));
+
+		$actionsActual = TestReflection::getValue($this->_instance, 'availableActions');
+		$this->assertEquals(true, in_array('action1', $actionsActual));
+		$this->assertEquals(true, in_array('action2', $actionsActual));
+
+		$alternativeActual = TestReflection::getValue($this->_instance, 'alternativeFields');
+		$this->assertEquals(true, isset($alternativeActual['alternative']));
+		$this->assertEquals('alt', $alternativeActual['alternative']);
+
+		$mapActual = TestReflection::getValue($this->_instance, 'fieldsMap');
+		$this->assertEquals(true, isset($mapActual['map']));
+		$this->assertEquals('map_test', $mapActual['map']);
+	}
+
+	/**
+	 * Test readFields
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function testReadFieldsEmpty()
+	{
+		TestReflection::setValue($this->_instance, 'type', 'test_empty');
+		TestReflection::invoke($this->_instance, 'readFields');
+
+		$mandatoryActual = TestReflection::getValue($this->_instance, 'mandatoryFields');
+		$this->assertEquals(array(), $mandatoryActual);
+
+		$optionalActual = TestReflection::getValue($this->_instance, 'optionalFields');
+		$this->assertEquals(array(), $optionalActual);
+
+		$actionsActual = TestReflection::getValue($this->_instance, 'availableActions');
+		$this->assertEquals(array(), $actionsActual);
+
+		$alternativeActual = TestReflection::getValue($this->_instance, 'alternativeFields');
+		$this->assertEquals(array(), $alternativeActual);
+
+		$mapActual = TestReflection::getValue($this->_instance, 'fieldsMap');
+		$this->assertEquals(array(), $mapActual);
+	}
+
+	/**
+	 * Test setWhere
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function testSetWhere()
+	{
+		TestReflection::invoke($this->_instance, 'setWhere', array('foo' => 'bar'));
+		$model = TestReflection::getValue($this->_instance, 'model');
+
+		$modelState = $model->getState();
+		$this->assertEquals('foo', $modelState->get('where.fields'));
+		$this->assertEquals('bar', $modelState->get('where.foo'));
+	}
+
+	/**
+	 * Test setWhere
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function testItemExists()
+	{
+		$model = $this->getMock('WebServiceModelBase', array('existsItem'));
+		$model->expects($this->any())
+				->method('existsItem')
+				->will($this->returnValue('ok'));
+		TestReflection::setValue($this->_instance, 'model', $model);
+
+		$actual = TestReflection::invoke($this->_instance, 'itemExists', 'foo', 'id');
+		$this->assertEquals('ok', $actual);
 	}
 
 	/**

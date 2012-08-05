@@ -49,7 +49,6 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceApplicationWebRouter::removeControllerFromRoute
 	 * @dataProvider  seedRemoveControllerFromRouteData
 	 * @since         1.0
 	 */
@@ -92,7 +91,6 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceApplicationWebRouter::rewriteRoute
 	 * @dataProvider  seedRewriteRouteData
 	 * @since         1.0
 	 */
@@ -140,7 +138,6 @@ class WebServiceApplicationWebRouterTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceApplicationWebRouter::actionRoute
 	 * @dataProvider  seedActionRouteData
 	 * @since         1.0
 	 */

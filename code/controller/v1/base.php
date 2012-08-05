@@ -49,6 +49,12 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	protected $alternativeFields;
 
 	/**
+	 * @var    array  An array with the available actions
+	 * @since  1.0
+	 */
+	protected $availableActions;
+
+	/**
 	 * @var    array  The order of the output
 	 * @since  1.0
 	 */

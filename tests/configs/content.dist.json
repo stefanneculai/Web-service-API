@@ -14,5 +14,24 @@
 			"f4": "field4",
 			"f5": "field5"
 		}
+	},
+	
+	"test":
+	{
+		"mandatory": "mandatory",
+		"optional": "optional",
+		"alternative": 
+		{
+			"alternative": "alt"
+		},
+		"actions": "action1, action2",
+		"map":
+		{
+			"map": "map_test"
+		}
+	},
+	
+	"test_empty":
+	{
 	}
 }
