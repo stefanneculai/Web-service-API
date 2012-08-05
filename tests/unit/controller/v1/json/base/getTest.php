@@ -8,8 +8,6 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-require_once __DIR__ . '/../../../../application/stubs/webMock.php';
-
 /**
  * Test Case class for WebServiceControllerV1JsonBaseGet
  *
@@ -33,7 +31,6 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceControllerV1JsonBaseGetTest::__construct
 	 * @since   1.0
 	 */
 	public function test__construct()
@@ -51,77 +48,6 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 
 		// Verify that the values injected into the constructor are present.
 		$this->assertEquals('ok', TestReflection::getValue($controller, 'input')->test());
-	}
-
-	/**
-	 * Provides test data for request format detection.
-	 *
-	 * @return  array
-	 *
-	 * @since   1.0
-	 */
-	public function seedGetOrderData()
-	{
-
-		// Input, Expected, Exception
-		return array(
-				array('', null),
-				array('field1', array('field1')),
-				array('field1, field2', array('field1', 'field2')),
-				array(null, null),
-				array('foo, bar',null, true),
-				array('wrong_field','wrong_field', true)
-		);
-	}
-
-	/**
-	 * Tests getOrder()
-	 *
-	 * @param   string   $input      Input string to test.
-	 * @param   string   $expected   Expected fetched string.
-	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
-	 *
-	 * @return  void
-	 *
-	 * @covers        WebServiceControllerV1JsonBaseGet::getOrder
-	 * @dataProvider  seedGetOrderData
-	 * @since         1.0
-	 */
-	public function testGetOrder($input,  $expected, $exception=false)
-	{
-		$fieldsMap = array(
-			'id' => 'id',
-			'created_at' => 'created_at',
-			'user_id' => 'user_id',
-			'field1' => 'field1',
-			'field2' => 'field2',
-			'field3' => 'field3',
-			'field4' => 'field4',
-			'field5' => 'field5'
-		);
-
-		// Set the input values.
-		$_GET['order'] = $input;
-
-		// Set fields map
-		TestReflection::setValue($this->_instance, 'fieldsMap', $fieldsMap);
-
-		// Execute the code to test.
-		$actual = TestReflection::invoke($this->_instance, 'getOrder');
-
-		// Clean up after ourselves.
-		$_GET['order'] = null;
-
-		if ($exception)
-		{
-			$app = TestReflection::getValue($this->_instance, 'app');
-			$errors = TestReflection::invoke($app->errors, 'getErrors');
-			$this->assertEquals(1, count($errors));
-			return;
-		}
-
-		// Verify the value.
-		$this->assertEquals($expected, $actual);
 	}
 
 	/**
@@ -155,7 +81,6 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseGet::getLimit
 	 * @dataProvider  seedGetLimitData
 	 * @since         1.0
 	 */
@@ -212,7 +137,6 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseGet::getOffset
 	 * @dataProvider  seedGetOffsetData
 	 * @since         1.0
 	 */
@@ -251,13 +175,9 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array('', '*', false),
-				array(null, '*', false),
-				array('22', '22', false),
-				array('-7', null, true),
-				array('22/user', '22', false),
-				array('bad/user', '22', true),
-				array('-1/user', null, true),
+				array(22, 22, false),
+				array('bad', null, true),
+				array(null, '*', false)
 		);
 	}
 
@@ -270,20 +190,19 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseGet::getContentId
 	 * @dataProvider  seedGetContentIdData
 	 * @since         1.0
 	 */
 	public function testGetContentId($input,  $expected, $exception)
 	{
 		// Set the input values.
-		$_GET['@route'] = $input;
+		$_GET['content_id'] = $input;
 
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getContentId');
 
 		// Clean up after ourselves.
-		$_GET['@route'] = null;
+		$_GET['content_id'] = null;
 
 		// If we are expecting an exception set it.
 		if ($exception)
@@ -341,7 +260,6 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseGet::getSince
 	 * @dataProvider  seedGetSinceData
 	 * @since         1.0
 	 */
@@ -422,7 +340,6 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseGet::getBefore
 	 * @dataProvider  seedGetBeforeData
 	 * @since         1.0
 	 */
@@ -497,7 +414,6 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseGet::getFields
 	 * @dataProvider  seedGetFieldsData
 	 * @since         1.0
 	 */
@@ -526,78 +442,10 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 		$this->assertEquals($expected, $actual);
 	}
 
-	/** Test init
-	 *
-	 * @return void
-	 *
-	 * @covers        WebServiceControllerV1JsonBaseGet::init
-	 * @since
-	 */
-	public function testInit()
-	{
-		$map = array(
-				'created_at' => 'created_at',
-				'user_id' => 'user_id',
-				'f1' => 'field1',
-				'f2' => 'field2'
-				);
-
-		TestReflection::setValue($this->_instance, 'fieldsMap', $map);
-
-		$_GET['@route'] = '22';
-		$_GET['fields'] = 'content, created_at, user_id';
-		$_GET['before'] = '1970-01-01';
-		$_GET['since'] = '1970-01-01';
-		$_GET['offset'] = 10;
-		$_GET['limit'] = 20;
-		$_GET['order'] = 'f1, f2';
-
-		TestReflection::invoke($this->_instance, 'init');
-
-		// Test expected id
-		$ai = TestReflection::getValue($this->_instance, 'id');
-		$this->assertEquals('22', $ai);
-
-		// Test expected fields
-		$af = TestReflection::getValue($this->_instance, 'fields');
-		$this->assertEquals(
-				array_values(
-						array(
-							TestReflection::invoke($this->_instance, 'mapIn', 'created_at'),
-							TestReflection::invoke($this->_instance, 'mapIn', 'user_id'),
-						)
-					),
-				array_values($af)
-				);
-
-		// Test expected before
-		$ab = TestReflection::getValue($this->_instance, 'before');
-		$d = new JDate('1970-01-01');
-		$this->assertEquals($d->toSql(), $ab);
-
-		// Test expected since
-		$as = TestReflection::getValue($this->_instance, 'since');
-		$d = new JDate('1970-01-01');
-		$this->assertEquals($d->toSql(), $as);
-
-		// Test expected offset
-		$ao = TestReflection::getValue($this->_instance, 'offset');
-		$this->assertEquals(10, $ao);
-
-		// Test expected limit
-		$al = TestReflection::getValue($this->_instance, 'limit');
-		$this->assertEquals(20, $al);
-
-		// Test expected limit
-		$ao = TestReflection::getValue($this->_instance, 'order');
-		$this->assertEquals(array('field1', 'field2'), $ao);
-	}
-
 	/** Test execute with errors
 	 *
 	 * @return void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseGet::execute
 	 * @since
 	 */
 	public function testExecuteWithErrors()
@@ -626,25 +474,26 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	 */
 	public function seedGetAction()
 	{
-		// Input, Expected, Exception
+		// Input, Exception
 		return array(
 				array(null),
-				array('like')
+				array('like', true),
+				array('count')
 		);
 	}
 
 	/**
 	 * Tests getAction()
 	 *
-	 * @param   string  $data  Input to test
+	 * @param   string   $data       Input to test
+	 * @param   boolean  $exception  Expected exception
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseGet::getAction
 	 * @dataProvider  seedGetAction
 	 * @since         1.0
 	 */
-	public function testGetAction($data)
+	public function testGetAction($data, $exception = false)
 	{
 		// Set the input values.
 		$_GET['action'] = $data;
@@ -654,6 +503,15 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 
 		// Clean up after ourselves.
 		$_GET['action'] = null;
+
+		// If we are expecting an exception set it.
+		if ($exception)
+		{
+			$app = TestReflection::getValue($this->_instance, 'app');
+			$errors = TestReflection::getValue($app->errors, 'errorsArray');
+			$this->assertEquals(1, count($errors));
+			return;
+		}
 
 		// Verify the value.
 		$this->assertEquals($data, $actual);
@@ -686,7 +544,7 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 		JFactory::$application = $this->getMockWeb();
 
 		$testInput = new JInput;
-		$testMock = WebServiceApplicationWebMock::create($this);
+		$testMock = MockWebServiceApplicationWeb::create($this);
 
 		$this->_instance = new WebServiceControllerV1JsonBaseGet('general', $testInput, $testMock);
 	}

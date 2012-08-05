@@ -346,6 +346,70 @@ class WebServiceControllerV1BaseTest extends TestCase
 	}
 
 	/**
+	 * Test getUserId() with no user passed
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function testGetUserIdNull()
+	{
+		// Test no user id
+		$_GET['user_id'] = null;
+
+		$uid = TestReflection::invoke($this->_instance, 'getUserId');
+		$this->assertEquals(null, $uid);
+	}
+
+	/**
+	 * Test getUserId with valid and invalid user passed
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function testGetUserId()
+	{
+		$_GET['user_id'] = 'ok';
+
+		// Set user mock
+		$user = $this->getMock('JUser', array('load'));
+		$user->expects($this->at(0))
+			->method('load')
+			->will($this->returnValue(true));
+		$user->expects($this->at(1))
+			->method('load')
+			->will($this->returnValue(false));
+		TestReflection::setValue($this->_instance, 'user', $user);
+
+		// Test user ID exists
+		$actual = TestReflection::invoke($this->_instance, 'getUserId');
+		$this->assertEquals('ok', $actual);
+
+		// Test user ID exists
+		$actual = TestReflection::invoke($this->_instance, 'getUserId');
+		$app = TestReflection::getValue($this->_instance, 'app');
+		$errors = TestReflection::getValue($app->errors, 'errorsArray');
+		$this->assertEquals(1, count($errors));
+	}
+
+	/**
+	 * Test checkUserId with null
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function testCheckUserIdNull()
+	{
+		// Test no user id
+		$_GET['user_id'] = null;
+
+		$uid = TestReflection::invoke($this->_instance, 'checkUserId');
+		$this->assertEquals(false, $uid);
+	}
+
+	/**
 	 * Prepares the environment before running a test.
 	 *
 	 * @return  void

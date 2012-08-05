@@ -7,8 +7,6 @@
 * @license     GNU General Public License version 2 or later; see LICENSE
 */
 
-require_once __DIR__ . '/../../../../application/stubs/webMock.php';
-
 /**
  * Test Case class for WebServiceControllerV1JsonBaseUpdate
 *
@@ -63,13 +61,9 @@ class WebServiceControllerV1JsonBaseUpdateTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array('', '*', true),
-				array(null, '*', true),
-				array('22', '22', false),
-				array('-7', null, true),
-				array('22/user', '22', false),
-				array('bad/user', '22', true),
-				array('-1/user', null, true),
+				array(22, 22, false),
+				array('bad', null, true),
+				array(null, null, true)
 		);
 	}
 
@@ -89,13 +83,13 @@ class WebServiceControllerV1JsonBaseUpdateTest extends TestCase
 	public function testGetContentId($input,  $expected, $exception)
 	{
 		// Set the input values.
-		$_GET['@route'] = $input;
+		$_GET['content_id'] = $input;
 
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getContentId');
 
 		// Clean up after ourselves.
-		$_GET['@route'] = null;
+		$_GET['content_id'] = null;
 
 		// If we are expecting an exception set it.
 		if ($exception)
@@ -193,14 +187,16 @@ class WebServiceControllerV1JsonBaseUpdateTest extends TestCase
 		// Input, Expected, Exception
 		return array(
 				array(null),
-				array('like')
+				array('like'),
+				array('count', true)
 		);
 	}
 
 	/**
 	 * Tests getAction()
 	 *
-	 * @param   string  $data  Input to test
+	 * @param   string   $data       Input to test
+	 * @param   boolean  $exception  Expected exception
 	 *
 	 * @return  void
 	 *
@@ -208,16 +204,28 @@ class WebServiceControllerV1JsonBaseUpdateTest extends TestCase
 	 * @dataProvider  seedGetAction
 	 * @since         1.0
 	 */
-	public function testGetAction($data)
+	public function testGetAction($data, $exception = false)
 	{
 		// Set the input values.
 		$_GET['action'] = $data;
+
+		// Set actions
+		TestReflection::setValue($this->_instance, 'availableActions', array('like', 'unlike'));
 
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getAction');
 
 		// Clean up after ourselves.
 		$_GET['action'] = null;
+
+		// If we are expecting an exception set it.
+		if ($exception)
+		{
+			$app = TestReflection::getValue($this->_instance, 'app');
+			$errors = TestReflection::getValue($app->errors, 'errorsArray');
+			$this->assertEquals(1, count($errors));
+			return;
+		}
 
 		// Verify the value.
 		$this->assertEquals($data, $actual);
@@ -227,12 +235,11 @@ class WebServiceControllerV1JsonBaseUpdateTest extends TestCase
 	 *
 	 * @return void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseUpdate::execute
 	 * @since
 	 */
 	public function testExecuteWithErrors()
 	{
-		$_GET['@route'] = '22';
+		$_GET['content_id'] = '22';
 
 		// Get app
 		$app = TestReflection::getValue($this->_instance, 'app');
@@ -248,43 +255,6 @@ class WebServiceControllerV1JsonBaseUpdateTest extends TestCase
 
 		$this->assertEquals($expected, $actual);
 
-	}
-
-	/** Test init
-	 *
-	 * @return void
-	 *
-	 * @covers        WebServiceControllerV1JsonBaseUpdate::init
-	 * @since
-	 */
-	public function testInit()
-	{
-		$_GET['@route'] = '22';
-		TestReflection::setValue($this->_instance, 'fieldsMap', array());
-
-		$mf = array('f1' => null, 'f2' => null, 'f3' => null);
-		$of = array('f4' => null, 'f5' => null);
-		TestReflection::setValue($this->_instance, 'mandatoryFields', $mf);
-		TestReflection::setValue($this->_instance, 'optionalFields', $of);
-
-		foreach (array('f1' => 'test', 'f2' => 'test2') as $key => $value)
-		{
-			$_GET[$key] = $value;
-		}
-
-		TestReflection::invoke($this->_instance, 'init');
-
-		foreach (array('f1' => 'test', 'f2' => 'test2') as $key => $value)
-		{
-			$_GET[$key] = null;
-		}
-
-		// Test expected id
-		$ai = TestReflection::getValue($this->_instance, 'id');
-		$this->assertEquals('22', $ai);
-
-		$ad = TestReflection::getValue($this->_instance, 'dataFields');
-		$this->assertEquals(array('f1' => 'test', 'f2' => 'test2', 'f3' => null, 'f4' => null, 'f5' => null), $ad);
 	}
 
 	/** Test buildFields
@@ -334,7 +304,7 @@ class WebServiceControllerV1JsonBaseUpdateTest extends TestCase
 		JFactory::$application = $this->getMockWeb();
 
 		$testInput = new JInput;
-		$testMock = WebServiceApplicationWebMock::create($this);
+		$testMock = MockWebServiceApplicationWeb::create($this);
 		$this->_instance = new WebServiceControllerV1JsonBaseUpdate('general', $testInput, $testMock);
 	}
 

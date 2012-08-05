@@ -67,6 +67,12 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	protected $model;
 
 	/**
+	 * @var    JUser  User associated with the controller
+	 * @sicen  1.0
+	 */
+	protected $user;
+
+	/**
 	 * Abstract function to init parameters
 	 *
 	 * @return  void
@@ -202,6 +208,9 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 
 		// Init user load table
 		JUser::getTable('user', 'WebServiceTable');
+
+		// Init a local user
+		$this->user = new JUser;
 
 		// Init model
 		$this->model = new WebServiceModelBase(new JContentFactory('WebService'));
@@ -414,5 +423,47 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 		$modelState->set('content.id', $idBackup);
 
 		return $exists;
+	}
+
+	/** Get the user_id from input and check if it exists
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.0
+	 */
+	protected function checkUserId()
+	{
+		$user_id = $this->input->get->getString('user_id');
+		if (isset($user_id))
+		{
+			return $this->user->load($user_id);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get the user ID associated with the content
+	 *
+	 * @return  string
+	 *
+	 * @since   1.0
+	 */
+	protected function getUserId()
+	{
+		$user_id = $this->input->get->getString('user_id');
+		if (isset($user_id))
+		{
+			if ($this->checkUserId() == true)
+			{
+				return $user_id;
+			}
+			else
+			{
+				$this->app->errors->addError("201", array($this->input->get->getString('user_id')));
+			}
+		}
+
+		return null;
 	}
 }

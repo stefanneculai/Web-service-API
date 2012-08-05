@@ -22,11 +22,6 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 	protected $media = null;
 
 	/**
-	 * The user that creates the content
-	 */
-	protected $user = null;
-
-	/**
 	 * Init parameters
 	 *
 	 * @return  void
@@ -95,7 +90,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 								$this->mandatoryFields[$alternative->field] = $field;
 
 								// The order of the alternatives is important (first match is accepted)
-								return;
+								break;
 							}
 						}
 					}
@@ -225,24 +220,6 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 		}
 
 		return null;
-	}
-
-	/** Get the user_id from input and check if it exists
-	 *
-	 * @return  boolean
-	 *
-	 * @since   1.0
-	 */
-	protected function checkUserId()
-	{
-		$user_id = $this->input->get->getString('user_id');
-		if (isset($user_id))
-		{
-			$user = new JUser;
-			return $user->load($user_id);
-		}
-
-		return false;
 	}
 
 	/**

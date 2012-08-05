@@ -7,8 +7,6 @@
 * @license     GNU General Public License version 2 or later; see LICENSE
 */
 
-require_once __DIR__ . '/../../../../application/stubs/webMock.php';
-
 /**
  * Test Case class for WebServiceControllerV1JsonBaseDelete
 *
@@ -32,7 +30,6 @@ class WebServiceControllerV1JsonBaseDeleteTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceControllerV1JsonBaseDeleteTest::__construct
 	 * @since   1.0
 	 */
 	public function test__construct()
@@ -82,7 +79,6 @@ class WebServiceControllerV1JsonBaseDeleteTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseDelete::getContentId
 	 * @dataProvider  seedGetContentIdData
 	 * @since         1.0
 	 */
@@ -153,7 +149,6 @@ class WebServiceControllerV1JsonBaseDeleteTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseDelete::getSince
 	 * @dataProvider  seedGetSinceData
 	 * @since         1.0
 	 */
@@ -231,7 +226,6 @@ class WebServiceControllerV1JsonBaseDeleteTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseDelete::getBefore
 	 * @dataProvider  seedGetBeforeData
 	 * @since         1.0
 	 */
@@ -273,7 +267,6 @@ class WebServiceControllerV1JsonBaseDeleteTest extends TestCase
 	 *
 	 * @return void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseDelete::execute
 	 * @since
 	 */
 	public function testExecute()
@@ -298,7 +291,6 @@ class WebServiceControllerV1JsonBaseDeleteTest extends TestCase
 	 *
 	 * @return void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseDelete::init
 	 * @since
 	 */
 	public function testInit()
@@ -351,7 +343,7 @@ class WebServiceControllerV1JsonBaseDeleteTest extends TestCase
 		JFactory::$application = $this->getMockWeb();
 
 		$testInput = new JInput;
-		$testMock = WebServiceApplicationWebMock::create($this);
+		$testMock = MockWebServiceApplicationWeb::create($this);
 		$this->_instance = new WebServiceControllerV1JsonBaseDelete('general', $testInput, $testMock);
 	}
 

@@ -66,24 +66,6 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 		return $this->action;
 	}
 
-	/** Get the user_id from input and check if it exists
-	 *
-	 * @return  boolean
-	 *
-	 * @since   1.0
-	 */
-	protected function checkUserId()
-	{
-		$user_id = $this->input->get->getString('user_id');
-		if (isset($user_id))
-		{
-			$user = new JUser;
-			return $user->load($user_id);
-		}
-
-		return false;
-	}
-
 	/**
 	 * Load user
 	 *
@@ -126,27 +108,26 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 	protected function getContentId()
 	{
 		// Get route from the input
-		$route = $this->input->get->getString('@route');
-
-		// Break route into more parts
-		$routeParts = explode('/', $route);
+		$id = $this->input->get->getInteger('content_id');
 
 		// Content is not refered by a number id
-		if (count($routeParts) > 0 && (!is_numeric($routeParts[0]) || $routeParts[0] < 0) && !empty($routeParts[0]))
+		if (isset($id))
 		{
-			$this->app->errors->addError("301");
-			return;
+			if ($id <= 0)
+			{
+				$this->app->errors->addError("301");
+				return;
+			}
+			else
+			{
+				return $id;
+			}
 		}
-
-		// All content is refered
-		if ( count($routeParts) == 0 || strlen($routeParts[0]) === 0 )
+		else
 		{
 			$this->app->errors->addError("309");
 			return;
 		}
-
-		// Specific content id
-		return $routeParts[0];
 	}
 
 	/**
@@ -217,7 +198,7 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 		{
 			$this->loadUser();
 		}
-		elseif ( !is_null($this->dataFields['user_id']) && $this->checkUserId() == false)
+		elseif (!empty($this->dataFields['user_id']) && $this->checkUserId() == false)
 		{
 			$this->app->errors->addError("201", array($this->input->get->getString('user_id')));
 		}

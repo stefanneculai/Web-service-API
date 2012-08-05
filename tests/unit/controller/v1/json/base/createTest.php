@@ -7,8 +7,6 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-require_once __DIR__ . '/../../../../application/stubs/webMock.php';
-
 /**
  * Test Case class for WebServiceControllerV1JsonBaseCreate
 *
@@ -32,7 +30,6 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceControllerV1JsonBaseCreateTest::__construct
 	 * @since   1.0
 	 */
 	public function test__construct()
@@ -52,67 +49,10 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 		$this->assertEquals('ok', TestReflection::getValue($controller, 'input')->test());
 	}
 
-	/** Test init
-	 *
-	 * @return void
-	 *
-	 * @covers        WebServiceControllerV1JsonBaseCreate::init
-	 * @since
-	 */
-	public function testInit()
-	{
-		// Set mandatory fields
-		$mandatory = array('f1' => '', 'f2' => '', 'f3' => '');
-		TestReflection::setValue($this->_instance, 'mandatoryFields', $mandatory);
-		foreach (array('f1' => 'test', 'f2' => 'test', 'f3' => 'test') as $key => $value)
-		{
-			$_GET[$key] = $value;
-		}
-
-		// Set optional fields
-		$optional = array('f4' => '', 'f5' => '');
-		TestReflection::setValue($this->_instance, 'optionalFields', $optional);
-		foreach (array('f4' => 'test', 'f5' => 'test') as $key => $value)
-		{
-			$_GET[$key] = $value;
-		}
-
-		TestReflection::invoke($this->_instance, 'init');
-
-		$am = TestReflection::getValue($this->_instance, 'mandatoryFields');
-		$ao = TestReflection::getValue($this->_instance, 'optionalFields');
-
-		// Clear
-		TestReflection::setValue($this->_instance, 'mandatoryFields', array());
-		TestReflection::setValue($this->_instance, 'optionalFields', array());
-
-		foreach (array('f1' => 'test', 'f2' => 'test', 'f3' => 'test') as $key => $value)
-		{
-			$_GET[$key] = null;
-		}
-
-		foreach (array('f4' => 'test', 'f5' => 'test') as $key => $value)
-		{
-			$_GET[$key] = null;
-		}
-
-		// Result assert
-		$this->assertEquals(
-					array('f1' => 'test', 'f2' => 'test', 'f3' => 'test'),
-					$am
-				);
-
-		$this->assertEquals(
-					array('f4' => 'test', 'f5' => 'test'),
-					$ao
-				);
-	}
-
 	/** Test execute with errors
 	 *
 	 * @return void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseCreate::execute
 	 * @since
 	 */
 	public function testExecute()
@@ -140,7 +80,6 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 		}
 
 		$this->assertEquals($expected, $actual);
-
 	}
 
 	/**
@@ -153,35 +92,61 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 	public function seedGetMandatoryFieldsData()
 	{
 		$mandatory = array('f1' => '', 'f2' => '', 'f3' => '');
+		$alternativeCondition = get_object_vars(
+				json_decode(
+				'{"0": {
+					"key": "f1",
+					"field": "field1",
+					"condition": ""
+					},
+				  "1": {
+					"key": "f3",
+					"field": "foo",
+					"condition": ""
+					},
+				  "2": {
+					"key": "f2",
+					"field": "field2",
+					"condition": "f7"
+					}
+				}')
+				);
 
-		// Input, Expected, Exception
+		// Mandatory fields, Alternative fields, Input, Expected, Exception, Error count
 		return array(
-				array($mandatory, array(), null, true, 3),
-				array($mandatory, array('f1' => 'test'), null, true, 2),
-				array($mandatory, array('f1' => 'test', 'f2' => 'test', 'f3' => null), null, true, 1),
-				array($mandatory, array('f1' => 'test', 'f2' => 'test', 'f3' => 'test'),
+				array($mandatory, array(), array(), null, true, 3),
+				array($mandatory, array(), array('f1' => 'test'), null, true, 2),
+				array($mandatory, array(), array('f1' => 'test', 'f2' => 'test', 'f3' => null), null, true, 1),
+				array($mandatory, array(), array('f1' => 'test', 'f2' => 'test', 'f3' => 'test'),
 						array('f1' => 'test', 'f2' => 'test', 'f3' => 'test'), false),
+				array($mandatory, $alternativeCondition, array('field1' => 'test', 'f2' => 'test', 'f3' => 'test'),
+						array('field1' => 'test', 'f2' => 'test', 'f3' => 'test'),false),
+				array($mandatory, $alternativeCondition, array('f1' => 'test', 'field2' => 'test', 'f3' => 'test'),
+						null, true, 1),
+				array($mandatory, $alternativeCondition, array('f1' => 'test', 'f2' => 'test', 'fss' => 'test'),
+						null, true, 1)
 		);
 	}
 
 	/**
 	 * Tests getMandatoryFields()
 	 *
-	 * @param   array    $mandatory  Associative array with the mandatory fields
-	 * @param   string   $input      Input string to test.
-	 * @param   string   $expected   Expected fetched string.
-	 * @param   boolean  $exception  True if an InvalidArgumentException is expected based on invalid input.
-	 * @param   integer  $en         Exception number
+	 * @param   array     $mandatory    Associative array with the mandatory fields
+	 * @param   stdClass  $alternative  The alternative fields
+	 * @param   string    $input        Input string to test.
+	 * @param   string    $expected     Expected fetched string.
+	 * @param   boolean   $exception    True if an InvalidArgumentException is expected based on invalid input.
+	 * @param   integer   $en           Exception number
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseCreate::getMandatoryFields
 	 * @dataProvider  seedGetMandatoryFieldsData
 	 * @since         1.0
 	 */
-	public function testGetMandatoryFields($mandatory, $input,  $expected, $exception, $en=0)
+	public function testGetMandatoryFields($mandatory, $alternative, $input,  $expected, $exception, $en=0)
 	{
 		TestReflection::setValue($this->_instance, 'mandatoryFields', $mandatory);
+		TestReflection::setValue($this->_instance, 'alternativeFields', $alternative);
 		TestReflection::setValue($this->_instance, 'fieldsMap', array());
 
 		foreach ($input as $key => $value)
@@ -241,7 +206,6 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceControllerV1JsonBaseCreate::getOptionalFields
 	 * @dataProvider  seedGetOptionalFieldsData
 	 * @since         1.0
 	 */
@@ -305,7 +269,7 @@ class WebServiceControllerV1JsonBaseCreateTest extends TestCase
 
 		$type = 'general';
 		$testInput = new JInput;
-		$testMock = WebServiceApplicationWebMock::create($this);
+		$testMock = MockWebServiceApplicationWeb::create($this);
 		$this->_instance = new WebServiceControllerV1JsonBaseCreate($type, $testInput, $testMock);
 	}
 
