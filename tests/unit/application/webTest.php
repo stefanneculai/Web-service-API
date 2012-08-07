@@ -185,7 +185,7 @@ class WebServiceApplicationWebTest extends TestCase
 	 * @dataProvider  seedReadConfig
 	 * @since   1.0
 	 */
-	public function testReadConfig1($file)
+	public function testReadConfig($file)
 	{
 		$this->setExpectedException('RuntimeException');
 		$this->_instance->readConfig($file);

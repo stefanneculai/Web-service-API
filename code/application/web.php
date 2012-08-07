@@ -276,12 +276,12 @@ class WebServiceApplicationWeb extends JApplicationWeb
 		// Initialise variables.
 		$config = array();
 
-		$file = JPATH_CONFIGURATION . '\\' . $fileName . '.json';
+		$file = realpath(JPATH_CONFIGURATION . '/' . $fileName . '.json');
 
 		// Check if file exists
-		if ($file)
+		if (!$file)
 		{
-			$file = JPATH_CONFIGURATION . '\\' . $fileName . '.dist.json';
+			$file = realpath(JPATH_CONFIGURATION . '/' . $fileName . '.dist.json');
 		}
 
 		if (!is_readable($file))
