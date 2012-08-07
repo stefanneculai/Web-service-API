@@ -33,5 +33,5 @@ if (!defined('JPATH_CONFIGURATION'))
 require_once __DIR__ . '/../code/bootstrap.php';
 
 // Register the core Joomla test classes.
-JLoader::registerPrefix('Test', JPATH_PLATFORM . '/../tests/core');
 JLoader::registerPrefix('MockWebService', JPATH_TESTS . '/core/mock');
+JLoader::registerPrefix('Test', JPATH_PLATFORM . '/../tests/core');

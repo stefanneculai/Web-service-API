@@ -213,7 +213,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 		$this->user = new JUser;
 
 		// Init model
-		$this->model = new WebServiceModelBase(new JContentFactory('WebService'));
+		$this->model = new WebServiceModelBase(new JContentFactory);
 	}
 
 	/**

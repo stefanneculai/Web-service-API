@@ -67,4 +67,6 @@ if (!class_exists('JLoader'))
 define('UPLOADS', 'http://ws.localhost/uploads/');
 
 // Setup the autoloader for the WebService application classes.
+JLoader::registerPrefix('J', __DIR__ . '/joomla', true);
+JLoader::registerPrefix('J', JPATH_PLATFORM . '/joomla');
 JLoader::registerPrefix('WebService', __DIR__);
