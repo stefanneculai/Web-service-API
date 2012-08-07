@@ -18,6 +18,14 @@ ini_set('max_execution_time', 0);
 error_reporting(E_ALL);
 ini_set('display_errors', true);
 
+// Ensure that required path constants are defined.
+if (!defined('JPATH_BASE'))
+{
+	define('JPATH_BASE', realpath(__DIR__));
+}
+
+Phar::loadPhar(realpath(JPATH_BASE . '/../libraries/joomla.phar'));
+
 // Define the path for the Joomla Platform.
 if (!defined('JPATH_PLATFORM'))
 {
@@ -28,14 +36,8 @@ if (!defined('JPATH_PLATFORM'))
 	}
 	else
 	{
-		define('JPATH_PLATFORM', realpath(__DIR__ . '/../../joomla-platform/libraries'));
+		define('JPATH_PLATFORM', 'phar://joomla.phar/libraries');
 	}
-}
-
-// Ensure that required path constants are defined.
-if (!defined('JPATH_BASE'))
-{
-	define('JPATH_BASE', realpath(__DIR__));
 }
 
 // Ensure that required path constants are defined.
