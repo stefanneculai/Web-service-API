@@ -33,8 +33,8 @@
 	"debug_lang":"0",
 	"error_reporting":"30719",
 
-	"log_path":"\/tmp\/logs\/vangelis",
-	"tmp_path":"\/tmp\/vangelis",
+	"log_path":"\/tmp\/logs\/ws",
+	"tmp_path":"\/tmp\/ws",
 
 	"cache_enabled":"0",
 	"cache_ttl":"30",
