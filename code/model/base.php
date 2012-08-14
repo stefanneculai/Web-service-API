@@ -720,7 +720,7 @@ class WebServiceModelBase extends JModelBase
 			$query->values($content_id1 . ', ' . $content_id);
 		}
 
-		$this->db->setQuery(str_replace('INSERT INTO', 'INSERT IGNORE INTO', $query));
+		$this->db->setQuery($query);
 
 		try
 		{

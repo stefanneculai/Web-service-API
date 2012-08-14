@@ -627,6 +627,119 @@ class WebServiceModelBaseTest extends TestCase
 	}
 
 	/**
+	 * Provides test data for unmap()
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	public function seedUnmap()
+	{
+		// Tag, C1, C2, $Expected, Exception
+		return array(
+				// OK
+				array('tag', 1, 4, true),
+				// OK without type
+				array(null, 1, 4, true),
+				// Bad request
+				array('tag', 'foo', 5, false),
+				// No type exception
+				array(null, 1, 7, null, true),
+				// No type exception
+				array(null, 1, null, null, true)
+				);
+	}
+
+	/**
+	 * Test unmap()
+	 *
+	 * @param   string   $type  The type of the unmapped content
+	 * @param   mixed    $v1    The content_id
+	 * @param   mixed    $v2    The unmapped content_id
+	 * @param   boolean  $e     The expected value
+	 * @param   boolean  $exp   Exception
+	 *
+	 * @return  void
+	 *
+	 * @dataProvider  seedUnmap
+	 * @since   1.0
+	 */
+	public function testUnmap($type, $v1, $v2, $e, $exp = false)
+	{
+		if ($exp)
+		{
+			$this->setExpectedException('UnexpectedValueException');
+		}
+
+		TestReflection::invoke($this->_state, 'set', 'content.type', $type);
+		$a = TestReflection::invoke($this->_instance, 'unmap', $v1, $v2);
+		$this->assertEquals($e, $a);
+	}
+
+	/**
+	 * Provides test data for map()
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	public function seedMap()
+	{
+		// Tag, C1, C2, $Expected, Exception
+		return array(
+				// Exception
+				array(null, null, null, null, true),
+				array('tag', 2, array(4), true),
+				array('tag', 2, array('foo'), false),
+				);
+	}
+
+	/**
+	 * Test map()
+	 *
+	 * @param   string   $type  The type of the unmapped content
+	 * @param   mixed    $v1    The content_id
+	 * @param   array    $v2    The unmapped content_id
+	 * @param   boolean  $e     The expected value
+	 * @param   boolean  $exp   Exception
+	 *
+	 * @return  void
+	 *
+	 * @dataProvider  seedMap
+	 * @since   1.0
+	 */
+	public function testMap($type, $v1, $v2, $e, $exp = false)
+	{
+		if ($exp)
+		{
+			$this->setExpectedException('UnexpectedValueException');
+		}
+
+		TestReflection::invoke($this->_state, 'set', 'content.type', $type);
+		$a = TestReflection::invoke($this->_instance, 'map', $v1, $v2);
+		$this->assertEquals($e, $a);
+	}
+
+	/**
+	 * Test map() by deleting the existing mappings first
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function testMap2()
+	{
+		TestReflection::invoke($this->_state, 'set', 'content.type', 'tag');
+		$a = TestReflection::invoke($this->_instance, 'map', 1, array(5), true);
+		$this->assertEquals(true, $a);
+
+		TestReflection::invoke($this->_state, 'set', 'tags.content_id', '1');
+		$actual = TestReflection::invoke($this->_instance, 'getList');
+
+		$this->assertEquals(1, count($actual));
+	}
+
+	/**
 	 * Tests __construct()
 	 *
 	 * @return  void
