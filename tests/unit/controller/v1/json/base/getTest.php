@@ -537,7 +537,7 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 		$driver = JDatabaseDriver::getInstance($options);
 
 		$pdo = new PDO('sqlite::memory:');
-		$pdo->exec(file_get_contents(JPATH_TESTS . '/unit/model/stubs/ws.sql')) or die(print_r($pdo->errorInfo()));
+		$pdo->exec(file_get_contents(JPATH_TESTS . '/schema/ws.sql')) or die(print_r($pdo->errorInfo()));
 
 		TestReflection::setValue($driver, 'connection', $pdo);
 		JFactory::$database = $driver;
