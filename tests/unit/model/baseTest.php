@@ -53,7 +53,7 @@ class WebServiceModelBaseTest extends TestCase
 		TestReflection::setValue($driver, 'connection', $pdo);
 		JFactory::$database = $driver;
 
-		$this->_instance = new WebServiceModelBase(new JContentFactory('WebService'), $driver);
+		$this->_instance = new WebServiceModelBase(new JContentFactory, $driver);
 		$this->_state = TestReflection::invoke($this->_instance, 'getState');
 	}
 
@@ -77,7 +77,6 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceModelBase::existsItem
 	 * @since   1.0
 	 */
 	public function testItemExists()
@@ -92,7 +91,6 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceModelBase::existsItem
 	 * @since   1.0
 	 */
 	public function testItemDoesNotExists()
@@ -107,7 +105,6 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceModelBase::getTypes
 	 * @since   1.0
 	 */
 	public function testGetTypes()
@@ -150,7 +147,6 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceModelBase::getItem
 	 * @dataProvider  seedGetItem
 	 * @since         1.0
 	 */
@@ -221,7 +217,6 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceModelBase::createItem
 	 * @dataProvider  seedCreateItem
 	 * @since         1.0
 	 */
@@ -274,7 +269,6 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceModelBase::deleteItem
 	 * @dataProvider  seedDeleteItem
 	 * @since         1.0
 	 */
@@ -322,7 +316,6 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceModelBase::hitItem
 	 * @dataProvider  seedHitItem
 	 * @since         1.0
 	 */
@@ -350,14 +343,13 @@ class WebServiceModelBaseTest extends TestCase
 	 */
 	public function seedLikeItem()
 	{
-		// Id, Type, User_id, Expected, Exception
+		// Id, Type, Expected, Exception
 		return array(
-				array(null, 'general', '2000', null, 'InvalidArgumentException'),
-				array('-1', null, '2000' , null, 'UnexpectedValueException'),
-				array('-1', 'general', '2000' , false, null),
-				array('1', 'general', '2000', true, null),
-				array('1', null, '2000', true, null),
-				array('1', null, null, true, 'InvalidArgumentException')
+				array(null, 'general', null, 'InvalidArgumentException'),
+				array('-1', null, null, 'UnexpectedValueException'),
+				array('-1', 'general', false, null),
+				array('1', 'general', true, null),
+				array('1', null, true, null)
 		);
 	}
 
@@ -366,23 +358,20 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @param   string  $id         The id to get
 	 * @param   string  $type       The type of the content
-	 * @param   string  $user_id    The user id
 	 * @param   string  $expected   The expected results
 	 * @param   string  $exception  The expected exception
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceModelBase::likeItem
 	 * @dataProvider  seedLikeItem
 	 * @since         1.0
 	 */
-	public function testLikeItem($id, $type, $user_id, $expected, $exception)
+	public function testLikeItem($id, $type, $expected, $exception)
 	{
 		TestReflection::invoke($this->_state, 'set', 'content.id', $id);
 		TestReflection::invoke($this->_state, 'set', 'content.type', $type);
-		TestReflection::invoke($this->_state, 'set', 'content.user_id', $user_id);
 
-		if ($exception != null)
+		if (!is_null($exception))
 		{
 			$this->setExpectedException($exception);
 		}
@@ -401,14 +390,9 @@ class WebServiceModelBaseTest extends TestCase
 	 */
 	public function seedUnlikeItem()
 	{
-		// Id, Type, User_id, Expected, Exception
+		// Id, Type, Expected, Exception
 		return array(
-				array(null, 'general', '2000', null, 'InvalidArgumentException'),
-				array('-1', null, '2000' , null, 'UnexpectedValueException'),
-				array('-1', 'general', '2000' , false, null),
-				array('1', 'general', '2000', true, null),
-				array('1', null, '2000', true, null),
-				array('1', null, null, true, 'InvalidArgumentException')
+				array('1', 'general', true, null)
 		);
 	}
 
@@ -417,28 +401,25 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @param   string  $id         The id to get
 	 * @param   string  $type       The type of the content
-	 * @param   string  $user_id    The user id
 	 * @param   string  $expected   The expected results
 	 * @param   string  $exception  The expected exception
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceModelBase::unlikeItem
 	 * @dataProvider  seedUnlikeItem
 	 * @since         1.0
 	 */
-	public function testUnlikeItem($id, $type, $user_id, $expected, $exception)
+	public function testUnlikeItem($id, $type, $expected, $exception)
 	{
 		TestReflection::invoke($this->_state, 'set', 'content.id', $id);
 		TestReflection::invoke($this->_state, 'set', 'content.type', $type);
-		TestReflection::invoke($this->_state, 'set', 'content.user_id', $user_id);
 
 		if ($exception != null)
 		{
 			$this->setExpectedException($exception);
 		}
 
-		$actual = TestReflection::invoke($this->_instance, 'unlikeItem');
+		$actual = TestReflection::invoke($this->_instance, 'likeItem', true);
 
 		$this->assertEquals($expected, $actual);
 	}
@@ -468,7 +449,6 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceModelBase::deleteList
 	 * @dataProvider  seedDeleteList
 	 * @since         1.0
 	 */
@@ -551,7 +531,6 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceModelBase::updateItem
 	 * @dataProvider  seedUpdateItem
 	 * @since         1.0
 	 */
@@ -631,7 +610,6 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers        WebServiceModelBase::countItems
 	 * @dataProvider  seedDeleteList
 	 * @since         1.0
 	 */
@@ -649,7 +627,6 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceModelBase::__construct
 	 * @since   1.0
 	 */
 	public function test__construct()
@@ -669,7 +646,6 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @covers  WebServiceModelBase::__construct
 	 * @since   1.0
 	 */
 	public function test__construct2()

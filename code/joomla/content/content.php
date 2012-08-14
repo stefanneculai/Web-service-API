@@ -531,8 +531,8 @@ class JContent extends JDatabaseObject implements JAuthorisationAuthorisable
 		// Build the query to create the like record.
 		$query = $this->db->getQuery(true);
 		$query->insert($this->db->qn('#__content_likes'));
-		$query->set('content_id = ' . (int) $this->content_id);
-		$query->set('user_id = ' . (int) $this->user->get('content_id'));
+		$query->columns(array($this->db->quoteName('content_id'), $this->db->quoteName('user_id')));
+		$query->values((int) $this->content_id . ',' . (int) $this->user->get('content_id'));
 
 		// Create the like record.
 		$this->db->setQuery($query);

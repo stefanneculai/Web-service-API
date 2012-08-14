@@ -102,3 +102,15 @@ CREATE TABLE IF NOT EXISTS `ws_viewlevels` (
 );
 
 INSERT INTO `ws_viewlevels` VALUES(2, 'user', 0, '');
+
+CREATE TABLE IF NOT EXISTS `ws_session` (
+  `session_id` varchar(200) NOT NULL DEFAULT '',
+  `client_id` tinyint(3) NOT NULL DEFAULT '0',
+  `guest` tinyint(4) DEFAULT '1',
+  `time` varchar(14) DEFAULT '',
+  `data` mediumtext,
+  `userid` int(11) DEFAULT '0',
+  `username` varchar(150) DEFAULT '',
+  `usertype` varchar(50) DEFAULT '',
+  PRIMARY KEY (`session_id`)
+);

@@ -691,7 +691,7 @@ class WebServiceModelBase extends JModelBase
 		// Create content
 		$content = $content->create();
 		$content->temporary = 0;
-		$content->update()->checkin();
+		$content->update();
 
 		return $content;
 	}
