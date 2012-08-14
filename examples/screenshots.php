@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This example shows how to add a screenshot to an application with the id :application_id
  * @package    WebService
@@ -20,5 +19,3 @@ curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, array('screenshots[0]' => '@ss_path', 'screenshots[1]' => '@ss_path'));
 
 $response = curl_exec($ch);
-
-?>
