@@ -37,7 +37,7 @@ class WebServiceModelBaseTest extends TestCase
 		$this->saveFactoryState();
 
 		JFactory::$session = $this->getMockSession();
-		JFactory::$application = $this->getMockWeb();
+		JFactory::$application = MockWebServiceApplicationWeb::create($this);
 
 		$options = array(
 			'driver' => 'sqlite',
@@ -563,46 +563,51 @@ class WebServiceModelBaseTest extends TestCase
 	}
 
 	/**
-	 * Test getList() method
+	 * Provides test data for updateItem()
 	 *
-	 * @return  void
+	 * @return  array
 	 *
 	 * @since   1.0
 	 */
-	public function testGetList()
+	public function seedGetList()
 	{
-		TestReflection::invoke($this->_state, 'set', 'content.type', 'general');
-		$actual = TestReflection::invoke($this->_instance, 'getList');
-		$this->assertEquals(2, count($actual));
+		// Filter, Value, Expected
+		return array(
+					array(array('content.type' => 'general'), 3),
+					array(array('content.type' => 'general', 'filter.before' => '2011-01-01'), 0),
+					array(array('content.type' => 'general', 'filter.before' => '2011-01-02'), 1),
+					array(array('content.type' => 'general', 'filter.before' => '2011-02-02'), 1),
+					array(array('content.type' => 'general', 'filter.since' => '2011-01-01'), 3),
+					array(array('content.type' => 'general', 'filter.since' => '2011-01-02'), 2),
+					array(array('content.type' => 'general', 'filter.since' => '2011-02-02'), 2),
+					array(array('content.type' => 'general', 'content.type' => '5'), 0),
+					array(array('content.type' => 'general', 'content.user_id' => '1'), 2),
+					array(array('content.type' => 'general', 'where.fields' => 'created_user_id', 'where.created_user_id' => '2'), 1),
+					array(array('content.type' => 'comment', 'comments.content_id' => '1'), 0),
+					array(array('content.type' => 'tag', 'tags.content_id' => '1'), 1)
+				);
+	}
 
-		TestReflection::invoke($this->_state, 'set', 'filter.before', '2011-01-01');
-		$actual = TestReflection::invoke($this->_instance, 'getList');
-		$this->assertEquals(0, count($actual));
+	/**
+	 * Test getList() method
+	 *
+	 * @param   array    $data      The test data. An associative array with filter and value
+	 * @param   integer  $expected  The expected value
+	 *
+	 * @return  void
+	 *
+	 * @dataProvider  seedGetList
+	 * @since   1.0
+	 */
+	public function testGetList($data, $expected)
+	{
+		foreach ($data as $filter => $value)
+		{
+			TestReflection::invoke($this->_state, 'set', $filter, $value);
+			$actual = TestReflection::invoke($this->_instance, 'getList');
+		}
 
-		TestReflection::invoke($this->_state, 'set', 'filter.before', '2011-01-02');
-		$actual = TestReflection::invoke($this->_instance, 'getList');
-		$this->assertEquals(1, count($actual));
-
-		TestReflection::invoke($this->_state, 'set', 'filter.before', '2012-02-02');
-		$actual = TestReflection::invoke($this->_instance, 'getList');
-		$this->assertEquals(2, count($actual));
-
-		TestReflection::invoke($this->_state, 'set', 'filter.before', null);
-		TestReflection::invoke($this->_state, 'set', 'filter.since', '2011-01-01');
-		$actual = TestReflection::invoke($this->_instance, 'getList');
-		$this->assertEquals(2, count($actual));
-
-		TestReflection::invoke($this->_state, 'set', 'filter.since', '2011-01-02');
-		$actual = TestReflection::invoke($this->_instance, 'getList');
-		$this->assertEquals(1, count($actual));
-
-		TestReflection::invoke($this->_state, 'set', 'filter.since', '2012-02-02');
-		$actual = TestReflection::invoke($this->_instance, 'getList');
-		$this->assertEquals(0, count($actual));
-
-		TestReflection::invoke($this->_state, 'set', 'content.type', '5');
-		$actual = TestReflection::invoke($this->_instance, 'getList');
-		$this->assertEquals(0, count($actual));
+		$this->assertEquals($expected, count($actual));
 	}
 
 	/**
@@ -610,8 +615,7 @@ class WebServiceModelBaseTest extends TestCase
 	 *
 	 * @return  void
 	 *
-	 * @dataProvider  seedDeleteList
-	 * @since         1.0
+	 * @since   1.0
 	 */
 	public function testCountItems()
 	{
@@ -619,7 +623,7 @@ class WebServiceModelBaseTest extends TestCase
 
 		$actual = TestReflection::invoke($this->_instance, 'countItems');
 
-		$this->assertEquals(2, $actual);
+		$this->assertEquals(3, $actual);
 	}
 
 	/**

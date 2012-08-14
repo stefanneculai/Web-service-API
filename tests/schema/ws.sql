@@ -26,6 +26,8 @@ CREATE TABLE IF NOT EXISTS `ws_content` (
 
 INSERT INTO `ws_content` (`content_id`, `type_id`, `title`, `alias`, `body`, `access`, `state`, `temporary`, `featured`, `created_date`, `created_user_id`, `modified_date`, `modified_user_id`, `checked_out_session`, `checked_out_user_id`, `publish_start_date`, `publish_end_date`, `likes`, `revision`, `config`, `media`, `rules`) VALUES(1, 1, 'General', 'general', 'this is a test', 2, 1, 0, 0, '2011-01-01 00:00:01', 1, '2011-01-01 00:00:01', 1, '', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, '{"target":"","image":""}', '', '{"core.create":{"10":0,"12":0},"core.delete":[],"core.edit":[],"core.edit.state":[]}');
 INSERT INTO `ws_content` (`content_id`, `type_id`, `title`, `alias`, `body`, `access`, `state`, `temporary`, `featured`, `created_date`, `created_user_id`, `modified_date`, `modified_user_id`, `checked_out_session`, `checked_out_user_id`, `publish_start_date`, `publish_end_date`, `likes`, `revision`, `config`, `media`, `rules`) VALUES(2, 1, 'General', 'general', 'this is a test', 2, 1, 0, 0, '2012-01-01 00:00:01', 1, '2011-01-01 00:00:01', 1, '', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, '{"target":"","image":""}', '', '{"core.create":{"10":0,"12":0},"core.delete":[],"core.edit":[],"core.edit.state":[]}');
+INSERT INTO `ws_content` (`content_id`, `type_id`, `title`, `alias`, `body`, `access`, `state`, `temporary`, `featured`, `created_date`, `created_user_id`, `modified_date`, `modified_user_id`, `checked_out_session`, `checked_out_user_id`, `publish_start_date`, `publish_end_date`, `likes`, `revision`, `config`, `media`, `rules`) VALUES(3, 1, 'General', 'general', 'this is a test', 2, 1, 0, 0, '2012-01-01 00:00:01', 2, '2011-01-01 00:00:01', 1, '', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, '{"target":"","image":""}', '', '{"core.create":{"10":0,"12":0},"core.delete":[],"core.edit":[],"core.edit.state":[]}');
+INSERT INTO `ws_content` (`content_id`, `type_id`, `title`, `alias`, `body`, `access`, `state`, `temporary`, `featured`, `created_date`, `created_user_id`, `modified_date`, `modified_user_id`, `checked_out_session`, `checked_out_user_id`, `publish_start_date`, `publish_end_date`, `likes`, `revision`, `config`, `media`, `rules`) VALUES(4, 2, 'Tag', 'tag', 'foo', 2, 1, 0, 0, '2012-01-01 00:00:01', 2, '2011-01-01 00:00:01', 1, '', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, '{"target":"","image":""}', '', '{"core.create":{"10":0,"12":0},"core.delete":[],"core.edit":[],"core.edit.state":[]}');
 
 CREATE TABLE IF NOT EXISTS `ws_content_hits` (
   `content_id` int(11) NOT NULL DEFAULT '0',
@@ -36,6 +38,8 @@ CREATE TABLE IF NOT EXISTS `ws_content_hits` (
 
 INSERT INTO `ws_content_hits` (`content_id`, `hits`, `hit_modified_date`) VALUES(1, 0, NULL);
 INSERT INTO `ws_content_hits` (`content_id`, `hits`, `hit_modified_date`) VALUES(2, 0, NULL);
+INSERT INTO `ws_content_hits` (`content_id`, `hits`, `hit_modified_date`) VALUES(3, 0, NULL);
+INSERT INTO `ws_content_hits` (`content_id`, `hits`, `hit_modified_date`) VALUES(4, 0, NULL);
 
 CREATE TABLE IF NOT EXISTS `ws_content_likes` (
   `content_id` int(11) NOT NULL DEFAULT '0',
@@ -56,6 +60,8 @@ CREATE TABLE IF NOT EXISTS `ws_content_types` (
 );
 
 INSERT INTO `ws_content_types` (`type_id`, `title`, `alias`, `table`, `rules`) VALUES(1, 'General', 'general', '#__general', '');
+INSERT INTO `ws_content_types` (`type_id`, `title`, `alias`, `table`, `rules`) VALUES(2, 'Tag', 'tag', '', '');
+INSERT INTO `ws_content_types` (`type_id`, `title`, `alias`, `table`, `rules`) VALUES(3, 'Comment', 'comment', '', '');
 
 CREATE TABLE IF NOT EXISTS `ws_general` (
   `id` int(11),
@@ -70,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `ws_general` (
 
 INSERT INTO `ws_general` (`id`, `content_id`, `field1`, `field2`, `field3`, `field4`, `field5`) VALUES(1, 1, 'field1 test', 'field2 test', 'field3 test', 'field4 test', 'field5 test');
 INSERT INTO `ws_general` (`id`, `content_id`, `field1`, `field2`, `field3`, `field4`, `field5`) VALUES(2, 2, 'f1', 'f2', 'f3', 'f4', 'f5');
+INSERT INTO `ws_general` (`id`, `content_id`, `field1`, `field2`, `field3`, `field4`, `field5`) VALUES(3, 3, 'foo1', 'foo2', 'foo3', 'foo4', 'foo5');
 
 CREATE TABLE IF NOT EXISTS `ws_users` (
   `id` int(11),
@@ -88,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `ws_users` (
 );
 
 INSERT INTO `ws_users` (`id`, `name`, `username`, `email`, `password`, `usertype`, `block`, `sendEmail`, `registerDate`, `lastvisitDate`, `activation`, `params`) VALUES(1, 'test', 'test', 'test@aaa.com', 'rarata', '', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '');
+INSERT INTO `ws_users` (`id`, `name`, `username`, `email`, `password`, `usertype`, `block`, `sendEmail`, `registerDate`, `lastvisitDate`, `activation`, `params`) VALUES(2, 'test2', 'test', 'test@aaa.com', 'rarata', '', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '');
 
 --
 -- Table structure for table `ws_viewlevels`
@@ -114,3 +122,17 @@ CREATE TABLE IF NOT EXISTS `ws_session` (
   `usertype` varchar(50) DEFAULT '',
   PRIMARY KEY (`session_id`)
 );
+
+CREATE TABLE IF NOT EXISTS `ws_content_comment_map` (
+  `content_id` int(10) NOT NULL,
+  `comment_id` int(10) NOT NULL,  
+  PRIMARY KEY (`content_id`,`comment_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `ws_content_tag_map` (
+  `content_id` int(10) NOT NULL,
+  `tag_id` int(10) NOT NULL,  
+  PRIMARY KEY (`content_id`,`tag_id`)
+);
+
+INSERT INTO `ws_content_tag_map` VALUES(1, 4);
