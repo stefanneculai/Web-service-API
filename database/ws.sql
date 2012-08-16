@@ -212,21 +212,3 @@ CREATE TABLE IF NOT EXISTS `ws_session` (
   KEY `userid` (`userid`),
   KEY `time` (`time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Create root user
---
-INSERT INTO `ws_content` 
-(`content_id`, `type_id`, `title`, `alias`, `body`, `access`, `state`, `temporary`, `featured`, `created_date`, `created_user_id`, `modified_date`, `modified_user_id`, `checked_out_session`, `checked_out_user_id`, `publish_start_date`, `publish_end_date`, `likes`, `revision`, `config`, `media`, `rules`) 
-VALUES
-(1, 3, 'Root', 'root', 'root', NULL, 0, 0, 0, '2012-07-25 00:00:00', NULL, '0000-00-00 00:00:00', NULL, '', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, '', '', '');
-
-INSERT INTO `ws_content_hits` 
-(`content_id`, `hits`, `hit_modified_date`) 
-VALUES
-(1, 0, NULL);
-
-INSERT INTO `ws_users` 
-(`id`, `name`, `content_id`, `username`, `email`, `password`, `usertype`, `block`, `sendEmail`, `lastvisitDate`, `activation`, `params`) 
-VALUES
-(1, 'Root', 1, 'root', 'root@localhost', '', '', 0, 0, '0000-00-00 00:00:00', '', '');
