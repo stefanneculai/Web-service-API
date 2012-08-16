@@ -271,6 +271,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	 * @return  array
 	 *
 	 * @since   1.0
+	 * @throws   RuntimeException if file cannot be read.
 	 */
 	public function readConfig($fileName)
 	{

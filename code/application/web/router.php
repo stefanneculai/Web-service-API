@@ -55,6 +55,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	 * @throws  InvalidArgumentException
 	 * @throws  RuntimeException
 	 *
+	 * @codeCoverageIgnore
 	 */
 	public function execute($route)
 	{
@@ -209,7 +210,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	 * @return  JController
 	 *
 	 * @since   12.3
-	 * @throws  RuntimeException
+	 * @throws  RuntimeException if unable to locate controller
 	 *
 	 * @codeCoverageIgnore
 	 */

@@ -235,7 +235,6 @@ class WebServiceApplicationWebErrors
 	 * @return  object  An object to be loaded into the application configuration.
 	 *
 	 * @since   1.0
-	 * @throws  RuntimeException if file cannot be read.
 	 *
 	 */
 	protected function fetchErrorsData()
