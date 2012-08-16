@@ -51,8 +51,10 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 	{
 		$action = $this->input->get->getString('action');
 
+		// Check if action is set
 		if (isset($action))
 		{
+			// Available actions are like, unlike and hit
 			if (in_array($action, $this->availableActions) && strcmp($action, 'count') != 0)
 			{
 				return $action;
@@ -63,6 +65,7 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 			}
 		}
 
+		// NULL is returned
 		return $this->action;
 	}
 
@@ -193,7 +196,7 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 		// Get action
 		$this->action = $this->getAction();
 
-		// User
+		// If we have an action we need a user to do that
 		if ($this->action != null && (strcmp($this->action, 'like') == 0 || strcmp($this->action, 'unlike') == 0))
 		{
 			$this->loadUser();
@@ -245,7 +248,7 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 	 * @return  mixed
 	 *
 	 * @since   1.0
-	 * @throws  Exception
+	 * @throws  Exception - if something went wrong during the update
 	 */
 	protected function updateContent()
 	{
@@ -285,23 +288,32 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 
 		try
 		{
+			// Check if item exists
 			if ($this->model->existsItem($this->id) == false)
 			{
 				$this->app->errors->addError("204", array($this->type . '_id', $this->id));
 				return;
 			}
+
+			// Hit item
 			if (strcmp($this->action, 'hit') == 0)
 			{
 				$item = $this->model->hitItem();
 			}
+
+			// Like item
 			elseif (strcmp($this->action, 'like') == 0)
 			{
 				$item = $this->model->likeItem();
 			}
+
+			// Unlike item
 			elseif (strcmp($this->action, 'unlike') == 0)
 			{
 				$item = $this->model->likeItem(true);
 			}
+
+			// Update item fields
 			else
 			{
 				$item = $this->model->updateItem();
@@ -311,7 +323,7 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 		}
 		catch (Exception $e)
 		{
-			return false;
+			throw $e;
 		}
 	}
 
@@ -326,7 +338,6 @@ class WebServiceControllerV1JsonBaseUpdate extends WebServiceControllerV1Base
 	 */
 	protected function parseData($data)
 	{
-		// Check if the update was successful
 		$this->app->setBody(json_encode($data));
 	}
 

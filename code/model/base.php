@@ -255,7 +255,7 @@ class WebServiceModelBase extends JModelBase
 		}
 		else
 		{
-			return false;
+			return null;
 		}
 	}
 

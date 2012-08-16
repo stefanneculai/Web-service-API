@@ -119,7 +119,7 @@ class WebServiceControllerV1JsonBaseGetTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array('', null, true),
+				array('', 0, false),
 				array(null, 0, false),
 				array(10, 10, false),
 				array(200, 200, false),

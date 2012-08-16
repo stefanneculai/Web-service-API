@@ -41,7 +41,7 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 	protected $before = 'now';
 
 	/**
-	 * Get route parts from the input or the default one
+	 * Get the content ID from the input. It may also return '*' refeering all the content
 	 *
 	 * @return  string
 	 *
@@ -49,27 +49,27 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 	 */
 	protected function getContentId()
 	{
-		// Get route from the input
-		$route = $this->input->get->getString('@route');
+		// Get content id from input and convert it to integer
+		$id = $this->input->get->getInteger('content_id');
 
-		// Break route into more parts
-		$routeParts = explode('/', $route);
-
-		// Contet is not refered by a number id
-		if ( count($routeParts) > 0 && (!is_numeric($routeParts[0]) || $routeParts[0] < 0) && !empty($routeParts[0]))
+		// Check if content_id is set
+		if (isset($id))
 		{
-			$this->app->errors->addError("301");
-			return;
+			// Check if ID is positive
+			if ($id <= 0)
+			{
+				$this->app->errors->addError("301");
+				return;
+			}
+			else
+			{
+				return $id;
+			}
 		}
-
-		// All content is refered
-		if ( count($routeParts) == 0 || strlen($routeParts[0]) === 0 )
+		else
 		{
 			return $this->id;
 		}
-
-		// Specific content id
-		return $routeParts[0];
 	}
 
 	/**
@@ -83,9 +83,13 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 	{
 		$since = $this->input->get->getString('since');
 
+		// Check if since is set
 		if (isset($since))
 		{
+			// Convert since to date
 			$date = new JDate($since);
+
+			// Test if date exists
 			if (!empty($since) && checkdate($date->__get('month'), $date->__get('day'), $date->__get('year')))
 			{
 				return $date->toSql();
@@ -96,6 +100,7 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 		}
 		else
 		{
+			// Return the default date
 			$date = new JDate($this->since);
 			return $date->toSql();
 		}
@@ -110,12 +115,15 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 	 */
 	protected function getBefore()
 	{
-
 		$before = $this->input->get->getString('before');
 
+		// Check if before is set
 		if (isset($before))
 		{
+			// Convert before to date
 			$date = new JDate($before);
+
+			// Check if date exists
 			if (!empty($before) && checkdate($date->__get('month'), $date->__get('day'), $date->__get('year')))
 			{
 				return $date->toSql();
@@ -126,6 +134,7 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 		}
 		else
 		{
+			// Return the default date
 			$date = new JDate($this->before);
 			return $date->toSql();
 		}
@@ -140,6 +149,7 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 	 */
 	protected function init()
 	{
+		// Read fields from config file
 		$this->readFields();
 
 		// Content id
@@ -198,6 +208,7 @@ class WebServiceControllerV1JsonBaseDelete extends WebServiceControllerV1Base
 		$modelState->set('content.type', $this->type);
 		$modelState->set('content.id', $this->id);
 
+		// Set since and before
 		$modelState->set('filter.since', $this->since);
 		$modelState->set('filter.before', $this->before);
 

@@ -60,13 +60,9 @@ class WebServiceControllerV1JsonBaseDeleteTest extends TestCase
 	{
 		// Input, Expected, Exception
 		return array(
-				array('', '*', false),
-				array(null, '*', false),
-				array('22', '22', false),
-				array('-7', null, true),
-				array('22/user', '22', false),
-				array('bad/user', '22', true),
-				array('-1/user', null, true),
+				array(22, 22, false),
+				array('bad', null, true),
+				array(null, '*', false)
 		);
 	}
 
@@ -85,13 +81,13 @@ class WebServiceControllerV1JsonBaseDeleteTest extends TestCase
 	public function testGetContentId($input,  $expected, $exception)
 	{
 		// Set the input values.
-		$_GET['@route'] = $input;
+		$_GET['content_id'] = $input;
 
 		// Execute the code to test.
 		$actual = TestReflection::invoke($this->_instance, 'getContentId');
 
 		// Clean up after ourselves.
-		$_GET['@route'] = null;
+		$_GET['content_id'] = null;
 
 		// If we are expecting an exception set it.
 		if ($exception)
@@ -295,7 +291,7 @@ class WebServiceControllerV1JsonBaseDeleteTest extends TestCase
 	 */
 	public function testInit()
 	{
-		$_GET['@route'] = '22';
+		$_GET['content_id'] = '22';
 		$_GET['before'] = '1970-01-01';
 		$_GET['since'] = '1970-01-01';
 

@@ -30,7 +30,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 	 */
 	protected function init()
 	{
-		// Set the fields
+		// Read fields from config file
 		$this->readFields();
 
 		// Init mandatory fields
@@ -45,6 +45,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 			$this->optionalFields['media'] = $this->getMedia();
 		}
 
+		// Load user
 		$this->loadUser();
 	}
 
@@ -241,6 +242,7 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 				$session = $this->app->getSession();
 				$session->set('user', new JUser($user_id));
 
+				// Remove user_id from mandatory fields, because we have it stored is session
 				unset($this->mandatoryFields['user_id']);
 			}
 
@@ -250,6 +252,8 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 				$this->app->errors->addError("201", array($this->input->get->getString('user_id')));
 			}
 		}
+
+		// Get a guest session
 		else
 		{
 			$session = $this->app->getSession();
@@ -290,10 +294,10 @@ class WebServiceControllerV1JsonBaseCreate extends WebServiceControllerV1Base
 	 * @return  JContent
 	 *
 	 * @since   1.0
+	 * @throws  Exception - if there was a problem when creating the content
 	 */
 	protected function createContent()
 	{
-
 		$fields = implode(',', $this->mapFieldsIn(array_keys($this->mandatoryFields)));
 		$fields = $fields . ',' . implode(',', $this->mapFieldsIn(array_keys($this->optionalFields)));
 

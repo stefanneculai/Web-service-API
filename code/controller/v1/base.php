@@ -195,7 +195,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	 * @param   JInput            $input  The input object.
 	 * @param   JApplicationBase  $app    The application object.
 	 *
-	 * @since  12.1
+	 * @since   1.0
 	 */
 	public function __construct($type, JInput $input = null, JApplicationBase $app = null)
 	{
@@ -219,7 +219,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	/**
 	 * Prunes fields in an array of JContent objects to a set list.
 	 *
-	 * @param   mixed  $list    An array of Jcontent or a Jcontent object
+	 * @param   mixed  $list    An array of JContent or a JContent object
 	 * @param   array  $fields  An array of the field names to preserve (strip all others).
 	 *
 	 * @return  mixed
@@ -239,6 +239,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 			// Flip the fields so we can find the intersection by the array keys.
 			$fields = array_flip($fields);
 
+			// $list is an array of JContent
 			if (is_array($list))
 			{
 				/* @var $object JContent */
@@ -254,6 +255,8 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 					$list[$key] = $this->mapFieldsOut($list[$key]);
 				}
 			}
+
+			// $list a JContent object
 			else
 			{
 				$list = array_uintersect_assoc(
@@ -268,6 +271,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 		// All fields should be returned
 		else
 		{
+			// $list is an array of JContent
 			if (is_array($list))
 			{
 				foreach ($list as $key => $object)
@@ -277,6 +281,8 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 					$list[$key] = $this->mapFieldsOut($list[$key]);
 				}
 			}
+
+			// $list a JContent object
 			else
 			{
 				$list = (array) $list->dump();
@@ -425,7 +431,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 		return $exists;
 	}
 
-	/** Get the user_id from input and check if it exists
+	/** Get the user_id from input and check if it exists in database
 	 *
 	 * @return  boolean
 	 *
@@ -443,7 +449,7 @@ abstract class WebServiceControllerV1Base extends JControllerBase
 	}
 
 	/**
-	 * Get the user ID associated with the content
+	 * Get the user_id passed in input or null if it does not exist in database
 	 *
 	 * @return  string
 	 *

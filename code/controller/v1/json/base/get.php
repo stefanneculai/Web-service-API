@@ -85,12 +85,13 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	 */
 	protected function getContentId()
 	{
-		// Get route from the input
+		// Get content id from input and convert it to integer
 		$id = $this->input->get->getInteger('content_id');
 
-		// Content is not refered by a number id
+		// Check if content_id is set
 		if (isset($id))
 		{
+			// Check if ID is positive
 			if ($id <= 0)
 			{
 				$this->app->errors->addError("301");
@@ -116,17 +117,21 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	 */
 	protected function getOffset()
 	{
-		$offset = $this->input->get->getString('offset');
+		$offset = $this->input->get->getInteger('offset');
 
+		// Check if offset is set in input
 		if (isset($offset))
 		{
-			if ( is_numeric($offset) && $offset >= 0)
+			// Check if offset is positive
+			if ($offset >= 0)
 			{
 				return $offset;
 			}
-
-			$this->app->errors->addError("302");
-			return;
+			else
+			{
+				$this->app->errors->addError("302");
+				return;
+			}
 		}
 		else
 		{
@@ -143,13 +148,15 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	 */
 	protected function getLimit()
 	{
-		$limit = $this->input->get->getString('limit');
+		$limit = $this->input->get->getInteger('limit');
 
+		// Check if limit is passed in input
 		if (isset($limit))
 		{
-			$limit = min($this->maxResults, $limit);
-			if (is_numeric($limit) && $limit > 0)
+			// Check if limit is positive
+			if ($limit > 0)
 			{
+				$limit = min($this->maxResults, $limit);
 				return $limit;
 			}
 
@@ -173,10 +180,13 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	{
 		$fields = $this->input->get->getString('fields');
 
+		// CHeck if a list of fields in passed in input
 		if (isset($fields))
 		{
+			// Split the list of fields in words
 			$fields = preg_split('#[\s,]+#', $fields, null, PREG_SPLIT_NO_EMPTY);
 
+			// Check if the fields exist in the fields' map. Otherwise, remove it
 			foreach ($fields as $key => $field)
 			{
 				if (!array_key_exists($field, $this->fieldsMap))
@@ -185,15 +195,18 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 				}
 			}
 
+			// If filter fields are passed return them
 			if (count($fields) > 0)
 			{
 				return $fields;
 			}
 
+			// All available fields are returned in an array
 			return array_keys($this->fieldsMap);
 		}
 		else
 		{
+			// All available fields are returned in an array
 			return array_keys($this->fieldsMap);
 		}
 	}
@@ -209,9 +222,13 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	{
 		$since = $this->input->get->getString('since');
 
+		// Check if since is set
 		if (isset($since))
 		{
+			// Convert since to date
 			$date = new JDate($since);
+
+			// Test if date is valid
 			if (!empty($since) && checkdate($date->__get('month'), $date->__get('day'), $date->__get('year')))
 			{
 				return $date->toSql();
@@ -222,6 +239,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		}
 		else
 		{
+			// Return the default date
 			$date = new JDate($this->since);
 			return $date->toSql();
 		}
@@ -239,9 +257,13 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 
 		$before = $this->input->get->getString('before');
 
+		// Check if before is set
 		if (isset($before))
 		{
+			// Convert before to date
 			$date = new JDate($before);
+
+			// Test if date is valid
 			if (!empty($before) && checkdate($date->__get('month'), $date->__get('day'), $date->__get('year')))
 			{
 				return $date->toSql();
@@ -252,6 +274,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		}
 		else
 		{
+			// Return the default date
 			$date = new JDate($this->before);
 			return $date->toSql();
 		}
@@ -267,8 +290,11 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	protected function getAction()
 	{
 		$action = $this->input->get->getString('action');
+
+		// Check if action is set
 		if (isset($action))
 		{
+			// The only available action for GET method is count
 			if (strcmp($action, 'count') == 0)
 			{
 				return $action;
@@ -291,7 +317,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	 */
 	protected function init()
 	{
-		// Set the fields
+		// Read fields from config file
 		$this->readFields();
 
 		// Content id
@@ -351,6 +377,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		// Map other data
 		$this->doMap();
 
+		// Check if there are errors
 		if ($this->app->errors->errorsExist() == true)
 		{
 			$this->app->setBody(json_encode($this->app->errors->getErrors()));
@@ -358,7 +385,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 			return;
 		}
 
-		// Returned data
+		// Get data from model
 		$data = $this->getContent();
 
 		// Format the results properly
@@ -371,7 +398,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	 * @return  mixed
 	 *
 	 * @since   1.0
-	 * @throws  Exception
+	 * @throws  Exception if something went wrong during the database request
 	 */
 	protected function getContent()
 	{
@@ -386,6 +413,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 		$modelState->set('filter.since', $this->since);
 		$modelState->set('filter.before', $this->before);
 
+		// Return the number of items
 		if (strcmp($this->action, 'count') === 0)
 		{
 			return $this->model->countItems();
@@ -404,14 +432,9 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 				throw $e;
 			}
 
-			// No item found
-			if ($item == false)
-			{
-				return false;
-			}
-
 			return $item;
 		}
+
 		// All content is requested
 		else
 		{
@@ -434,12 +457,6 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 				throw $e;
 			}
 
-			// No items found
-			if ($items == false)
-			{
-				return false;
-			}
-
 			return $items;
 		}
 	}
@@ -456,7 +473,7 @@ class WebServiceControllerV1JsonBaseGet extends WebServiceControllerV1Base
 	protected function parseData($data)
 	{
 		// There is no content for the request
-		if ($data == false)
+		if ($data == null)
 		{
 			if (strcmp($this->id, '*') !== 0)
 			{
