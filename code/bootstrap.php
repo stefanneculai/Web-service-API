@@ -36,8 +36,8 @@ if (!defined('JPATH_PLATFORM'))
 	}
 	else
 	{
-		define('JPATH_PLATFORM', JPATH_BASE . '/../../joomla-platform/libraries');
-		//define('JPATH_PLATFORM', 'phar://joomla.phar/libraries');
+		// Platform directory instead of phar: define('JPATH_PLATFORM', JPATH_BASE . '/../../joomla-platform/libraries');
+		define('JPATH_PLATFORM', 'phar://joomla.phar/libraries');
 	}
 }
 
