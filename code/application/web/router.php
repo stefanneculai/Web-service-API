@@ -29,42 +29,6 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 	protected $apiVersion = 'v1';
 
 	/**
-	 * @var    array  The URL => controller map for routing requests.
-	 * @since  1.0
-	 */
-	protected $routeMap = array(
-		'Get' =>
-			array(
-				'#(users)/(\d+)/(likes)#i' => '$3',
-				'#(users)/(\d+)/(applications)#i' => '$3',
-				'#(users)/(\d+)/(comments)#i' => '$3',
-				'#(applications)/(\d+)/(likes)#i' => '$3',
-				'#(applications)/(\d+)/(comments)#i' => '$3',
-				'#(applications)/(\d+)/(tags)#i' => '$3',
-				'#(applications)/(\d+)/(screenshots)#i' => '$3',
-			),
-		'Create' =>
-			array(
-				'#(users)/(\d+)/(applications)#i' => '$3',
-				'#(users)/(\d+)/(comments)#i' => '$3',
-				'#(applications)/(\d+)/(comments)#i' => '$3',
-				'#(applications)/(\d+)/(tags)#i' => '$3',
-				'#(applications)/(\d+)/(screenshots)#i' => '$3',
-			),
-		'Update' =>
-			array(
-				'#(applications)/(\d+)/(tags)#i' => '$3',
-			),
-		'Delete' =>
-			array(
-				'#(users)/(\d+)/(applications)#i' => '$3',
-				'#(applications)/(\d+)/(comments)#i' => '$3',
-				'#(applications)/(\d+)/(tags)#i' => '$3',
-				'#(applications)/(\d+)/(screenshots)#i' => '$3',
-			)
-	);
-
-	/**
 	 * @var    array  The possible actions
 	 * @since  1.0
 	 */
@@ -137,16 +101,21 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		$pattern = array_keys($this->actionsMap);
 		$replace = array_values($this->actionsMap);
 
+		// Update the route
 		$output = preg_replace($pattern, $replace, $input);
 
+		// Set the action in input
 		foreach ($this->actionsMap as $pattern => $replace)
 		{
 			if (preg_match($pattern, $input, $matches))
 			{
+				// Count is used per collection and it is the 2nd match
 				if (in_array($matches[2], $this->actions))
 				{
 					$this->input->get->set('action', $matches[2]);
 				}
+
+				// Otherwise, we have the 3rd match
 				elseif (in_array($matches[3], $this->actions))
 				{
 					$this->input->get->set('action', $matches[3]);
@@ -154,6 +123,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 			}
 		}
 
+		// Return the updated route
 		return $output;
 	}
 
@@ -180,6 +150,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		// Build route back
 		$route = implode('/', $parts);
 
+		// Return the updated route
 		return $route;
 	}
 
@@ -225,6 +196,7 @@ class WebServiceApplicationWebRouter extends JApplicationWebRouterRest
 		// Build route back
 		$route = implode('/', $parts);
 
+		// Return the updated route
 		return $route;
 	}
 

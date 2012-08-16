@@ -145,7 +145,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	}
 
 	/**
-	 * Decode media after content load
+	 * Load additional data for a content after loading it
 	 *
 	 * @param   JContnet  $content  The content object
 	 *
@@ -230,29 +230,30 @@ class WebServiceApplicationWeb extends JApplicationWeb
 	{
 		try
 		{
+			// Set db in factory
 			$this->dbo = JFactory::getDbo();
+
+			// Set session in factory
 			$this->session = JFactory::getSession();
 			$this->session->initialise($this->input);
 			$this->session->start();
+
+			// Set application in factory
 			JFactory::$application = $this;
 
 			$this->loadDispatcher();
+
+			// Refister event for changing content after loading it
 			$this->registerEvent('onContentAfterLoad', 'WebServiceApplicationWeb::contentAfterLoad');
 
-			// There is an error
-			if ($this->errors->errorsExist())
-			{
-				$this->setBody(json_encode($this->errors->getErrors()));
-				$this->setHeader('status', $this->errors->getResponseCode(), true);
-				return;
-			}
-
+			// Get routes
 			$this->routes = $this->fetchRoutes();
 			$this->addRoutes($this->routes);
 
-			// Get the controller instance based on the request.
+			// Get the controller instance based on the request and execute it
 			$this->router->execute($this->get('uri.route'));
 		}
+		// If there is any exception send it in the request
 		catch (Exception $e)
 		{
 			$this->errors->addError('808', array($e->getMessage()));
@@ -284,6 +285,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 			$file = realpath(JPATH_CONFIGURATION . '/' . $fileName . '.dist.json');
 		}
 
+		// Check if file is readable
 		if (!is_readable($file))
 		{
 			throw new RuntimeException(sprintf('File %s is unreadable.', $file));
@@ -292,6 +294,7 @@ class WebServiceApplicationWeb extends JApplicationWeb
 		// Load the configuration file into an object.
 		$config = json_decode(file_get_contents($file));
 
+		// Check if configuration file hasn't any error
 		if ($config == null)
 		{
 			throw new RuntimeException(sprintf('Configuration file %s cannot be decoded.', $file));

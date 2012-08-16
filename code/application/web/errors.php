@@ -39,7 +39,7 @@ class WebServiceApplicationWebErrors
 	protected $input;
 
 	/**
-	 * Boolean showing if there is any error so far
+	 * Error status
 	 *
 	 * @var    boolean
 	 * @since  1.0
@@ -90,6 +90,7 @@ class WebServiceApplicationWebErrors
 	 */
 	private function customMessage($errorObj, $params)
 	{
+		// Replace the parameter from message with the string from $params[$#]
 		for ($i = 1;; $i++)
 		{
 			if (strstr($errorObj['message'], '$' . $i) !== false)
@@ -109,7 +110,7 @@ class WebServiceApplicationWebErrors
 	 * Add error to the error list
 	 *
 	 * @param   string  $code    The code of the error
-	 * @param   array   $params  An array with parameters to pass to the error message
+	 * @param   array   $params  An array with custom messages
 	 *
 	 * @return  void
 	 *
@@ -117,10 +118,13 @@ class WebServiceApplicationWebErrors
 	 */
 	public function addError($code, $params = array())
 	{
+		// Set erros status to true
 		$this->errors = true;
 
+		// Check if the error exist in configuration file
 		if (property_exists($this->errorsMap, $code))
 		{
+			// Check if there is any custom message and set it
 			if (count($params) > 0)
 			{
 				$message = get_object_vars($this->errorsMap->{$code});
@@ -131,6 +135,7 @@ class WebServiceApplicationWebErrors
 				array_push($this->errorsArray, get_object_vars($this->errorsMap->{$code}));
 			}
 		}
+		// The error is unknown. The unknown error code is thrown
 		else
 		{
 			array_push($this->errorsArray, $this->unknownError($code));
@@ -150,7 +155,7 @@ class WebServiceApplicationWebErrors
 	}
 
 	/**
-	 * A boolean that tells if there are errors or not
+	 * Returns the error status
 	 *
 	 * @return  boolean
 	 *
