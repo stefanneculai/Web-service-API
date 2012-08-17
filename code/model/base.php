@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @package     WebService.Model
  * @subpackage  Model
@@ -46,6 +45,7 @@ class WebServiceModelBase extends JModelBase
 	{
 		parent::__construct($state);
 
+		// Set factory
 		if ($factory == null)
 		{
 			$this->factory = JContentFactory::getInstance();
@@ -55,6 +55,7 @@ class WebServiceModelBase extends JModelBase
 			$this->factory = $factory;
 		}
 
+		// Set database
 		if ($db == null)
 		{
 			$this->db = JFactory::getDbo();
@@ -127,7 +128,10 @@ class WebServiceModelBase extends JModelBase
 	 */
 	public function countItems()
 	{
+		// Get a list
 		$itemsArray = $this->getList();
+
+		// Return the number of results
 		return count($itemsArray);
 	}
 
@@ -186,6 +190,7 @@ class WebServiceModelBase extends JModelBase
 			$query->where($query->qn('a.created_date') . ' < ' . '\'' . $this->state->get('filter.before') . '\'');
 		}
 
+		// Check if we should filter the list based on special conditions
 		if (!is_null($this->state->get('where.fields')))
 		{
 			$where = explode(',', $this->state->get('where.fields'));
@@ -196,12 +201,14 @@ class WebServiceModelBase extends JModelBase
 			}
 		}
 
+		// Check if we should join tags
 		if (!is_null($this->state->get('tags.content_id')))
 		{
 			$query->innerJoin($query->qn('#__content_tag_map', 'c') . ' ON ' . $query->qn('c.tag_id') . ' = ' . $query->qn('a.content_id'));
 			$query->where($query->qn('c.content_id') . '=' . $this->state->get('tags.content_id'));
 		}
 
+		// Check if we should join comments
 		if (!is_null($this->state->get('comments.content_id')))
 		{
 			$query->innerJoin($query->qn('#__content_comment_map', 'c') . ' ON ' . $query->qn('c.comment_id') . ' = ' . $query->qn('a.content_id'));
@@ -249,6 +256,7 @@ class WebServiceModelBase extends JModelBase
 			$contentType = $results[$contentId]->type;
 		}
 
+		// Check if item exists before loading it
 		if ($this->existsItem($contentId))
 		{
 			return $this->factory->getContent($contentType)->load($contentId);
@@ -297,6 +305,7 @@ class WebServiceModelBase extends JModelBase
 			$contentType = $results[$contentId]->type;
 		}
 
+		// Check if item exists before deleting it
 		if ($this->existsItem($contentId))
 		{
 			$item = $this->factory->getContent($contentType)->load($contentId);
@@ -329,7 +338,10 @@ class WebServiceModelBase extends JModelBase
 				throw new UnexpectedValueException(sprintf('%s->deleteItem() could not find the content type.', get_class($this)));
 		}
 
+		// Set offset to null
 		$this->state->set('list.offset', null);
+
+		// Set limit to null
 		$this->state->set('list.limit', null);
 
 		$objects = $this->getList();
@@ -547,6 +559,7 @@ class WebServiceModelBase extends JModelBase
 			$contentType = $results[$contentId]->type;
 		}
 
+		// Check if content exists before hittin it
 		if ($this->existsItem($contentId))
 		{
 			$item = $this->factory->getContent($contentType)->load($contentId);
@@ -601,14 +614,19 @@ class WebServiceModelBase extends JModelBase
 			$contentType = $results[$contentId]->type;
 		}
 
+		// Check if item exists before loading it
 		if ($this->existsItem($contentId))
 		{
+			// Load the item
 			$item = $this->factory->getContent($contentType)->load($contentId);
 
+			// Like
 			if ($unlike == false)
 			{
 				$item->like();
 			}
+
+			// Unlike
 			else
 			{
 				$item->unlike();
@@ -715,6 +733,7 @@ class WebServiceModelBase extends JModelBase
 		$query->insert($this->db->quoteName('#__content_' . $contentType . '_map'));
 		$query->columns(array($this->db->quoteName('content_id'), $this->db->quoteName($contentType . '_id')));
 
+		// Map all content IDS
 		foreach ($content_ids as $key => $content_id)
 		{
 			$query->values($content_id1 . ', ' . $content_id);
