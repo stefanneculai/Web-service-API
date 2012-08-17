@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
@@ -8,10 +8,11 @@
  */
 
 /**
- * WebService 'content' Update method.
+ * The class for Tag UPDATE requests
  *
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
+ *
  * @since       1.0
  */
 class WebServiceControllerV1JsonTagsUpdate extends WebServiceControllerV1JsonBaseUpdate
@@ -25,6 +26,7 @@ class WebServiceControllerV1JsonTagsUpdate extends WebServiceControllerV1JsonBas
 	 */
 	public function execute()
 	{
+		// This request is not available
 		$this->app->errors->addError('601', array("/updates"));
 		$this->app->setBody(json_encode($this->app->errors->getErrors()));
 		$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
@@ -8,10 +8,11 @@
  */
 
 /**
- * WebService GET content class
+ * The class for Screenshot DELETE requests
  *
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
+ *
  * @since       1.0
  */
 class WebServiceControllerV1JsonScreenshotsDelete extends WebServiceControllerV1JsonBaseDelete
@@ -50,9 +51,13 @@ class WebServiceControllerV1JsonScreenshotsDelete extends WebServiceControllerV1
 	 */
 	protected function getIDsList()
 	{
+		// Get ids from input
 		$list = $this->app->input->get->getString('ids');
+
+		// Check if ids were passed
 		if (isset($list))
 		{
+			// Convert the ids list to array
 			$idsList = explode(',', $list);
 
 			return $idsList;
@@ -90,6 +95,7 @@ class WebServiceControllerV1JsonScreenshotsDelete extends WebServiceControllerV1
 		// Init request
 		$this->init();
 
+		// Check for errors
 		if ($this->app->errors->errorsExist() == true)
 		{
 			$this->app->setBody(json_encode($this->app->errors->getErrors()));
@@ -97,7 +103,8 @@ class WebServiceControllerV1JsonScreenshotsDelete extends WebServiceControllerV1
 			return;
 		}
 
-		if ($this->applicationExists($this->mandatoryFields['application_id']))
+		// Check if application exists in database
+		if ($this->itemExists($this->mandatoryFields['application_id'], 'application'))
 		{
 			// Get content state
 			$modelState = $this->model->getState();
@@ -106,27 +113,40 @@ class WebServiceControllerV1JsonScreenshotsDelete extends WebServiceControllerV1
 			$modelState->set('content.type', 'application');
 			$modelState->set('content.id', $this->mandatoryFields['application_id']);
 
+			// Get application
 			$application = $this->model->getItem();
+
+			// Check if application was loaded successful
 			if ($application == false)
 			{
-				$this->app->setBody(json_encode(false));
+				$this->parseData(false);
 			}
 			else
 			{
+				// Decode media json to array
 				$appMedia = json_decode($application->media);
 
+				// Only one screenshot should be deleted
 				if (strcmp($this->id, '*') !== 0)
 				{
+					// Check if screenshot exists
 					if (property_exists($appMedia, $this->id))
 					{
+						// Remove screenshot
 						unset($appMedia->{$this->id});
 					}
 				}
+
+				// All screenshots should be deleted or a list of screenshots
 				else
 				{
+					// Check for ids list
 					$ids = $this->getIDsList();
+
+					// If there is a list of ids
 					if ($ids != null)
 					{
+						// Remove each screenshot if it is passed in the array list
 						foreach ($ids as $key => $id)
 						{
 							if (property_exists($appMedia, $id))
@@ -135,12 +155,15 @@ class WebServiceControllerV1JsonScreenshotsDelete extends WebServiceControllerV1
 							}
 						}
 					}
+
+					// Remove all screenshots
 					else
 					{
 						$appMedia = null;
 					}
 				}
 
+				// Update screenshots
 				$application->media = json_encode($appMedia);
 				try
 				{
@@ -153,8 +176,6 @@ class WebServiceControllerV1JsonScreenshotsDelete extends WebServiceControllerV1
 					$this->parseData(false);
 					return;
 				}
-
-				$this->parseData($application);
 			}
 		}
 		else
@@ -164,23 +185,6 @@ class WebServiceControllerV1JsonScreenshotsDelete extends WebServiceControllerV1
 			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
 			return;
 		}
-	}
-
-	/**
-	 * Check if an application exists in DB
-	 *
-	 * @param   string  $id  The id of the application
-	 *
-	 * @return  boolean
-	 *
-	 * @since   1.0
-	 */
-	protected function applicationExists($id)
-	{
-		$modelState = $this->model->getState();
-		$modelState->set('content.type', 'application');
-
-		return $this->model->existsItem($id);
 	}
 
 	/**

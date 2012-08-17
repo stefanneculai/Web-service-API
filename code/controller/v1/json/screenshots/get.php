@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
@@ -8,10 +8,11 @@
  */
 
 /**
- * WebService GET content class
+ * The class for Screenshot GET requests
  *
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
+ *
  * @since       1.0
  */
 class WebServiceControllerV1JsonScreenshotsGet extends WebServiceControllerV1JsonBaseGet
@@ -91,7 +92,7 @@ class WebServiceControllerV1JsonScreenshotsGet extends WebServiceControllerV1Jso
 			return;
 		}
 
-		if ($this->applicationExists($this->mandatoryFields['application_id']))
+		if ($this->itemExists($this->mandatoryFields['application_id'], 'application'))
 		{
 			// Get content state
 			$modelState = $this->model->getState();
@@ -100,7 +101,10 @@ class WebServiceControllerV1JsonScreenshotsGet extends WebServiceControllerV1Jso
 			$modelState->set('content.type', 'application');
 			$modelState->set('content.id', $this->mandatoryFields['application_id']);
 
+			// Load application
 			$application = $this->model->getItem();
+
+			// Check if application was successfully loaded
 			if ($application == false)
 			{
 				$this->app->setBody(json_encode(false));
@@ -120,23 +124,6 @@ class WebServiceControllerV1JsonScreenshotsGet extends WebServiceControllerV1Jso
 	}
 
 	/**
-	 * Check if an application exists in DB
-	 *
-	 * @param   string  $id  The id of the application
-	 *
-	 * @return  boolean
-	 *
-	 * @since   1.0
-	 */
-	protected function applicationExists($id)
-	{
-		$modelState = $this->model->getState();
-		$modelState->set('content.type', 'application');
-
-		return $this->model->existsItem($id);
-	}
-
-/**
 	 * Parse the returned data from database
 	 *
 	 * @param   mixed  $data  A JContent object, an array of JContent or a boolean.

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
@@ -8,10 +8,11 @@
  */
 
 /**
- * WebService 'content' Delete method.
+ * The class for Comment DELETE requests
  *
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
+ *
  * @since       1.0
  */
 class WebServiceControllerV1JsonCommentsDelete extends WebServiceControllerV1JsonBaseDelete

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
@@ -8,10 +8,11 @@
  */
 
 /**
- * WebService GET content class
+ * The class for Application GET requests
  *
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
+ *
  * @since       1.0
  */
 class WebServiceControllerV1JsonApplicationsGet extends WebServiceControllerV1JsonBaseGet

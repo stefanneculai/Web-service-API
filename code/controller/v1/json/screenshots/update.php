@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
@@ -8,10 +8,11 @@
  */
 
 /**
- * WebService GET content class
+ * The class for Screenshot UPDATE requests
  *
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
+ *
  * @since       1.0
  */
 class WebServiceControllerV1JsonScreenshotsUpdate extends WebServiceControllerV1JsonBaseUpdate
@@ -25,6 +26,7 @@ class WebServiceControllerV1JsonScreenshotsUpdate extends WebServiceControllerV1
 	 */
 	public function execute()
 	{
+		// This request is not available
 		$this->app->errors->addError('601', array("/screenshots"));
 		$this->app->setBody(json_encode($this->app->errors->getErrors()));
 		$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);

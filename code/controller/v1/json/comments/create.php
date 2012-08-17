@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
@@ -8,10 +8,11 @@
  */
 
 /**
- * WebService 'content' Create method.
+ * The class for Comment CREATE requests
  *
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
+ *
  * @since       1.0
  */
 class WebServiceControllerV1JsonCommentsCreate extends WebServiceControllerV1JsonBaseCreate
@@ -36,14 +37,16 @@ class WebServiceControllerV1JsonCommentsCreate extends WebServiceControllerV1Jso
 			return;
 		}
 
-		if ( $this->applicationExists($this->mandatoryFields['application_id']) )
+		// Check if mandatory field application_id was passed (each comment is associated with an application)
+		if ($this->itemExists($this->mandatoryFields['application_id'], 'application'))
 		{
 			// Create content
 			$data = $this->createContent();
 
-			// Get tag id
+			// Get comment id
 			$comment_id = $this->pruneFields($data, array('content_id'));
 
+			// Check if we have comment id in result
 			if (array_key_exists('id', $comment_id))
 			{
 				$comment_id = $comment_id['id'];
@@ -55,20 +58,26 @@ class WebServiceControllerV1JsonCommentsCreate extends WebServiceControllerV1Jso
 			// Set content type that we need
 			$modelState->set('content.type', $this->type);
 
+			// Map the comment with the application
 			$result = $this->model->map($this->mandatoryFields['application_id'], array($comment_id));
 
+			// If mapping is done successfully
 			if ($result == true)
 			{
 				$returnedContent = new stdClass;
 				$returnedContent->id = $comment_id;
 				$this->app->setBody(json_encode($returnedContent));
 			}
+
+			// If something went wrong during mapping return false
 			else
 			{
 				$this->parseData(false);
 			}
 			return;
 		}
+
+		// Throw error
 		else
 		{
 			$this->app->errors->addError('202');
@@ -76,22 +85,5 @@ class WebServiceControllerV1JsonCommentsCreate extends WebServiceControllerV1Jso
 			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
 			return;
 		}
-	}
-
-	/**
-	 * Check if an application exists in DB
-	 *
-	 * @param   string  $id  The id of the application
-	 *
-	 * @return  boolean
-	 *
-	 * @since   1.0
-	 */
-	protected function applicationExists($id)
-	{
-		$modelState = $this->model->getState();
-		$modelState->set('content.type', 'application');
-
-		return $this->model->existsItem($id);
 	}
 }

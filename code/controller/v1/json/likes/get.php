@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
@@ -8,10 +8,11 @@
  */
 
 /**
- * WebService GET likes class
+ * The class for likes GET requests
  *
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
+ *
  * @since       1.0
  */
 class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseGet
@@ -31,9 +32,15 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseG
 	 */
 	protected function getContentId()
 	{
+		// TODO update this class to get likes for all kind of contents
+
+		// Get application ID from input
 		$application_id = $route = $this->input->get->getString('application_id');
+
+		// Check if application ID was passed
 		if (isset($application_id))
 		{
+			// Update the type from likes to application, because likes are actually associated to application
 			$this->type = "application";
 			return $application_id;
 		}
@@ -88,6 +95,7 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseG
 	{
 		$this->init();
 
+		// Check if we have a content ID specified
 		if (is_null($this->content_id) && is_null($this->user_id))
 		{
 			$this->app->errors->addError("203");
@@ -96,8 +104,10 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseG
 			return;
 		}
 
+		// All likes for the specified user should be returned
 		if (!is_null($this->user_id))
 		{
+			// Check if user exists in database
 			if ($this->checkUserId() == false)
 			{
 				$this->app->errors->addError("204", array('user_id', $this->user_id));
@@ -106,16 +116,21 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseG
 				return;
 			}
 
+			// Get model state
 			$modelState = $this->model->getState();
 
+			// Set the user id in session. This is used for updating the content in Application class
 			$session = $this->app->getSession();
 			$session->set('userID', $this->user_id);
 
+			// Set limit and offset for the returned likes
 			$modelState->set('list.offset', $this->offset);
 			$modelState->set('list.limit', $this->limit);
 
+			// Get data
 			$data = $this->model->getList();
 
+			// Format likes properly
 			$likes = array();
 
 			foreach ($data as $key => $content)
@@ -171,6 +186,8 @@ class WebServiceControllerV1JsonLikesGet extends WebServiceControllerV1JsonBaseG
 			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
 			return;
 		}
+
+		// Return only the likes from application
 		else
 		{
 			$data = $this->pruneFields($data, $this->fields);

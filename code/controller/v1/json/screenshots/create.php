@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
@@ -8,10 +8,11 @@
  */
 
 /**
- * WebService GET content class
+ * The class for Screenshot CREATE requests
  *
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
+ *
  * @since       1.0
  */
 class WebServiceControllerV1JsonScreenshotsCreate extends WebServiceControllerV1JsonBaseCreate
@@ -60,7 +61,7 @@ class WebServiceControllerV1JsonScreenshotsCreate extends WebServiceControllerV1
 			return;
 		}
 
-		if ($this->applicationExists($this->mandatoryFields['application_id']))
+		if ($this->itemExists($this->mandatoryFields['application_id'], 'application'))
 		{
 			// Get content state
 			$modelState = $this->model->getState();
@@ -69,16 +70,23 @@ class WebServiceControllerV1JsonScreenshotsCreate extends WebServiceControllerV1
 			$modelState->set('content.type', 'application');
 			$modelState->set('content.id', $this->mandatoryFields['application_id']);
 
+			// Get the application
 			$application = $this->model->getItem();
+
+			// Check if application exists
 			if ($application == false)
 			{
-				$this->app->setBody(json_encode(false));
+				$this->parseData(false);
 			}
 			else
 			{
+				// Check if media fields were passed
 				if (isset($this->optionalFields['media']))
 				{
+					// Get the media from application
 					$appMedia = json_decode($application->media);
+
+					// Add new media to application
 					foreach (json_decode($this->optionalFields['media']) as $key => $media)
 					{
 						if ($appMedia != null)
@@ -92,6 +100,7 @@ class WebServiceControllerV1JsonScreenshotsCreate extends WebServiceControllerV1
 						$appMedia->{$maxId} = $media;
 					}
 
+					// Encode media to json and save it to database
 					$application->media = json_encode($appMedia);
 					try
 					{
@@ -121,23 +130,6 @@ class WebServiceControllerV1JsonScreenshotsCreate extends WebServiceControllerV1
 			$this->app->setHeader('status', $this->app->errors->getResponseCode(), true);
 			return;
 		}
-	}
-
-	/**
-	 * Check if an application exists in DB
-	 *
-	 * @param   string  $id  The id of the application
-	 *
-	 * @return  boolean
-	 *
-	 * @since   1.0
-	 */
-	protected function applicationExists($id)
-	{
-		$modelState = $this->model->getState();
-		$modelState->set('content.type', 'application');
-
-		return $this->model->existsItem($id);
 	}
 
 	/**

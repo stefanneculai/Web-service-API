@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
@@ -8,10 +8,11 @@
  */
 
 /**
- * WebService 'content' Delete method.
+ * The class for Tag DELETE requests
  *
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
+ *
  * @since       1.0
  */
 class WebServiceControllerV1JsonTagsDelete extends WebServiceControllerV1JsonBaseDelete
@@ -25,13 +26,17 @@ class WebServiceControllerV1JsonTagsDelete extends WebServiceControllerV1JsonBas
 	 */
 	protected function getTagList()
 	{
+		// Get name and list from input
 		$name = $this->input->get->getString('name');
 		$list = $this->input->get->getString('list');
 
+		// If name was passed return an array with it
 		if (isset($name))
 		{
 			return array($name);
 		}
+
+		// If a list was passed return an array with tags
 		elseif (isset($list))
 		{
 			$tagList = explode(',', $list);
@@ -56,9 +61,13 @@ class WebServiceControllerV1JsonTagsDelete extends WebServiceControllerV1JsonBas
 	 */
 	protected function getIDsList()
 	{
+		// Get ids from input
 		$ids = $this->input->get->getString('ids');
+
+		// Check if ids were passed to input
 		if (isset($ids))
 		{
+			// Create an array with ids
 			$idsList = explode(',', $ids);
 
 			foreach ($idsList as $key => $tag)
@@ -98,12 +107,17 @@ class WebServiceControllerV1JsonTagsDelete extends WebServiceControllerV1JsonBas
 			// Check if application exists in database
 			if ($this->itemExists($app_id, 'application'))
 			{
+				// Get state and set type
 				$modelState = $this->model->getState();
 				$modelState->set('content.type', $this->type);
 
+				// Get an array of tags
 				$tagList = $this->getTagList();
+
+				// Get an array of ids
 				$idsList = $this->getIDsList();
 
+				// Check if there is a list of tags
 				if (!is_null($tagList))
 				{
 					// Check if tags exist in database or they should be created
@@ -121,41 +135,52 @@ class WebServiceControllerV1JsonTagsDelete extends WebServiceControllerV1JsonBas
 							$data = $data[0];
 							$tag_id = $this->pruneFields($data, array('content_id'));
 
+							// Check if tag exists
 							if (array_key_exists('id', $tag_id))
 							{
 								$tag_id = $tag_id['id'];
 							}
 
+							// Unmap tag from application
 							$result = $this->model->unmap($app_id, $tag_id);
+
+							// Something unexpected happened
 							if ($result == false)
 							{
-								$this->app->setBody(json_encode($result));
+								$this->parseData(false);
 								return;
 							}
 						}
 					}
 
-					$this->app->setBody(json_encode(true));
+					$this->parseData(true);
 				}
+
+				// Check if a list of ids was passed
 				elseif (!is_null($idsList))
 				{
+					// Get state
 					$modelState = $this->model->getState();
 					$modelState->set('content.type', $this->type);
 
+					// Unmap each id
 					foreach ($idsList as $key => $id)
 					{
 						if ($this->model->existsItem($id))
 						{
+							// Unmap tag from application
 							$result = $this->model->unmap($app_id, $id);
+
+							// Something unexpected happened
 							if ($result == false)
 							{
-								$this->app->setBody(json_encode($result));
+								$this->parseData(false);
 								return;
 							}
 						}
 					}
 
-					$this->app->setBody(json_encode(true));
+					$this->parseData(true);
 				}
 				elseif (strcmp($this->id, '*') !== 0)
 				{

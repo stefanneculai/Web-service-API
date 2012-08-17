@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
@@ -8,10 +8,11 @@
  */
 
 /**
- * WebService 'content' Create method.
+ * The class for Tag CREATE requests
  *
- * @package     WebService.Application
+ * @package     WebService.Controller
  * @subpackage  Controller
+ *
  * @since       1.0
  */
 class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBaseCreate
@@ -25,8 +26,10 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 	 */
 	protected function getTagList()
 	{
+		// Check if the mandatory field list is set
 		if (isset($this->mandatoryFields['list']))
 		{
+			// Convert the list of tags to array
 			$tagList = explode(',', $this->mandatoryFields['list']);
 
 			foreach ($tagList as $key => $tag)
@@ -49,8 +52,10 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 	 */
 	protected function getIDsList()
 	{
+		// Check if ids were passed
 		if (isset($this->mandatoryFields['ids']))
 		{
+			// Create an array of ids
 			$idsList = explode(',', $this->mandatoryFields['ids']);
 
 			foreach ($idsList as $key => $tag)
@@ -78,6 +83,7 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 		$ids = $this->getIDsList();
 		$tagIDs = array();
 
+		// If there is a list of tags
 		if ($list != null)
 		{
 			// Check if tags exist in database or they should be created
@@ -113,6 +119,8 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 				array_push($tagIDs, $tag_id);
 			}
 		}
+
+		// If there is a list of tag ids
 		elseif ($ids != null)
 		{
 			$modelState = $this->model->getState();
@@ -132,6 +140,8 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 				}
 			}
 		}
+
+		// There is a tag
 		else
 		{
 			// Create content
@@ -195,10 +205,13 @@ class WebServiceControllerV1JsonTagsCreate extends WebServiceControllerV1JsonBas
 				// Set content type that we need
 				$modelState->set('content.type', $this->type);
 
+				// Map only one tag ID
 				if (isset($this->mandatoryFields['name']))
 				{
 					$result = $this->model->map($this->optionalFields['application_id'], $tagIDs);
 				}
+
+				// Map an array of tag IDs
 				else
 				{
 					$result = $this->model->map($this->optionalFields['application_id'], $tagIDs, true);
